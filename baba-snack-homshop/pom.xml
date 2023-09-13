@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.15</version>
+		<version>2.7.14</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.babasnack.hom</groupId>
@@ -17,6 +17,40 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- 스프링 시큐리티 EL과 태그 라이브러리 -->
+		<dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-taglibs</artifactId>
+		</dependency>
+		<!-- 아파치 커먼스 라이브러리 : lang3, io -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+	    <groupId>commons-io</groupId>
+	    <artifactId>commons-io</artifactId>
+	    <version>2.13.0</version>
+		</dependency>
+		<!-- 
+			log4jdbc와 log4j2를 연결해 메시지를 출력하는 라이브러리
+			우리는 logback을 사용하지만 logback이나 log4j2나 slf4j의 구현체이므로 상관없음(facade 패턴)
+		-->
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+			<version>1.16</version>
+		</dependency>
+		<!-- JSTL -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<!-- 내장 톰캣에 jsp 지원 기능을 추가 -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
