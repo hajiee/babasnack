@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class orderDetail {
+public class OrderDetail {
 	private Long odno;
 	private Long allPrice;
 	private String username;

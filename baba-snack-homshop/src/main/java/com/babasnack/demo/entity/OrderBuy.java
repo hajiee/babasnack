@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class orderBuy {
+public class OrderBuy {
 	private Long ono;
 	private Long buyCnt;
 	private LocalDateTime orderDay = LocalDateTime.now();
