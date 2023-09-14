@@ -1,5 +1,8 @@
 package com.babasnack.demo.entity;
 
-public class Product {
+import lombok.Data;
 
+@Data
+public class Product {
+	private Long pno;
 }
