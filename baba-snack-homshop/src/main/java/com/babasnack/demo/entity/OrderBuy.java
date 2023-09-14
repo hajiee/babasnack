@@ -11,7 +11,7 @@ import lombok.*;
 public class OrderBuy {
 	private Long ono;
 	private Long buyCnt;
-	private LocalDateTime orderDay = LocalDateTime.now();
+	private LocalDateTime orderDay;
 	private Long allPrice;
 	private String deliveryState;
 	private String  baseDelivery;
