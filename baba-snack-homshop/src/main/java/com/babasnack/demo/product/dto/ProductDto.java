@@ -61,6 +61,7 @@ public class ProductDto {
 		private String productNotice;
 		private Long productPrice;
 		private Long productSize;
+		private Long productCnt;
 		private List<ProductPhoto> productPhoto;
 		private List<Review> reviews;
 	}

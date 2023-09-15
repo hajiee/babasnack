@@ -17,4 +17,5 @@ public class Product {
 	private Long productPrice;
 	private Long productSize;
 	private Long reserve;
+	private Long productCnt;
 }
