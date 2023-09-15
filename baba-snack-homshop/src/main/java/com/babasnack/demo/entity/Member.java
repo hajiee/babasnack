@@ -15,4 +15,9 @@ public class Member {
 	private Long pnoTell;
 	private String email;
 	private LocalDateTime joinDay;
+	public static Object builder() {
+		
+		return null;
+	}
+	
 }
