@@ -18,10 +18,9 @@ public class ProductDto {
 	@Autowired
 	Category category;
 	
-	//a)상품등록
+	//상품등록
 	@Data
 	public static class WriteP{	
-		private Long pno;
 		private String productName;
 		private String productNotice;
 		private Long productStock;
@@ -30,7 +29,7 @@ public class ProductDto {
 		private List<MultipartFile> productPhoto;
 	}
 	
-	//b)상품관리
+	//상품관리
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -40,7 +39,7 @@ public class ProductDto {
 		private Category category;
 	}
 	
-	//c)상품목록
+	//상품목록
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -52,7 +51,7 @@ public class ProductDto {
 		private List<ProductPhoto> productPhoto;
 	}
 	
-	//d)상품상세
+	//상품상세
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -66,7 +65,7 @@ public class ProductDto {
 		private List<Review> reviews;
 	}
 	
-	//e)상품검색
+	//상품검색
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
