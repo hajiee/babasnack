@@ -16,11 +16,9 @@ public class CartDto {
 	@NoArgsConstructor
 	public static class ReadCart {	
 		private List<ProductPhoto> productPhoto;
-		private Long pno;
-		private Long productCnt;
+		private List<Cart> cart;
 		private Long productPrice;
 		private Long allPrice;
-		private String productName;
 	}
 	
 	// 장바구니 상품 삭제
@@ -30,4 +28,8 @@ public class CartDto {
 	public static class DeleteAllCart {
 		private String username;
 	}
+
+	
+
+	
 }

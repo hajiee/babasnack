@@ -1,4 +1,4 @@
-package com.babasnack.demo.cart.delivery.dto;
+package com.babasnack.demo.delivery.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
