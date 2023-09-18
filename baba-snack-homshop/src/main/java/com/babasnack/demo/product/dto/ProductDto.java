@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.entity.Review;
 
@@ -26,7 +27,18 @@ public class ProductDto {
 		private Long productStock;
 		private Long productPrice;
 		private Long productSize;
+		private Category category;
 		private List<MultipartFile> productPhoto;
+		public Product toProduct() {
+			Product product = new Product();
+		    product.setProductName(this.productName);
+		    product.setProductNotice(this.productNotice);
+		    product.setProductStock(this.productStock);
+		    product.setProductPrice(this.productPrice);
+		    product.setProductSize(this.productSize);
+		    // 나머지 필드 초기화
+		    return product;
+		}
 	}
 	
 	//상품관리

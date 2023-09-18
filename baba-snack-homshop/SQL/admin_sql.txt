@@ -1,0 +1,92 @@
+CREATE TABLE product (
+    pno   number(8)   NOT NULL,
+    product_name  varchar2(15 char)   NOT NULL,
+    product_notice    clob    NOT NULL,
+    product_stock number(3)   NOT NULL,
+    product_price number(7)   NOT NULL,
+    product_size  number(4)   NOT NULL,
+    reserve   number(7)   NOT NULL,    -- '상품(갯수무관)하나 주문할때 해당 상품가격의 10% 적립'
+);
+
+ALTER TABLE product ADD CONSTRAINT PK_PRODUCT PRIMARY KEY(pno);
+ALTER TABLE product ADD product_cnt number(2);
+
+ALTER TABLE product
+ADD category VARCHAR2(10);
+ALTER TABLE product
+ADD CONSTRAINT chk_category CHECK (category IN ('CAT', 'DOG'));
+
+CREATE TABLE product_photo (
+    product_imgno number(8)   NOT NULL,
+    pno   number(8)   NOT NULL,
+    product_img   varchar2(45 char)   NOT NULL,
+    product_saveimg   varchar2(45 char)   NOT NULL
+);
+
+ALTER TABLE product_photo ADD CONSTRAINT PK_PRODUCT_PHOTO PRIMARY KEY (
+    product_imgno,
+    pno
+);
+
+ALTER TABLE product_photo ADD CONSTRAINT FK_product_TO_product_photo_1 FOREIGN KEY(pno)
+REFERENCES product(pno);
+
+CREATE TABLE board (
+    bno   number(8)   NOT NULL,
+    title varchar2(15 char)   NOT NULL,
+    board_notice  clob    NOT NULL,
+    board_date    date    NOT NULL,
+    board_state   number(1)   NOT NULL    , -- 'boolean',
+    board_code    number(4)   NULL,
+    board_writer  varchar2(10 char)   NOT NULL
+);
+
+ALTER TABLE board ADD CONSTRAINT PK_BOARD PRIMARY KEY(bno);
+
+CREATE TABLE board_review (
+    brno  number(8)   NOT NULL,
+    bno   number(8)   NOT NULL,
+    admin varchar2(8 char)    NOT NULL    , -- '관리자가 기본값',
+    admin_notice  varchar2(1000 char) NOT NULL,
+    admin_date    date    NOT NULL
+);
+
+ALTER TABLE board_review ADD CONSTRAINT PK_BOARD_REVIEW PRIMARY KEY (
+    brno,
+    bno
+);
+
+ALTER TABLE board_review ADD CONSTRAINT FK_board_TO_board_review_1 FOREIGN KEY(bno)
+REFERENCES board(bno);
+
+CREATE TABLE review (
+    rno   number(8)   NOT NULL,
+    review_date   date    NOT NULL, 	-- '현재시간',
+    review_notice varchar2(1000 char) NULL,
+    star  number(1)   NOT NULL,	 -- 'boolean',
+    review_write  varchar2(10 char)   NOT NULL, -- '회원의 아이디',
+    pno   number(8)   NOT NULL
+);
+
+ALTER TABLE review ADD CONSTRAINT PK_REVIEW PRIMARY KEY(rno);
+
+CREATE TABLE review_photo (
+    rno   number(8)   NOT NULL,
+    review_imgno  number(8)   NOT NULL,
+    review_img    varchar2(45 char)   NOT NULL,
+    review_saveimg    varchar2(45 char)   NOT NULL
+);
+
+ALTER TABLE review_photo ADD CONSTRAINT PK_REVIEW_PHOTO PRIMARY KEY(rno);
+
+ALTER TABLE review_photo ADD CONSTRAINT FK_review_TO_review_photo_1 FOREIGN KEY(rno)
+REFERENCES review (
+    rno
+);
+
+create sequence product_seq;
+create sequence product_photo_seq;
+create sequence board_seq;
+create sequence board_review_seq;
+create sequence review_seq;
+create sequence review_photo_seq;

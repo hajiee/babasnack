@@ -1,0 +1,97 @@
+CREATE TABLE cart (
+    pno   number(8)   NOT NULL, -- '상품key',
+    username  varchar2(10 char)   NOT NULL,  -- '회원key',
+    product_cnt   number(2)   NOT NULL,
+    product_price number(7)   NOT NULL,
+    all_price number(10)  NOT NULL,
+    product_name  varchar2(15 char)   NOT NULL
+);
+
+CREATE TABLE delivery (
+    dno   number(8)   NOT NULL,
+    username  varchar2(10 char)   NOT NULL    , -- '회원key',
+    name  varchar2(4 char)    NOT NULL,
+    pno_tell  number(11)  NOT NULL,
+    base_delivery nvarchar2(200)  NOT NULL,
+    add_delivery  nvarchar2(200)  NULL
+);
+
+CREATE TABLE pay (
+    payno number(8)   NOT NULL,
+    pay_ment  nvarchar2(50)   NOT NULL    -- '네이버페이, 무통장입금'
+);
+
+CREATE TABLE order_buy (
+    ono   number(8)   NOT NULL,
+    buy_cnt   number(2)   NOT NULL,
+    order_day date    NOT NULL,
+    all_price number(10)  NOT NULL,
+    delivery_state    nvarchar2(50)   NOT NULL,
+    base_delivery nvarchar2(200)  NOT NULL,
+    all_reserve   number(10)  NOT NULL,
+    dno   number(8)   NOT NULL, 	-- '배송지key',
+    username  varchar2(10 char)   NOT NULL, 	-- '회원key',
+    payno number(8)   NOT NULL
+);
+
+CREATE TABLE order_detail (
+    odno  number(8)   NOT NULL,
+    all_price number(10)  NOT NULL,
+    username  varchar2(10 char)   NOT NULL,
+    buy_cnt   number(2)   NOT NULL,
+    product_price number(7)   NOT NULL,
+    product_name  varchar2(15 char)   NOT NULL,
+    product_saveimg   varchar2(45 char)   NOT NULL,
+    ono   number(8)   NOT NULL, 	-- '주문key'
+    pno   number(8)   NOT NULL   -- '상품key'
+);
+
+create sequence cart_seq;
+create sequence delivery_seq;
+create sequence pay_seq;
+create sequence order_buy_seq;
+create sequence order_detail_seq;
+
+ALTER TABLE cart ADD CONSTRAINT PK_CART PRIMARY KEY (
+    pno,
+    username
+);
+
+ALTER TABLE cart ADD CONSTRAINT FK_product_TO_cart_1 FOREIGN KEY(pno)
+
+REFERENCES product (
+    pno
+);
+
+ALTER TABLE cart ADD CONSTRAINT FK_member_TO_cart_1 FOREIGN KEY(username)
+
+REFERENCES member (
+    username
+);
+
+ALTER TABLE delivery ADD CONSTRAINT PK_DELIVERY PRIMARY KEY (
+    dno,
+    username
+);
+
+ALTER TABLE delivery ADD CONSTRAINT FK_member_TO_delivery_1 FOREIGN KEY(username)
+
+REFERENCES member (
+    username
+);
+
+ALTER TABLE pay ADD CONSTRAINT PK_PAY PRIMARY KEY (
+    payno
+);
+
+ALTER TABLE order_buy ADD CONSTRAINT PK_ORDER_BUY PRIMARY KEY (
+    ono
+);
+
+REFERENCES member (
+    username
+);
+
+ALTER TABLE order_detail ADD CONSTRAINT PK_ORDER_DETAIL PRIMARY KEY (
+    odno
+);

@@ -1,5 +1,7 @@
 package com.babasnack.demo.entity;
 
+import com.babasnack.demo.product.dto.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +20,5 @@ public class Product {
 	private Long productSize;
 	private Long reserve;
 	private Long productCnt;
+	private Category category;
 }

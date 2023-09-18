@@ -1,0 +1,50 @@
+CREATE TABLE member (
+    username  varchar2(10 char)   NOT NULL,
+    password  varchar2(12 char)   NOT NULL,
+    pno_tell  number(11)  NOT NULL,
+    ps_email  varchar2(320 char)  NOT NULL,
+    join_day  date    NOT NULL
+);
+
+CREATE TABLE pet (
+    pet_name  varchar2(7 char)    NOT NULL,
+    username  varchar2(10 char)   NOT NULL,
+    pet_type  varchar2(15 char)   NULL,
+    pet_age   number(2)   NULL,
+    pet_sex   number(1)   NULL
+);
+
+CREATE TABLE pet_photo (
+    pet_prono number(8 )  NOT NULL,
+    pet_name  varchar2(7 char)    NOT NULL,
+    username  varchar2(10 char)   NOT NULL,
+    pet_img   varchar2(45 char)   NULL,
+    pet_save_img  varchar2(45 char)   NULL
+);
+
+create sequence member_seq;
+create sequence member_pet_seq;
+create sequence member_pet_photo_seq;
+
+ALTER TABLE member ADD CONSTRAINT PK_MEMBER PRIMARY KEY (
+    username
+);
+
+ALTER TABLE pet ADD CONSTRAINT PK_PET PRIMARY KEY (
+    pet_name,
+    username
+);
+
+ALTER TABLE pet ADD CONSTRAINT FK_member_TO_pet_1 FOREIGN KEY(username)
+
+ALTER TABLE pet_photo ADD CONSTRAINT PK_PET_PHOTO PRIMARY KEY (
+    pet_prono,
+    pet_name,
+    username
+);
+
+ALTER TABLE pet_photo ADD CONSTRAINT FK_pet_TO_pet_photo_1 FOREIGN KEY(pet_name, username)
+
+REFERENCES pet (
+    pet_name, username
+);
