@@ -15,7 +15,8 @@ public interface MemberDao {
 	
 	@Select("select * from member where username=#{username} and rownum=1")
 	public Member FindById(String username);
-	
+	@Select("select*from member where email=#{email} and rownum=1")
+	public Member FindByEmail(String email);
 	@Update("update member set email=#{email} where username=#{username}")
 	  public Integer PsChangeEm(String email, String username);
 	
@@ -24,4 +25,5 @@ public interface MemberDao {
 	
 	@Delete("delete from member where username=#{username}")
 	  public Integer PsWithdrawl(String username);
+	
 }
