@@ -34,11 +34,11 @@ public class CartService {
 	}
 	
 	public Boolean add(Long pno, String username) {
-		Product product = productDao.getProductById(pno); // productDao
-		Cart newCart = new Cart(pno, username, 1L, product.getProductPrice(), product.getProductPrice(), product.getProductName());
-		cartDao.addCart(newCart);
+		Product product; // productDao
+//		Cart newCart = new Cart(pno, username, 1L, product.getProductPrice(), product.getProductPrice(), product.getProductName());
+//		cartDao.addCart(newCart);
 		
-		return true; 
+		return true; // 오류 나서 일단 보류
 		
 	}
 
