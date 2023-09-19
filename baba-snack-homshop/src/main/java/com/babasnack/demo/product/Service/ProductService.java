@@ -7,25 +7,29 @@ import org.springframework.stereotype.Service;
 
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.product.dao.ProductDao;
-import com.babasnack.demo.product.dto.Category;
+import com.babasnack.demo.product.dto.ProductDto;
 
 @Service
 public class ProductService {
-	@Autowired
-    private ProductDao productDao; // ProductRepository는 데이터베이스 접근을 위한 인터페이스 또는 클래스
+    private final ProductDao productDao;
 
-    public List<Product> getCatProducts(Category cat) {
-        // 'CAT' 카테고리에 해당하는 상품 목록 조회
-        return productDao.findByCategory(Category.CAT);
+    @Autowired
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
-    public List<Product> getDogProducts(Category dog) {
-        // 'DOG' 카테고리에 해당하는 상품 목록 조회
-        return productDao.findByCategory(Category.DOG);
-    }
-
-	public Product getProductById(Long id) {
-		return productDao.getProductById(id);
+	// 상품 목록 조회 서비스 메서드
+	public List<Product> getProductList() {
+		return productDao.findAll();
 	}
 
+	// 특정 상품 조회 서비스 메서드
+	public Product getProductByProductName(String productName) {
+		return productDao.findByProductName(productName);
+	}
+
+	// 한 페이지당 상품 수 조회 서비스 메서드
+	public List<ProductDto.ListP> getPageOne(Long startRownum, Long endRownum) {
+	    return productDao.findPageOne(startRownum, endRownum);
+	}
 }
