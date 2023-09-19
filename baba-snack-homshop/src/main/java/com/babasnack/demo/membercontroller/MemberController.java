@@ -67,7 +67,7 @@ public class MemberController {
 	public ModelAndView PsMyPage(Principal principal,HttpSession session) {
 		//비밀번호 확인이 안된경우 "/member/findbypw로 이동
 		if(session.getAttribute("CheckPw")==null)
-			return new ModelAndView("redirect:/member/check-password");
+			return new ModelAndView("redirect:/member/findbypw");
 		MemberDto.PsMyPage dto=service.psmypage(principal.getName());
 		return new ModelAndView("member/user-profile").addObject("member,dto");
 	}

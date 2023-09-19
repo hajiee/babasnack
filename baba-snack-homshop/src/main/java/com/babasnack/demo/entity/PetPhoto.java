@@ -1,5 +1,7 @@
 package com.babasnack.demo.entity;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetPhoto {
+
 	private Long petProno;
 	private String petName;
 	private String username;
