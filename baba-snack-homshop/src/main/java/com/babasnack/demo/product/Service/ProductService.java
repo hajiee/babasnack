@@ -3,6 +3,7 @@ package com.babasnack.demo.product.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.babasnack.demo.entity.Product;
@@ -23,7 +24,7 @@ public class ProductService {
 		return productDao.findAll();
 	}
 
-	// 특정 상품 조회 서비스 메서드
+	// 특정 상품 조회 서비스 메서드 - 만약 해당하는 상품이 없다면 null이 반환
 	public Product getProductByProductName(String productName) {
 		return productDao.findByProductName(productName);
 	}
@@ -32,4 +33,23 @@ public class ProductService {
 	public List<ProductDto.ListP> getPageOne(Long startRownum, Long endRownum) {
 	    return productDao.findPageOne(startRownum, endRownum);
 	}
+	
+	// 특정 상품의 상세 정보 조회 서비스 메서드
+	public ProductDto.ReadP getProductDetail(String productName) {
+	    Product product = getProductByProductName(productName);
+
+	    if (product == null) { 
+	        throw new NotFoundException("Product not found."); 
+	    }
+	    
+	    ProductDto.ReadP detail = new ProductDto.ReadP();
+	    detail.setProductName(product.getProductName());
+	    detail.setProductNotice(product.getProductNotice());
+	    detail.setProductPrice(product.getProductPrice());
+	    detail.setProductSize(product.getProductSize());
+	    
+	    // 나머지 필드 설정 (productCnt, reviews 등)
+	    
+	    return detail;
+		}
 }

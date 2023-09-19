@@ -18,7 +18,7 @@ import com.babasnack.demo.product.dto.ProductDto;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductService productService;
+	private final ProductService productService;
 
     @Autowired 
     public ProductController(ProductService productService) {
@@ -48,12 +48,11 @@ public class ProductController {
 	// 특정 상품 조회 API 엔드 포인트(GET /products/{productName})
     @GetMapping("/{productName}")
     public ModelAndView getProductByProductName(@PathVariable String productName) throws NotFoundException {
-        Product product = productService.getProductByProductName(productName);
-        if (product == null) { 
-            throw new NotFoundException(productName); // 예시로 NotFoundException을 던집니다.
-        }
+        ProductDto.ReadP productDetail = productService.getProductDetail(productName);
+        
         ModelAndView modelAndView = new ModelAndView("product-details");
-        modelAndView.addObject("product", product);
+        modelAndView.addObject("product", productDetail);
+        
         return modelAndView;
      }
 
@@ -69,6 +68,7 @@ public class ProductController {
          List<ProductDto.ListP> productList = productService.getPageOne(startRowNum, endRowNum);  
          ModelAndView modelAndView = new ModelAndView("product-page");
          modelAndView.addObject("products", productList);
+         
          return modelAndView;
      }
 }
