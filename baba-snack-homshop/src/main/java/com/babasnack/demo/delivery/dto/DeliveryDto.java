@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class DeliveryDto {
-	// 04-2 주문상세 구상
+	// 04-2 배송지 구상
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class SearchDeliveryAddress {
+	public static class updateDeliveryAddress {
+		private Long dno;
 		private String name;
 		private Long pnoTell;
 		private String baseDelivery;
@@ -21,6 +22,7 @@ public class DeliveryDto {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class PayDeliveryAddress {
+		private Long dno;
 		private String name;
 		private Long pnoTell;
 		private String baseDelivery;
