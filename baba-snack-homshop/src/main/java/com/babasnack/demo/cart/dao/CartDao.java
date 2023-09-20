@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.babasnack.demo.entity.Cart;
+import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 
 @Mapper
@@ -23,6 +24,10 @@ public interface CartDao {
 	// 장바구니 추가
 	@Insert("insert into cart values(#{pno}, #{username}, #{productCnt}, #{productPrice}, #{allPrice}, #{productName})")
 	public Integer addCart(Cart cart);
+	
+	// 장바구니 추가용으로 product의 pno를 불러와 상품가격과 상품명을 가져올려고 만든 select문
+	@Select("select * from product where pno=#{pno} and rownum=1")
+	public Product findByPnoProduct(Long pno);
 
 	// 장바구니 상품개수 합계
 	@Select("select sum(product_cnt) from cart where username=#{username}")

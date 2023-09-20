@@ -18,9 +18,6 @@ import com.babasnack.demo.product.dao.ProductDao;
 public class CartService {
 	@Autowired
 	private CartDao cartDao;
-	
-	@Autowired
-	private ProductDao productDao;
 
 	// 장바구니 목록과 가격 합계를 CartDto.ReadCart에 담아 리턴
 	@Transactional(readOnly = true)
@@ -33,15 +30,17 @@ public class CartService {
 		return new CartDto.ReadCart(productPhoto, cart, productCnt, allPrice);
 	}
 	
+	// 장바구니 추가(상품이미지 테이블 상품이미지 저장파일 + 상품 테이블 가격, 상품명)
 	public Boolean add(Long pno, String username) {
-		Product product; // productDao
-//		Cart newCart = new Cart(pno, username, 1L, product.getProductPrice(), product.getProductPrice(), product.getProductName());
-//		cartDao.addCart(newCart);
+		Product product = cartDao.findByPnoProduct(pno);
+		Cart newCart = new Cart(pno, username, 1L, product.getProductPrice(), product.getProductPrice(), product.getProductName());
+		cartDao.addCart(newCart);
 		
-		return true; // 오류 나서 일단 보류
+		return true;
 		
 	}
 
+	// 장바구니 전체삭제
 	public void deleteAll(String username) {
 		cartDao.deleteByUsername(username);
 	}

@@ -16,4 +16,6 @@ public class PayDto {
 		private Long payno;
 		private String payMent;
 	}
+	
+	// 08-1 결제 페이지
 }

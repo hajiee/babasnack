@@ -30,7 +30,8 @@ public class DeliveryService {
 			return false;
 		} else {
 			// 없으면 해당 회원 배송지정보 추가
-			Delivery newDelivery = new Delivery(dno, username, delivery.getName(), delivery.getPnoTell(), delivery.getBaseDelivery(), delivery.getAddDelivery());
+			Delivery deliveryDno = deliveryDao.findByDno(dno);
+			Delivery newDelivery = new Delivery(dno, username, deliveryDno.getName(), deliveryDno.getPnoTell(), deliveryDno.getBaseDelivery(), deliveryDno.getAddDelivery());
 			return deliveryDao.addDelivery(newDelivery) == 1;
 		}
 	}
