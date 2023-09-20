@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.babasnack.demo.entity.Member;
-import com.babasnack.demo.memberdao.MemberDao;
+import com.babasnack.demo.member.dao.MemberDao;
 
 @SpringBootTest
 public class MemberDaoTest {

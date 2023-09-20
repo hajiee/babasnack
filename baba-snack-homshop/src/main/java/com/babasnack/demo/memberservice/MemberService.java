@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.babasnack.demo.entity.Member;
-import com.babasnack.demo.memberdao.MemberDao;
-import com.babasnack.demo.memberdto.MemberDto;
-import com.babasnack.demo.memberdto.MemberDto.PsMyPage;
+import com.babasnack.demo.member.dao.MemberDao;
+import com.babasnack.demo.member.dto.MemberDto;
+import com.babasnack.demo.member.dto.MemberDto.PsMyPage;
 
 @Service
 public class MemberService {
