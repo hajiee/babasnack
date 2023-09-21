@@ -13,10 +13,10 @@ public interface ProductPhotoDao {
 	public Integer saveProductPhoto(ProductPhoto photo);
 
 	// 사진 수정
-	@Delete("DELETE FROM product_photo WHERE product_imgno = #{productImgNo}")
-	void deleteProductPhoto(Long photoId);
+	@Update("UPDATE product_photo SET product_img = #{productImg} WHERE product_imgno = #{productImgNo}")
+	void updateProductPhoto(Long photoImgNo, String productImg);
 
 	// 사진 삭제
-	@Update("UPDATE product_photo SET product_img = #{productImg} WHERE product_imgno = #{productImgNo}")
-	void updateProductPhoto(Long photoId, String productImg);
+	@Delete("DELETE FROM product_photo WHERE product_imgno = #{productImgNo}")
+	void deleteProductPhoto(Long photoImgNo);
 }

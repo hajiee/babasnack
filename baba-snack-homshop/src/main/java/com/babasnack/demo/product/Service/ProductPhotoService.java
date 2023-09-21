@@ -2,6 +2,7 @@ package com.babasnack.demo.product.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
@@ -10,16 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.dao.ProductAdminDao;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 import com.babasnack.demo.product.dto.ProductPhotDto;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
-@Log
+@Slf4j
 @Service
 public class ProductPhotoService {
-    @Autowired
+	@Autowired
     private ProductAdminDao productAdminDao;
 
     @Autowired
@@ -34,19 +36,26 @@ public class ProductPhotoService {
     @Value("${productImgUrl}")
     private String productImgUrl;
 
-    public void saveProductPhotos(Long pno, MultipartFile[] photos) {
-        for (MultipartFile photo : photos) {
-            if (!photo.isEmpty()) {
-                String originalFilename = photo.getOriginalFilename();
-                String savedFilename = saveFile(photo);
+	public void saveProductPhotos(Long pno, MultipartFile[] photos) {
+	    for (MultipartFile photo : photos) {
+	        if (!photo.isEmpty()) {
+	            String originalFilename = photo.getOriginalFilename();
+	            String savedFilename = saveFile(photo);
 
-                ProductPhotDto.saveProductPhoto dto = new ProductPhotDto.saveProductPhoto(null, originalFilename, savedFilename, null);
-                
-                // 사진 정보를 DB에 저장합니다.
-                productAdminDao.saveProductPhotos(null);
-            }
-        }
-    }
+	            ProductPhotDto.saveProductPhoto dto =
+	                    new ProductPhotDto.saveProductPhoto(null, originalFilename, savedFilename, null);
+	            
+	            // dto 객체로부터 ProductPhoto 객체 생성
+	            ProductPhoto productPhoto = new ProductPhoto();
+	            productPhoto.setPno(pno);
+	            productPhoto.setProductImg(dto.getProductImg());
+	            productPhoto.setProductSaveImg(dto.getSavedFilename());
+
+	            // 사진 정보를 DB에 저장합니다.
+                productAdminDao.saveProductPhotos(Collections.singletonList(productPhoto));
+	        }
+	    }
+	}
 
 	public String saveFile(MultipartFile file) {
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -60,17 +69,21 @@ public class ProductPhotoService {
 			e.printStackTrace();
 			throw new RuntimeException("Failed to save file: " + destFile.getAbsolutePath(), e);
 		}
-	}
+   }
 
-	// 파일이 저장된 경로를 이용하여 파일 객체를 생성하고 해당 파일이 존재하면 파일을 삭제
 	public void deleteFile(String filePath) throws Exception {
-		File deleteFile = new File(filePath);
-		if (deleteFile.exists()) {
-			deleteFile.delete();
-			log.info("파일을 삭제하였습니다.");
-		} else {
-			log.info("파일이 존재하지 않습니다.");
-		}
-	}
+	    File deleteFile = new File(filePath);
+	    if (deleteFile.exists()) {
+	        try{
+	        	deleteFile.delete();
+	        	log.info("파일을 삭제하였습니다.");
+	        }catch(Exception e){
+	        	log.error("파일 삭제 중 오류가 발생했습니다.", e);
+	        	throw e; // 예외 다시 던지기
+	        }
+	    } else {
+	        log.info("파일이 존재하지 않습니다.");
+	    }
+   }
 
 }

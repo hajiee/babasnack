@@ -5,14 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access=AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductPhotDto {
 	@Data
 	@AllArgsConstructor
-	public static class saveProductPhoto{
-	private Long productImgNo;
-	private String productImg;
-	private String productSaveImg;
-	private String productImgUrl;
+	public static class saveProductPhoto {
+		private Long productImgNo;
+		private String productImg;
+		private String productSaveImg;
+		private String productImgUrl;
+
+		public String getSavedFilename() {
+			return productSaveImg;
+		}
+
+		public void setSavedFilename(String savedFilename) {
+			this.productSaveImg = savedFilename;
+		}
 	}
 }

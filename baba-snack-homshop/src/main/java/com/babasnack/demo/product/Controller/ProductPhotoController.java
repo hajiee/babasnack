@@ -1,7 +1,5 @@
 package com.babasnack.demo.product.Controller;
 
-import java.io.File;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +16,12 @@ import com.babasnack.demo.product.dao.ProductAdminDao;
 public class ProductPhotoController {
     @Autowired
     private ProductPhotoService productPhotoService;
-    
     @Autowired
     private ProductAdminDao productAdminDao;
 
     @PostMapping("/products/{pno}/photos")
     public String saveProductPhotos(@PathVariable Long pno, @RequestParam("photos") MultipartFile[] photos,
-            Model model) {
+            Model model) throws Exception {
         String[] messages = new String[photos.length];
         int messageIndex = 0;
 
@@ -43,11 +40,9 @@ public class ProductPhotoController {
 					// 사진 정보를 DB에 저장합니다.
 					productAdminDao.saveProductPhoto(productPhoto);
                     messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장했습니다.";
-				} catch (Exception e) {
-					// 저장 실패 시 파일 삭제
-					String filePath = productPhoto + File.separator + savedFilename; 
-					productAdminDao.deleteProductPhotos(pno);
-					
+				}  catch (Exception e) {
+					productPhotoService.deleteFile(originalFilename);
+					productPhotoService.deleteFile(savedFilename);
                     messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장하는 도중 오류가 발생했습니다.";
 				}
 				
@@ -59,4 +54,5 @@ public class ProductPhotoController {
 
         return "result"; // 결과 페이지로 이동하도록 설정해야 합니다.
     }
+    
 }
