@@ -2,7 +2,6 @@ package com.babasnack.demo.product.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.ProductPhoto;
-import com.babasnack.demo.product.dao.ProductAdminDao;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 import com.babasnack.demo.product.dto.ProductPhotDto;
 
@@ -21,9 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ProductPhotoService {
-	@Autowired
-    private ProductAdminDao productAdminDao;
-
     @Autowired
     private ProductPhotoDao productPhotoDao;
 
@@ -52,7 +47,7 @@ public class ProductPhotoService {
 	            productPhoto.setProductSaveImg(dto.getSavedFilename());
 
 	            // 사진 정보를 DB에 저장합니다.
-                productAdminDao.saveProductPhotos(Collections.singletonList(productPhoto));
+	            productPhotoDao.saveProductPhoto(productPhoto);
 	        }
 	    }
 	}

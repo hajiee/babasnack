@@ -8,11 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
-import com.babasnack.demo.product.Provider.ProductAdminSqlProvider;
 import com.babasnack.demo.product.dto.ProductDto;
 
 @Mapper
@@ -25,11 +23,11 @@ public interface ProductAdminDao {
 	public Long addProduct(ProductDto.WriteP productDto);
 
 	// 상품수정
-	@Update("UPDATE product SET productName = #{product.productName}, " +
-	        "productNotice = #{product.productNotice}, " +
-	        "productStock = #{product.productStock}, " +
-	        "productPrice = #{product.productPrice}, " +
-	        "prodcutSize = #{prodcut.prodcutSize}, category = #{product.category} WHERE pno = #{pno}")
+	@Update("UPDATE product SET product_name = #{product.productName}, " +
+	        "product_notice = #{product.productNotice}, " +
+	        "product_ntock = #{product.productStock}, " +
+	        "product_price = #{product.productPrice}, " +
+	        "prodcut_size = #{prodcut.prodcutSize}, category = #{product.category} WHERE pno = #{pno}")
 	public Long updateProduct(ProductDto.WriteP UpProductWrite);
     
 	// 상품번호로 조회
@@ -39,23 +37,11 @@ public interface ProductAdminDao {
     // 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
     @Select("SELECT * FROM product_photo WHERE pno = #{pno}")
     public List<ProductPhoto> getProductPhotos(Long pno);
-
-    // Provider 클래스의 메서드를 사용하여 업데이트 쿼리를 실행할 때 사용
-    @UpdateProvider(type = ProductAdminSqlProvider.class, method = "updateProductWithPhotos")
-    public Long updateProductWithPhotos(ProductDto.WriteP productDto, List<ProductPhoto> photoList);
-    
+   
     @Delete("DELETE FROM product WHERE pno = #{pno}")
     public Integer deleteProduct(Long pno);
 
     @Delete("DELETE FROM product_photo WHERE pno = #{pno}")
     public boolean deleteProductPhotos(Long pno);
     
-	// 사진 저장
-    public Integer saveProductPhoto(ProductPhoto photo);
-    
-    default void saveProductPhotos(List<ProductPhoto> photos) {
-        for (ProductPhoto photo : photos) {
-            saveProductPhoto(photo);
-        }
-    }
 }

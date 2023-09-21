@@ -14,9 +14,9 @@ public interface ProductPhotoDao {
 
 	// 사진 수정
 	@Update("UPDATE product_photo SET product_img = #{productImg} WHERE product_imgno = #{productImgNo}")
-	void updateProductPhoto(Long photoImgNo, String productImg);
+	public void updateProductPhoto(Long photoImgNo, String productImg);
 
 	// 사진 삭제
 	@Delete("DELETE FROM product_photo WHERE product_imgno = #{productImgNo}")
-	void deleteProductPhoto(Long photoImgNo);
+	public void deleteProductPhoto(Long photoImgNo);
 }

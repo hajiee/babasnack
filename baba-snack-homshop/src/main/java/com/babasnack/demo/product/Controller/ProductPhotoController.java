@@ -10,14 +10,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductPhotoService;
-import com.babasnack.demo.product.dao.ProductAdminDao;
+import com.babasnack.demo.product.dao.ProductPhotoDao;
 
 @Controller
 public class ProductPhotoController {
     @Autowired
     private ProductPhotoService productPhotoService;
     @Autowired
-    private ProductAdminDao productAdminDao;
+    private ProductPhotoDao productPhotoDao;
+    
 
     @PostMapping("/products/{pno}/photos")
     public String saveProductPhotos(@PathVariable Long pno, @RequestParam("photos") MultipartFile[] photos,
@@ -38,7 +39,7 @@ public class ProductPhotoController {
 
 				try {
 					// 사진 정보를 DB에 저장합니다.
-					productAdminDao.saveProductPhoto(productPhoto);
+					productPhotoDao.saveProductPhoto(productPhoto);
                     messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장했습니다.";
 				}  catch (Exception e) {
 					productPhotoService.deleteFile(originalFilename);
