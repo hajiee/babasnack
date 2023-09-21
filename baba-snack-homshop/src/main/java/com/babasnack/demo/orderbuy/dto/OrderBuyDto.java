@@ -30,6 +30,15 @@ public class OrderBuyDto {
 		private Long payno;
 	}
 
+	// 주문상품 배송 정보
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class OrderBuyDeliveryStatus {
+		private String deliveryState;
+	}
+	
+	
 	// 06-3 상품 상세설명 페이지
 
 	// 07-2 주문상세 구상
