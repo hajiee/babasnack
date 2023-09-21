@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 
+import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Provider.ProductAdminSqlProvider;
 import com.babasnack.demo.product.dto.ProductDto;
@@ -29,15 +30,19 @@ public interface ProductAdminDao {
 	        "productStock = #{product.productStock}, " +
 	        "productPrice = #{product.productPrice}, " +
 	        "prodcutSize = #{prodcut.prodcutSize}, category = #{product.category} WHERE pno = #{pno}")
-	public Long updateProduct(ProductDto.WriteP prodcutDto);
+	public Long updateProduct(ProductDto.WriteP UpProductWrite);
     
+	// 상품번호로 조회
+    @Select("SELECT * FROM product WHERE pno = #{pno}")
+    public Product findByProduct(Long pno);
+	
     // 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
     @Select("SELECT * FROM product_photo WHERE pno = #{pno}")
     public List<ProductPhoto> getProductPhotos(Long pno);
 
     // Provider 클래스의 메서드를 사용하여 업데이트 쿼리를 실행할 때 사용
     @UpdateProvider(type = ProductAdminSqlProvider.class, method = "updateProductWithPhotos")
-    public void updateProductWithPhotos(ProductDto.WriteP productDto, List<ProductPhoto> photoList);
+    public Long updateProductWithPhotos(ProductDto.WriteP productDto, List<ProductPhoto> photoList);
     
     @Delete("DELETE FROM product WHERE pno = #{pno}")
     public Integer deleteProduct(Long pno);
