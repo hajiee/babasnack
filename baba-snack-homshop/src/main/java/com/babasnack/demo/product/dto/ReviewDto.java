@@ -1,10 +1,14 @@
 package com.babasnack.demo.product.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.ReviewPhoto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +19,40 @@ public class ReviewDto {
 		private String reviewNotice;
 		private Boolean star;
 		private Long pno;
-		private List<ReviewPhoto> reviewPhoto;
+		private List<MultipartFile> reviewPhoto;
 	}
+	
+	// 관리자리뷰
+	@Data
+	public static class AWritePR{
+		private Long rno;
+		private String reviewNotice;
+		private Long pno;
+		private String reviewWrite="관리자";
+	}
+	
+	//리뷰관리
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class AminPR{
+		private Long pno;
+		private Long rno;
+		private String reviewWrite;
+	}
+	
+	// 리뷰목록
+		@Data
+		@AllArgsConstructor
+		@NoArgsConstructor
+		public static class ListPR{
+			private Long rno;
+			private LocalDateTime reviewDate;
+			private String reviewNotice;
+			private Boolean star;
+			private String reviewWrite;
+			private List<ReviewPhoto> reviewPhoto;
+		}
+	
+	
 }
