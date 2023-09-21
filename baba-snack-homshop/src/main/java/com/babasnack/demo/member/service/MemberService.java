@@ -1,4 +1,4 @@
-package com.babasnack.demo.memberservice;
+package com.babasnack.demo.member.service;
 
 
 

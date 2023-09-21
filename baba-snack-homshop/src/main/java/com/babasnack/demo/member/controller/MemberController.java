@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.babasnack.demo.member.dto.MemberDto;
-import com.babasnack.demo.memberservice.MemberService;
+import com.babasnack.demo.member.service.MemberService;
 
 @Controller
 public class MemberController {

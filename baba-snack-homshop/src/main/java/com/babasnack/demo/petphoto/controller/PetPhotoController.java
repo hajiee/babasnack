@@ -26,9 +26,9 @@ public class PetPhotoController {
 	@Autowired
     private PetPhotoService petService;
 	@PostMapping("/uploadPetImg")
-    public ResponseEntity<String> uploadProfile(@RequestParam("file") MultipartFile file, @RequestParam("username") String username) {
+    public ResponseEntity<String> uploadProfile(@RequestParam("file") MultipartFile file, @RequestParam("petpno") Long petpno) {
         try {
-            petService.PetSaveImg(file, username);
+            petService.savePetPhoto(file, petpno);
             return ResponseEntity.ok("Profile uploaded successfully!");
         } catch (IOException e) {
             e.printStackTrace();
