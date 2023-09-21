@@ -1,12 +1,14 @@
 package com.babasnack.demo.petphoto.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.babasnack.demo.entity.Pet;
 import com.babasnack.demo.entity.PetPhoto;
 
 @Mapper
@@ -16,9 +18,11 @@ public interface PetPhotoDao {
 public Integer save(PetPhoto petphoto);
 
 @Select("select name from petphoto where pet_prono")
-public List<String> findByPetPno(Long petpno);
+public Optional<Pet> findByPetPno(Long petprono);
 
 @Update("update psprofile set psImg=#{pet_img} where username=#{username}")
-public Integer PsChangePhoto(String petImg,String username);
+public Integer PsChangePhoto(String petImg,Long petprono);
+
+
 
 } 

@@ -10,7 +10,7 @@ import com.babasnack.demo.entity.Member;
 
 @Mapper
 public interface MemberDao {
-	@Insert("insert into member values(#{username},#{password},#{email},#{joinday},#{profile},#{role})\")")
+	@Insert("insert into member values(#{username},#{password},#{email},#{joinday},#{profile},#{role}")
 	public Long save(Member member);
 	
 	@Select("select * from member where username=#{username} and rownum=1")

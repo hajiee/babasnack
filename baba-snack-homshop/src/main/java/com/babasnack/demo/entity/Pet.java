@@ -13,5 +13,8 @@ public class Pet {
 	private String petType;
 	private Long petAge;
 	private Boolean petSex;
+	public void setProfilePhoto(String filename) {
+		
+	}
 	
 }
