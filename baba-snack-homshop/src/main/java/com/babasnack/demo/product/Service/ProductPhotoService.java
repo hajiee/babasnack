@@ -37,8 +37,8 @@ public class ProductPhotoService {
 	            String originalFilename = photo.getOriginalFilename();
 	            String savedFilename = saveFile(photo);
 
-	            ProductPhotDto.saveProductPhoto dto =
-	                    new ProductPhotDto.saveProductPhoto(null, originalFilename, savedFilename, null);
+	            ProductPhotDto.addProductPhoto dto =
+	                    new ProductPhotDto.addProductPhoto(null, originalFilename, savedFilename, null);
 	            
 	            // dto 객체로부터 ProductPhoto 객체 생성
 	            ProductPhoto productPhoto = new ProductPhoto();

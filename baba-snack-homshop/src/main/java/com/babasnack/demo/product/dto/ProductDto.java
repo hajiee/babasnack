@@ -67,14 +67,17 @@ public class ProductDto {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class ReadP{
-		private String productName;
-		private String productNotice;
-		private Long productPrice;
-		private Long productSize;
-		private Long productCnt;
-		private List<ProductPhoto> productPhoto;
-		private List<Review> reviews;
+	public static class ReadP {
+	    private Long pno;
+	    private String productName;
+	    private String productNotice;
+	    private Long productStock;
+	    private Long productPrice; // 이름을 productPrice로 변경
+	    private Long productSize;
+	    private Long reviewCount;
+	    private Double reviewStar;
+	    private List<String> productPhoto; // 이미지 경로를 String 리스트로 변경
+	    private List<Review> reviews;
 	}
 	
 	//상품검색

@@ -10,14 +10,13 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.dto.ProductDto;
 
 @Mapper
 public interface ProductAdminDao {
 	// 상품등록
-	@Insert("INSERT INTO product (productName, productNotice, productStock, productPrice, productSize, category) " +
-	        "VALUES (#{product.productName}, #{product.productNotice}, #{product.productStock}, " +
+	@Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, category) " +
+	        "VALUES (product_seq.nextval, #{product.productName}, #{product.productNotice}, #{product.productStock}, " +
 	        "#{product.productPrice}, #{product.productSize}, #{category})")
 	@Options(useGeneratedKeys = true, keyProperty = "product.pno")	//MyBatis에서 자동 생성된 키(auto-generated key) 값을 사용하기 위한 옵션
 	public Long addProduct(ProductDto.WriteP productDto);
@@ -36,7 +35,7 @@ public interface ProductAdminDao {
 	
     // 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
     @Select("SELECT * FROM product_photo WHERE pno = #{pno}")
-    public List<ProductPhoto> getProductPhotos(Long pno);
+    public List<String> findProductPhotos(Long pno);
    
     @Delete("DELETE FROM product WHERE pno = #{pno}")
     public Integer deleteProduct(Long pno);

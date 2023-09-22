@@ -45,10 +45,10 @@ public class ProductController {
        return modelAndView;
     }
 
-	// 특정 상품 조회 API 엔드 포인트(GET /products/{productName})
-    @GetMapping("/{productName}")
-    public ModelAndView getProductByProductName(@PathVariable String productName) throws NotFoundException {
-        ProductDto.ReadP productDetail = productService.getProductDetail(productName);
+	// 특정 상품 조회 API 엔드 포인트(GET /products/{pno})
+    @GetMapping("/{pno}")
+    public ModelAndView getProduct(Long pno) throws NotFoundException {
+        ProductDto.ReadP productDetail = productService.getProductDetail(pno);
         
         ModelAndView modelAndView = new ModelAndView("product-details");
         modelAndView.addObject("product", productDetail);
@@ -65,7 +65,7 @@ public class ProductController {
          Long startRowNum = ((long) page - 1L) * size + 1L;  
          Long endRowNum = startRowNum + size - 1L;  
 
-         List<ProductDto.ListP> productList = productService.getPageOne(startRowNum, endRowNum);  
+         List<Product> productList = productService.getPageOne(startRowNum, endRowNum);  
          ModelAndView modelAndView = new ModelAndView("product-page");
          modelAndView.addObject("products", productList);
          

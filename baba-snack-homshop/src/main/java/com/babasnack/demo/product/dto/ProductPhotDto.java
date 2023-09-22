@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class ProductPhotDto {
 	@Data
 	@AllArgsConstructor
-	public static class saveProductPhoto {
+	public static class addProductPhoto {
 		private Long productImgNo;
 		private String productImg;
 		private String productSaveImg;

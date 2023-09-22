@@ -62,7 +62,7 @@ public class ProductAdminService {
 
 	// 모든 상품 조회
 	public List<Product> getAllProducts() {
-		return productDao.findAll();
+		return productDao.FindAll();
 	}
 
 	// 특정 상품 조회
