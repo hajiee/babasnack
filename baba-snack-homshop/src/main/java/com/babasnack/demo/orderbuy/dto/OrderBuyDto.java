@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderBuyDto {
-	// 주문상품 정보
+	// 주문 정보
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -30,13 +30,6 @@ public class OrderBuyDto {
 		private Long payno;
 	}
 
-	// 주문상품 배송 정보
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class OrderBuyDeliveryStatus {
-		private String deliveryState;
-	}
 	
 	
 	// 06-3 상품 상세설명 페이지
