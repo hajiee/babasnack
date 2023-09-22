@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import com.babasnack.demo.entity.Review;
+import com.babasnack.demo.entity.ReviewPhoto;
 
 public interface ReviewDao {
-	@Insert("insert into review values(review_seq.nextval, #{content}, #{star}, #{pno})")
+	@Insert("insert into Review(review_seq.nextval, review_date, review_notice, star, pno, review_write)"
+			+ "VALUES (#{rno}, #{reviewDate},#{reviewNotice}, #{star}, #{pno},#{reviewWrite})")
 	public void save(Review review);
 
 	// 특정 상품의 리뷰들을 출력
@@ -27,4 +29,8 @@ public interface ReviewDao {
 	// 상품 리뷰들의 별점 평균
 	@Select("select round(avg(star),2) from review where pno=#{pno}")
 	public Double avgByPno(Long pno);
+	
+	// 특정리뷰에 연관된 사진들
+	@Select("SELECT * FROM review_photo WHERE rno = #{rno}")	   
+	public List<ReviewPhoto> findReviewPhotosByRno(Long rno);
 }

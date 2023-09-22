@@ -14,5 +14,13 @@ public class ReviewPhotoDto {
 		private String reviewImg;
 		private String reviewSaveImg;
 		private String reviewImgUrl;
+		
+		public String getSavedFilename() {
+			return reviewSaveImg;
+		}
+
+		public void setSavedFilename(String savedFilename) {
+			this.reviewSaveImg = savedFilename;
+		}
 	}
 }

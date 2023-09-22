@@ -8,7 +8,7 @@ import com.babasnack.demo.entity.ProductPhoto;
 
 public interface ProductPhotoDao {
 	// 사진 저장
-	@Insert("INSERT INTO product_photo (pno, productImgNo, productImg, productSaveImg) "
+	@Insert("INSERT INTO product_photo (product_photo_seq.nextval, productImgNo, productImg, productSaveImg) "
 			+ "VALUES (#{pno}, #{productImgNo}, #{productImg}, #{productSaveImg})")
 	public Integer saveProductPhoto(ProductPhoto photo);
 

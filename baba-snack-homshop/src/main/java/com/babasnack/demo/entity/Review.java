@@ -1,6 +1,7 @@
 package com.babasnack.demo.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,14 @@ public class Review {
 	private Boolean star;
 	private Long pno;
 	private String reviewWrite;
+	
+	// Review 엔티티에 사진 목록을 저장할 컬렉션 필드 추가
+	// 해당 상품과 연관된 사진들을 저장하기 위한 컬렉션
+	private List<ReviewPhoto> photos;
+    public List<ReviewPhoto> getPhotos() {
+        return photos;
+    }
+    public void setPhotos(List<ReviewPhoto> photoData) {
+        this.photos = photoData;
+    }
 }
