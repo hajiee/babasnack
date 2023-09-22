@@ -13,6 +13,6 @@ public class PetDto {
 		private String username;
 		private String petType;
 		private Long petAge;
-		private Long petSex;
+		private Boolean petSex;
 	}
 }
