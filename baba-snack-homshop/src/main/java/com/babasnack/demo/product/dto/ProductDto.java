@@ -72,11 +72,11 @@ public class ProductDto {
 	    private String productName;
 	    private String productNotice;
 	    private Long productStock;
-	    private Long productPrice; // 이름을 productPrice로 변경
+	    private Long productPrice;
 	    private Long productSize;
 	    private Long reviewCount;
 	    private Double reviewStar;
-	    private List<String> productPhoto; // 이미지 경로를 String 리스트로 변경
+	    private List<String> productPhoto;
 	    private List<Review> reviews;
 	}
 	
