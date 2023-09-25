@@ -13,7 +13,7 @@ import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 public interface OrderBuyDao {
 	// 주문 정보 저장
 	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(#{ono}, #{buyCnt}, #{orderDay}, #{allPrice}, '배송준비', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
-	public Integer addOrderBuy(OrderBuyDto.OrderBuyProduct orderBuyProduct);
+	public Integer addOrderBuy(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username);
 
 	// 주문 상품 정보(관리자 확인용)
 	@Select("select * from order_buy where username=#{username} and ono=#{ono}")

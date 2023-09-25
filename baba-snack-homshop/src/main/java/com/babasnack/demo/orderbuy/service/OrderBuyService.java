@@ -14,7 +14,7 @@ public class OrderBuyService {
 	private OrderBuyDao orderBuyDao;
 	
 	// 주문 정보 저장
-	public void add(OrderBuyDto.OrderBuyProduct orderBuyProduct) {
-		orderBuyDao.addOrderBuy(orderBuyProduct);
+	public Boolean add(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username) {
+		return orderBuyDao.addOrderBuy(orderBuyProduct, username) == 1;
 	}
 }
