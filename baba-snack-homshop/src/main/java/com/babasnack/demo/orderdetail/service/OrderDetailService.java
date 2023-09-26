@@ -29,4 +29,6 @@ public class OrderDetailService {
 	public List<OrderDetailDto.ReadOrderDetailAdmin> orderDetailAdmin(String username, Long ono) {
 		return orderDetailDao.orderDetailAdmin(username, ono);
 	}
+	
+	
 }

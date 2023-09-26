@@ -21,7 +21,7 @@ public class CartDto {
 		private Long allPrice;
 	}
 	
-	// 장바구니 상품 삭제
+	// 장바구니 상품 전체삭제
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor

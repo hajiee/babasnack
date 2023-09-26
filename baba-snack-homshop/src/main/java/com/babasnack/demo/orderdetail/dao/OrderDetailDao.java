@@ -25,4 +25,5 @@ public interface OrderDetailDao {
 	@Select("select od.username, od.pno, od.buy_cnt, ob.dno from order_buy ob inner join order_detail od on ob.ono=od.ono where od.username=#{username} and ob.ono=#{ono}")
 	public List<OrderDetailDto.ReadOrderDetailAdmin> orderDetailAdmin(String username, Long ono);
 
+	 
 }
