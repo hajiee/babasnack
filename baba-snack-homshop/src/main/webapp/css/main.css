@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+#page {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+section {
+	width: 800px;
+	padding: 20px;
+	border: 1px solid orange;
+	min-height: 1000px;
+}
