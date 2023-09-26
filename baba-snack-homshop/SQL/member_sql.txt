@@ -22,9 +22,14 @@ CREATE TABLE pet_photo (
     pet_save_img  varchar2(45 char)   NULL
 );
 
-create sequence member_seq;
-create sequence member_pet_seq;
-create sequence member_pet_photo_seq;
+CREATE TABLE reserve (
+	username	varchar2(10 char)	NOT NULL,
+	first_reserve	number(7)	NOT NULL,
+	reserve_plus	number(7)	NOT NULL,
+	reserve_day	date	NOT NULL,
+	ono	number(8)	NOT NULL
+);
+
 
 ALTER TABLE member ADD CONSTRAINT PK_MEMBER PRIMARY KEY (
     username
@@ -48,3 +53,16 @@ ALTER TABLE pet_photo ADD CONSTRAINT FK_pet_TO_pet_photo_1 FOREIGN KEY(pet_name,
 REFERENCES pet (
     pet_name, username
 );
+
+ALTER TABLE reserve ADD CONSTRAINT PK_RESERVE PRIMARY KEY (
+	username
+);
+
+ALTER TABLE reserve
+ADD CONSTRAINT FK_member_TO_reserve_1 FOREIGN KEY (username)
+REFERENCES member(username);
+
+
+create sequence member_seq;
+create sequence member_pet_seq;
+create sequence member_pet_photo_seq;

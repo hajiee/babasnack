@@ -46,12 +46,6 @@ CREATE TABLE order_detail (
     pno   number(8)   NOT NULL   -- '상품key'
 );
 
-create sequence cart_seq;
-create sequence delivery_seq;
-create sequence pay_seq;
-create sequence order_buy_seq;
-create sequence order_detail_seq;
-
 ALTER TABLE cart ADD CONSTRAINT PK_CART PRIMARY KEY (
     pno,
     username
@@ -95,3 +89,10 @@ REFERENCES member (
 ALTER TABLE order_detail ADD CONSTRAINT PK_ORDER_DETAIL PRIMARY KEY (
     odno
 );
+
+
+create sequence cart_seq;
+create sequence delivery_seq;
+create sequence pay_seq;
+create sequence order_buy_seq;
+create sequence order_detail_seq;
