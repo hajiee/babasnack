@@ -24,11 +24,7 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private PasswordEncoder encoder;
-	@Value("${profileFolder}")
-	private String profileFolder;
-	@Value("${defaultProfile}")
-	private String defaultProfile;
-	@Value("${profileUrl}")
+	
 	
 	public void join(MemberDto.join dto) {
 		

@@ -6,12 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import com.babasnack.demo.petphoto.dao.PetPhotoDao;
 
@@ -19,8 +17,12 @@ import com.babasnack.demo.petphoto.dao.PetPhotoDao;
 public class PetPhotoService {
 	@Autowired
 	private PetPhotoDao petphotoDao;
-	
-	
+	@Value("${profileFolder}")
+	private String profileFolder;
+	@Value("${defaultProfile}")
+	private String defaultProfile;
+	@Value("${profileUrl}")
+	private String profileUrl;
 	@Value("${upload.path}")
 	private String uploadPath;
 	// 프로필사진 업로드
