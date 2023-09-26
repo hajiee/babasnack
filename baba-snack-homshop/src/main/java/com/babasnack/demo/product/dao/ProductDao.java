@@ -20,7 +20,7 @@ public interface ProductDao {
     public Product findByProduct(Long pno);
     
 	// 상품조회
-    @Select("SELECT * FROM product WHERE productName = #{productName}")
+    @Select("SELECT * FROM product WHERE product_name = #{productName}")
     public Product findByProductName(String productName);
 
     // 한 페이지당 상품 수

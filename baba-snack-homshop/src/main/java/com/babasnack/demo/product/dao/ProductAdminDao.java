@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -15,18 +14,16 @@ import com.babasnack.demo.product.dto.ProductDto;
 @Mapper
 public interface ProductAdminDao {
 	// 상품등록
-	@Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, category) " +
-	        "VALUES (product_seq.nextval, #{product.productName}, #{product.productNotice}, #{product.productStock}, " +
-	        "#{product.productPrice}, #{product.productSize}, #{category})")
-	@Options(useGeneratedKeys = true, keyProperty = "product.pno")	//MyBatis에서 자동 생성된 키(auto-generated key) 값을 사용하기 위한 옵션
-	public Long addProduct(ProductDto.WriteP productDto);
+	@Insert("INSERT INTO your_table_name (pno, product_name, product_notice, product_stock, product_price, product_size, reserve, product_cnt, category, product_day) " +
+            "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{reserve}, #{productCnt}, #{category.name()}, #{productDay})")
+    public Long addProduct(ProductDto.WriteP writeP);
 
 	// 상품수정
-	@Update("UPDATE product SET product_name = #{product.productName}, " +
-	        "product_notice = #{product.productNotice}, " +
-	        "product_ntock = #{product.productStock}, " +
-	        "product_price = #{product.productPrice}, " +
-	        "prodcut_size = #{prodcut.prodcutSize}, category = #{product.category} WHERE pno = #{pno}")
+	@Update("UPDATE product SET product_name = #{productName}, " +
+	        "product_notice = #{productNotice}, " +
+	        "product_ntock = #{productStock}, " +
+	        "product_price = #{productPrice}, " +
+	        "prodcut_size = #{prodcutSize}, category = #{category} WHERE pno = #{pno}")
 	public Long updateProduct(ProductDto.WriteP UpProductWrite);
     
 	// 상품번호로 조회

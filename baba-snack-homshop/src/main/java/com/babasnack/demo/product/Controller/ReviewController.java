@@ -49,6 +49,8 @@ public class ReviewController {
         }
     }
 
+	@Secured("ROLE_ADMIN") // 관리자에 대해서만 접근 허용
+    @PostMapping("/reviews-user")
     private boolean isAdminUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         

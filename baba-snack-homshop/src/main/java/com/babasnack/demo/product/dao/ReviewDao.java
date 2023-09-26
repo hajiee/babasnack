@@ -10,8 +10,8 @@ import com.babasnack.demo.entity.Review;
 import com.babasnack.demo.entity.ReviewPhoto;
 
 public interface ReviewDao {
-	@Insert("insert into Review(review_seq.nextval, review_date, review_notice, star, pno, review_write)"
-			+ "VALUES (#{rno}, #{reviewDate},#{reviewNotice}, #{star}, #{pno},#{reviewWrite})")
+	@Insert("insert into Review(rno, review_date, review_notice, star, pno, review_write)"
+			+ "VALUES (#{review_seq.nextval}, #{reviewDate},#{reviewNotice}, #{star}, #{pno},#{reviewWrite})")
 	public void save(Review review);
 
 	// 특정 상품의 리뷰들을 출력

@@ -82,10 +82,6 @@ ALTER TABLE order_buy ADD CONSTRAINT PK_ORDER_BUY PRIMARY KEY (
     ono
 );
 
-REFERENCES member (
-    username
-);
-
 ALTER TABLE order_detail ADD CONSTRAINT PK_ORDER_DETAIL PRIMARY KEY (
     odno
 );

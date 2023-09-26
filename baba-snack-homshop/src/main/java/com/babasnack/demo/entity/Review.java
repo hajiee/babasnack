@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Review {
 	private Long rno;
-	private LocalDateTime reviewDate;
+	private LocalDateTime reviewDate = LocalDateTime.now();
 	private String reviewNotice;
 	private Boolean star;
 	private Long pno;
