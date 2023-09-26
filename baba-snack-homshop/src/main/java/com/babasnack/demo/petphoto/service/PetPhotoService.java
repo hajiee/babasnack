@@ -39,13 +39,8 @@ public class PetPhotoService {
         Path filePath = Paths.get(uploadPath, fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // 기존의 프로필 사진 파일을 삭제하는 로직 등을 추가할 수 있습니다.
-        
-        // 프로필 사진 정보를 데이터베이스에 저장 또는 업데이트하는 로직을 추가해야 합니다.
         // 예시로서 PetPhotoDao의 PsChangePhoto 메서드를 호출하도록 작성합니다.
-        	petphotoDao.PsChangePhoto(fileName, petpno);
-
-       
+        petphotoDao.PsChangePhoto(fileName, petpno);
 	}
 }
 	

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.babasnack.demo.entity.Review;
 import com.babasnack.demo.entity.ReviewPhoto;
 
+@Mapper
 public interface ReviewDao {
 	@Insert("insert into Review(rno, review_date, review_notice, star, pno, review_write)"
 			+ "VALUES (#{review_seq.nextval}, #{reviewDate},#{reviewNotice}, #{star}, #{pno},#{reviewWrite})")

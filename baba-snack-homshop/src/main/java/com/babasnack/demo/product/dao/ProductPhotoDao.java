@@ -2,10 +2,12 @@ package com.babasnack.demo.product.dao;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 import com.babasnack.demo.entity.ProductPhoto;
 
+@Mapper
 public interface ProductPhotoDao {
 	// 사진 저장
 	@Insert("INSERT INTO product_photo (product_imgno, pno, product_img, product_saveimg)" +
