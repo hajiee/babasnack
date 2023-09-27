@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,25 +24,29 @@
 <body>
 	<div id="page">
 		<header> <!-- 공지, 로고 -->
-			<jsp:include page="/WEB-INF/views/include/header.jsp" />
+			<p>나 헤드</p>
 		</header>
 		<nav> <!-- 메뉴 -->
-			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+			<p>나 메뉴</p>
 		</nav>
 		<main>
 			<aside> <!-- 베스트상품 -->
-				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
+				<p>나 베스트</p>
 			</aside>
 			<section> <!-- 메인 상품 -->
-				<a href="/WEB-INF/views/product/product-dog"><img scr="#">강아지 상품페이지</a>
-				<a href="/WEB-INF/views/product/product-cat"><img scr="#">고양이 상품페이지</a>
+				<div id=dogPage>
+					<a href="/product/product-dog"><img scr="C:\Users\user\Downloads\712353f8-0a3c-422d-a311-e06e58d53160.png">강아지 상품페이지</a>
+				</div>
+				<div id=catPage>
+					<a href="/product/product-cat"><img scr="C:\Users\user\Downloads\16e80cf6-531b-48b0-b8df-8068a6c06be2.png">고양이 상품페이지</a>
+				</div>
 			</section>
 			<aside> <!-- 광고 -->
-				<jsp:include page="/WEB-INF/views/include/aside.jsp" />
+				<p>나 광고</p>
 			</aside>
 		</main>
 		<footer> <!-- 홈피정보 -->
-			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+			<p>나 정보</p>
 		</footer>
 	</div>
 </body>
