@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,12 +15,11 @@ import com.babasnack.demo.entity.ReviewPhoto;
 import com.babasnack.demo.product.Service.ReviewPhotoService;
 
 @Controller
-@RequestMapping("/review-photos")
 public class ReviewPhotoController {
 	@Autowired
 	private ReviewPhotoService reviewPhotoService;
 
-	@PostMapping("/{rno}")
+	@PostMapping("/review/{rno}")
 	public ResponseEntity<String> uploadReviewPhoto(@PathVariable Long rno,
 			@RequestParam("photo") MultipartFile photo) {
 		// 리뷰 사진 업로드 처리 로직
@@ -29,7 +27,7 @@ public class ReviewPhotoController {
 		return ResponseEntity.ok("리뷰사진 업로드완료");
 	}
 
-	@GetMapping("/{rno}")
+	@GetMapping("/review/{rno}")
 	public ResponseEntity<List<ReviewPhoto>> getReviewPhotos(@PathVariable Long rno) {
 		// 특정 리뷰에 연관된 사진들 조회 처리 로직
 		List<ReviewPhoto> reviewPhotos = reviewPhotoService.findReviewPhotosByRno(rno);

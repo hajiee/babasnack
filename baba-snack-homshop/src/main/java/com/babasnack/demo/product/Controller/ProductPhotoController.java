@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +12,6 @@ import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductPhotoService;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 
-@RequestMapping("/product")
 @Controller
 public class ProductPhotoController {
     @Autowired
@@ -22,7 +20,7 @@ public class ProductPhotoController {
     private ProductPhotoDao productPhotoDao;
     
 
-    @PostMapping("/{pno}/photos")
+    @PostMapping("/product/{pno}/photos")
     public String saveProductPhotos(@PathVariable Long pno, @RequestParam("photos") MultipartFile[] photos,
             Model model) throws Exception {
         String[] messages = new String[photos.length];

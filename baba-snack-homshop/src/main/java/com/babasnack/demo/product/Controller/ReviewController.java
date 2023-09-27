@@ -13,20 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.Review;
 import com.babasnack.demo.product.Service.ReviewService;
 
-@RequestMapping("/review")
 @Controller
 public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	
 	@Secured("ROLE_BUYER") // 상품 구매자 역할에 대해서만 접근 허용
-    @PostMapping("/reviews")
+    @PostMapping("/review")
     public String saveReview(@ModelAttribute("review") Review review, Principal principal, MultipartFile photo) {
         // 현재 로그인한 사용자 정보 가져오기
         String username = principal.getName();
@@ -60,7 +58,7 @@ public class ReviewController {
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
      }
     
-    @GetMapping("/product/{pno}")
+    @GetMapping("/review/product/{pno}")
     public void getProductPage(@PathVariable Long pno, Model model, Principal principal) {
         // 현재 로그인한 사용자 정보 가져오기
         String username = principal.getName();
