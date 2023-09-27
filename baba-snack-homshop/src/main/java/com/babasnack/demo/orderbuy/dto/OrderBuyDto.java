@@ -29,7 +29,6 @@ public class OrderBuyDto {
 		private String username;
 		private Long payno;
 	}
-
 	
 	
 	// 06-3 상품 상세설명 페이지

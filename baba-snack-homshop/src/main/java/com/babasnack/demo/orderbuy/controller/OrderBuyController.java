@@ -1,6 +1,7 @@
 package com.babasnack.demo.orderbuy.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.service.OrderBuyService;
 
@@ -34,15 +36,7 @@ public class OrderBuyController {
 //	}
 	
 	
-	// 주문 후 상품 수량 감소 - 작성중
-	@PostMapping("/member-list/decrease-product")
-	public ModelAndView decreaseProduct(Long productStock, Long pno) {
-		
-		
-		orderBuyService.decreaseProduct(productStock, pno);
-		
-		return new ModelAndView("redirect:/cart/read");
-	}
+	
 
 	// 주문상품 발송여부(관리자)
 	@PostMapping("/member-list/delivery-update")
