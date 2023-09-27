@@ -83,7 +83,7 @@ public class MemberController {
 	
 	//회원 탈퇴+로그아웃
 	@Secured("ROLE_USER")
-	@PostMapping("/member/main")
+	@PostMapping("/main")
 	public ModelAndView PsWithdrawl(Principal principal,HttpSession session) {
 		session.invalidate();
 		service.PsWithdrawl(principal.getName());
