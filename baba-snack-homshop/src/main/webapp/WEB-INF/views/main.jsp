@@ -24,27 +24,30 @@
 <body>
 	<div id="page">
 		<header> <!-- 공지, 로고 -->
-			<p>나 헤드</p>
+			<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		</header>
 		<nav> <!-- 메뉴 -->
 			<p>나 메뉴</p>
 		</nav>
 		<main>
-			<aside> <!-- 베스트상품 -->
+			<aside id="best"> <!-- 베스트상품 -->
 				<p>나 베스트</p>
 			</aside>
 			<section> <!-- 메인 상품 -->
-				<div id=dogPage>
+				<div class="category-product">
 					<a href="/product/product-dog"><img scr="C:\Users\user\Downloads\712353f8-0a3c-422d-a311-e06e58d53160.png">강아지 상품페이지</a>
 				</div>
-				<div id=catPage>
+				<div class="category-product">
 					<a href="/product/product-cat"><img scr="C:\Users\user\Downloads\16e80cf6-531b-48b0-b8df-8068a6c06be2.png">고양이 상품페이지</a>
 				</div>
 			</section>
-			<aside> <!-- 광고 -->
-				<p>나 광고</p>
-			</aside>
+			<div id="ad">	
+				<aside> <!-- 광고 -->
+					<jsp:include page="/WEB-INF/views/include/aside.jsp" />
+				</aside>
+			</div>
 		</main>
+			
 		<footer> <!-- 홈피정보 -->
 			<p>나 정보</p>
 		</footer>
