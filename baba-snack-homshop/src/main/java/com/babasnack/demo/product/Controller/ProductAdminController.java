@@ -42,7 +42,7 @@ public class ProductAdminController {
 	}
 
 	// 상품 상세 페이지로 이동
-	@GetMapping("/{pno}")
+	@GetMapping("/product-details/{pno}")
 	public String showProductDetails(@PathVariable("pno") Long pno, Model model) {
 		Product product = productAdminService.getProductById(pno);
 		model.addAttribute("product", product);

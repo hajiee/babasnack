@@ -16,7 +16,7 @@ import com.babasnack.demo.product.Service.ProductService;
 import com.babasnack.demo.product.dto.ProductDto;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
 	private final ProductService productService;
 
