@@ -1,6 +1,5 @@
 package com.babasnack.demo.reserve.controller;
 
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,13 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import com.babasnack.demo.entity.Reserve;
 import com.babasnack.demo.reserve.service.ReserveService;
 
 @Controller
-@RequestMapping("/reserve")
+
 public class ReserveController {
 
     private final ReserveService reserveService;
@@ -26,14 +25,14 @@ public class ReserveController {
         this.reserveService = reserveService;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/reserve/{username}")
     public String getReserveByUsername(@PathVariable String username, Model model) {
         Reserve reserve = reserveService.getReserveByUsername(username);
         model.addAttribute("reserve", reserve);
         return "reserve";
     }
 
-    @PostMapping("/")
+    @PostMapping("/reserve")
     public String createReserve(@ModelAttribute Reserve reserve, Model model) {
         Reserve createdReserve = reserveService.createReserve(reserve);
         model.addAttribute("result", createdReserve);

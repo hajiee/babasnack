@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.babasnack.demo.entity.Pet;
 import com.babasnack.demo.pet.dto.PetDto;
 import com.babasnack.demo.pet.service.PetService;
 
 @Controller
-@RequestMapping("/pets")
+
 public class PetController {
     private final PetService petservice;
 
@@ -22,7 +21,7 @@ public class PetController {
         this.petservice = petservice;
     }
 
-   @PostMapping("/")
+   @PostMapping("/pets")
    public ResponseEntity<String> savePets(@RequestBody PetDto.PsProfile profile) {
        Integer result = petservice.savePet(profile);
        if (result > 0) {
