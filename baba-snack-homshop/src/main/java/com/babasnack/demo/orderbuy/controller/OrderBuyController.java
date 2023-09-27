@@ -4,15 +4,11 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.babasnack.demo.entity.Cart;
-import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.service.OrderBuyService;
 
@@ -41,6 +37,9 @@ public class OrderBuyController {
 	// 주문 후 상품 수량 감소 - 작성중
 	@PostMapping("/member-list/decrease-product")
 	public ModelAndView decreaseProduct(Long productStock, Long pno) {
+		
+		
+		orderBuyService.decreaseProduct(productStock, pno);
 		
 		return new ModelAndView("redirect:/cart/read");
 	}

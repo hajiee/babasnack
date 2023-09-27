@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.OrderDetail;
@@ -16,6 +17,7 @@ import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetailAdmin;
 import com.babasnack.demo.orderdetail.service.OrderDetailService;
 
 @Secured("ROLE_USER")
+@RequestMapping("/products")
 @Controller
 public class OrderDetailController {
 	@Autowired

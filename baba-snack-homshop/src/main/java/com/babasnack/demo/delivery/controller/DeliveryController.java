@@ -8,15 +8,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.babasnack.demo.delivery.dto.DeliveryDto;
 import com.babasnack.demo.delivery.service.DeliveryService;
 import com.babasnack.demo.entity.Delivery;
 
 @Secured("ROLE_USER")
-@RequestMapping("/products")
 @Controller
 public class DeliveryController {
 	@Autowired
@@ -30,7 +27,7 @@ public class DeliveryController {
 	}
 		
 	// 배송지 저장 후 메인 페이지로
-	@PostMapping("/delivery/add")
+	@PostMapping("/mypage/delivery/add")
 	public ModelAndView add(Principal principal, Long dno) {
 		deliveryService.add(principal.getName(), dno);
 		return new ModelAndView("redirect:/");
