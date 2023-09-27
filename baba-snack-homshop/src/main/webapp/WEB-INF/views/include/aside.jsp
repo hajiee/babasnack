@@ -7,11 +7,11 @@
 <title>Insert title here</title>
 <style>
 	#aside {
-		width: 350px;
+		width: 300px;
 		background-color: #ccc;
 	}
 	#aside div {
-		width: 250px;
+		width: 200px;
 		background-color: #eee;
 		border: 1px solid #ddd;
 		height: 500px;

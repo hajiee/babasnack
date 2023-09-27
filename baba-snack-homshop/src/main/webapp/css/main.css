@@ -7,16 +7,16 @@
 }
 
 #page {
-	width: 2000px;
+	width: 1600px;
 	margin: 0;
-	padding-left: 150px;
+	padding-left: 50px;
 }
 
 main {
-	width: 1800px;
-	margin-left: 80px;
+	width: 1400px;
+	margin-left: 50px;
 	border: 1px solid  deepskyblue;
-	min-height: 800px;
+	min-height: 600px;
 	display: flex;
 	flex-direction: column;
 }
@@ -43,7 +43,7 @@ section{
 
 #ad{
 	position: relative;
-	left: 1100px;
+	left: 900px;
 	bottom: 850px;
 }
 
