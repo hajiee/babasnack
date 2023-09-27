@@ -39,14 +39,14 @@ public class OrderBuyController {
 	
 	
 	// 주문 후 상품 수량 감소 - 작성중
-	@PostMapping("/member-list")
+	@PostMapping("/member-list/decrease-product")
 	public ModelAndView decreaseProduct(Long productStock, Long pno) {
 		
 		return new ModelAndView("redirect:/cart/read");
 	}
 
 	// 주문상품 발송여부(관리자)
-	@PostMapping("/member-list")
+	@PostMapping("/member-list/delivery-update")
 	public ModelAndView deliveryUpdate(String deliveryState, Principal principal, Long ono) {
 		deliveryState = "상품발송 완료";
 		orderBuyService.deliveryUpdate(deliveryState, principal.getName(), ono);

@@ -13,7 +13,7 @@ import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 @Mapper
 public interface OrderBuyDao {
 	// 주문 정보 저장
-	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(#{ono}, #{buyCnt}, #{orderDay}, #{allPrice}, '배송준비', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
+	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(order_buy_seq.nextval, #{buyCnt}, #{orderDay}, #{allPrice}, '배송준비', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
 	public Integer addOrderBuy(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username);
 
 	// 적립금 계산

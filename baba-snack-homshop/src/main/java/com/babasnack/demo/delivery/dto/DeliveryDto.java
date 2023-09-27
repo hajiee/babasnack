@@ -5,6 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class DeliveryDto {
+	// entity
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class DeliveryAddress {
+		private Long dno;
+		private String username;
+		private String name;
+		private Long pnoTell;
+		private String baseDelivery;
+		private String addDelivery;
+	}
+	
+	
 	// 04-2 배송지 구상
 	@Data
 	@AllArgsConstructor
