@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.OrderDetail;
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetailAdmin;
 import com.babasnack.demo.orderdetail.service.OrderDetailService;
@@ -46,11 +45,11 @@ public class OrderDetailController {
 		return new ModelAndView("redirect:/admin-member").addObject("list", list);
 	}
 
-	// 주문 후 상품 수량 감소 - 작성중
+	// 주문 후 상품 수량 감소
 	@PostMapping("/member-list/decrease-product")
-	public ModelAndView decreaseProduct(Long odno, Product product, Long pno) {
+	public ModelAndView decreaseProduct(Long odno, Long pno) {
 		List<OrderDetailDto.ReadOrderDetail> orderDetailProductsList = orderDetailService.findOrderDetailByOdno(odno);
-		product = new Product();
+		Product product = new Product();
 
 		for (OrderDetailDto.ReadOrderDetail i : orderDetailProductsList) {
 			product.setPno(i.getPno());

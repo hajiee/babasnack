@@ -7,10 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.babasnack.demo.entity.OrderBuy;
 import com.babasnack.demo.entity.OrderDetail;
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetail;
 

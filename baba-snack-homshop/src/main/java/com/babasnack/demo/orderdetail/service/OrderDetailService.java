@@ -16,7 +16,7 @@ public class OrderDetailService {
 	@Autowired
 	private OrderDetailDao orderDetailDao;
 
-	// 주문 정보 저장
+	// 주문상세 정보 저장
 	public Boolean add(OrderDetail orderDetail, String username) {
 		return orderDetailDao.addOrderDetail(orderDetail, username) == 1;
 	}
