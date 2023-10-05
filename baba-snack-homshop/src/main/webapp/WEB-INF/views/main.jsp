@@ -35,10 +35,10 @@
 			</aside>
 			<section> <!-- 메인 상품 -->
 				<div class="category-product">
-					<a href="/product/product-dog"><img scr="C:\Users\user\Downloads\712353f8-0a3c-422d-a311-e06e58d53160.png">강아지 상품페이지</a>
+					<a href="/product/product-dog"><img scr="./images/카테고리_dog.png">강아지 상품페이지</a>
 				</div>
 				<div class="category-product">
-					<a href="/product/product-cat"><img scr="C:\Users\user\Downloads\16e80cf6-531b-48b0-b8df-8068a6c06be2.png">고양이 상품페이지</a>
+					<a href="/product/product-cat"><img scr="./images/카테고리_cat.png">고양이 상품페이지</a>
 				</div>
 			</section>
 			<div id="ad">	
@@ -49,7 +49,7 @@
 		</main>
 			
 		<footer> <!-- 홈피정보 -->
-			<p>나 정보</p>
+			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</footer>
 	</div>
 </body>
