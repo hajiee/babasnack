@@ -1,10 +1,12 @@
 package com.babasnack.demo.orderbuy.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,25 +21,50 @@ public class OrderBuyController {
 	private OrderBuyService orderBuyService;
 
 	// 주문정보 저장(회원 id)
-	@PostMapping("/orderbuy/{username}")
+	@PostMapping("/cart/orderdetails-list/{username}")
 	public ModelAndView orderBuyInsert(OrderBuyDto.OrderBuyProduct orderBuyProduct,
 			@PathVariable("username") String username) {
 		orderBuyService.add(orderBuyProduct, username);
-		return new ModelAndView("redirect:/order-list");
-	}
-
-	// 장바구니에서 전체주문(로그인이 되어있는 회원의 id와 주문하는 id가 같아야 함) - 작성중
-	@PostMapping("/cart/orderbuy/{username}")
-	public ModelAndView orderBuyCart(@PathVariable("username") String username) {
-				
-		// 주문 후 특정회원의 장바구니 상품 전체 삭제
-		orderBuyService.deleteAllCartByUsername(username);
-		
 		return new ModelAndView("redirect:/orderdetails/{username}");
 	}
 
+	// 장바구니에서 전체주문 - 작성중
+	@PostMapping("/cart/pay/{username}")
+	public ModelAndView orderBuyCart(OrderBuyDto.OrderBuyCart orderBuyCart, Long odno, Long pno, Long ono,
+			@PathVariable("username") String username) {
+		// 회원 id + 주문번호가 null이 아닐 때
+		if (orderBuyService.findByUsernameAndOno(username, ono) != null) {
+			// 유저 카트 찾기
+
+			// 유저 카트 안에 있는 상품들
+
+			// 최종 결제 금액
+
+			// 장바구니 주문정보 저장(회원 id)
+			orderBuyService.addCart(orderBuyCart, username);
+
+			// 주문후 상품 재고 감소
+			List<OrderBuyDto.ReadOrderDetailByOB> orderDetailProductsList = orderBuyService.findOrderDetailByOdno(odno);
+			OrderBuyDto.ProductOrderBuyDto productOrderBuyDto = new OrderBuyDto.ProductOrderBuyDto();
+
+			for (OrderBuyDto.ReadOrderDetailByOB i : orderDetailProductsList) {
+				productOrderBuyDto.setPno(i.getPno());
+				productOrderBuyDto.setProductCnt(i.getBuyCnt());
+				orderBuyService.decreaseProduct(productOrderBuyDto, pno);
+			}
+
+			// 주문후 특정회원의 장바구니 상품 전체 삭제
+			orderBuyService.deleteAllCartByUsername(username);
+
+			return new ModelAndView("redirect:/order-end/{username}");
+		} else {
+			// 회원 id + 주문번호가 null이었을 때 메인페이지로 이동
+			return new ModelAndView("redirect:/");
+		}
+	}
+
 	// 모든 상품들 10% 적립금 저장(update문)
-	@PostMapping("/product/reserve")
+	@GetMapping("/product/reserve")
 	public ModelAndView productReserve() {
 		orderBuyService.productReserve();
 		return new ModelAndView("product/reserve");

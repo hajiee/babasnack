@@ -1,10 +1,12 @@
 package com.babasnack.demo.orderbuy.dto;
 
 import java.time.LocalDateTime;
+import java.util.Locale.Category;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.babasnack.demo.entity.Cart;
+import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,14 +31,14 @@ public class OrderBuyDto {
 		private Long dno;
 		private String username;
 		private Long payno;
-	}	
-	
+	}
+
 	// 장바구니 주문 정보
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class OrderBuyCart {
-		Cart cart = new Cart();		
+		Cart cart = new Cart();
 		private Long ono;
 		private Long buyCnt;
 		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -48,6 +50,40 @@ public class OrderBuyDto {
 		private Long dno;
 		private String username = cart.getUsername();
 		private Long payno;
+	}
+
+	// 주문용 상품 테이블
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ProductOrderBuyDto {
+		private Long pno;
+		private String productName;
+		private String productNotice;
+		private Long productStock;
+		private Long productPrice;
+		private Long productSize;
+		private Long reserve;
+		private Long productCnt;
+		private Category category;
+		private LocalDateTime productDay;
+	}
+
+	// 04-3 주문 내역 페이지
+	// 07-2 주문상세 상품 목록
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ReadOrderDetailByOB {
+		private Long odno;
+		private Long allPrice;
+		private String username;
+		private Long buyCnt;
+		private Long productPrice;
+		private String productName;
+		private String productSaveimg;
+		private Long ono;
+		private Long pno;
 	}
 
 	// 06-3 상품 상세설명 페이지

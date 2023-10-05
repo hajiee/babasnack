@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.OrderDetail;
-import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetailAdmin;
 import com.babasnack.demo.orderdetail.service.OrderDetailService;
@@ -43,20 +42,5 @@ public class OrderDetailController {
 	public ModelAndView orderDetailAdmin(Principal principal, Long ono) {
 		List<ReadOrderDetailAdmin> list = orderDetailService.orderDetailAdmin(principal.getName(), ono);
 		return new ModelAndView("redirect:/admin-member").addObject("list", list);
-	}
-
-	// 주문 후 상품 수량 감소
-	@PostMapping("/member-list/decrease-product")
-	public ModelAndView decreaseProduct(Long odno, Long pno) {
-		List<OrderDetailDto.ReadOrderDetail> orderDetailProductsList = orderDetailService.findOrderDetailByOdno(odno);
-		Product product = new Product();
-
-		for (OrderDetailDto.ReadOrderDetail i : orderDetailProductsList) {
-			product.setPno(i.getPno());
-			product.setProductCnt(i.getBuyCnt());
-			orderDetailService.decreaseProduct(product, pno);
-		}
-
-		return new ModelAndView("redirect:/cart/read");
 	}
 }

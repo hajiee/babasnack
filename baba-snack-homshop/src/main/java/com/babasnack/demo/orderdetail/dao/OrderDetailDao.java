@@ -5,12 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import com.babasnack.demo.entity.OrderDetail;
-import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
-import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetail;
 
 @Mapper
 public interface OrderDetailDao {
@@ -25,16 +22,4 @@ public interface OrderDetailDao {
 	// 회원 주문 내역리스트(관리자 전용)
 	@Select("select od.username, od.pno, od.buy_cnt, ob.dno from order_buy ob inner join order_detail od on ob.ono=od.ono where od.username=#{username} and ob.ono=#{ono}")
 	public List<OrderDetailDto.ReadOrderDetailAdmin> orderDetailAdmin(String username, Long ono);
-
-	// 주문 후 상품 수량 감소
-	@Update("update product set product_stock=product_stock-#{productStock} where pno=#{pno}")
-	public Integer decreaseProductStock(Product product);
-
-	// 주문 후 상품 수량 감소(상품 테이블 pno 확인용)
-	@Select("select * from product where pno=#{pno} and rownum=1")
-	public Product findProductById(Long pno);
-
-	// 주문 후 상품 수량 감소(상품+주문+주문상세 3테이블 inner join, 주문상세 테이블 odno 확인용)
-	@Select("select * from order_buy ob inner join order_detail od on ob.ono = od.ono inner join product p on p.pno=od.pno where od.odno=#{odno}")
-	public List<ReadOrderDetail> findOrderDetailByOdno(Long odno);
 }
