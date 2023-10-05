@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <title>BABA-SNACK</title>
 <script>
@@ -35,10 +35,10 @@
 			</aside>
 			<section> <!-- 메인 상품 -->
 				<div class="category-product">
-					<a href="/product/product-dog"><img scr="./images/카테고리_dog.png">강아지 상품페이지</a>
+					<a href="/product/product-dog"><img src="/images/카테고리_dog.png" class="mx-auto d-block" style="width:50%" alt="강아지 상품페이지"></a>
 				</div>
 				<div class="category-product">
-					<a href="/product/product-cat"><img scr="./images/카테고리_cat.png">고양이 상품페이지</a>
+					<a href="/product/product-cat"><img src="/images/카테고리_dog.png" class="mx-auto d-block" style="width:50%" alt="고양이 상품페이지"></a>
 				</div>
 			</section>
 			<div id="ad">	

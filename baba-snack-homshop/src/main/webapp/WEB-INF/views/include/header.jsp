@@ -28,7 +28,7 @@
 </head>
 <body>
 	<div id="logo" class="col s12">
-		<a href="/main"><img src="/WEB-INF/views/images/00로고_BaBa_snack.png" alt="멍냥이 간식쇼핑몰"></a>
+		<a href="/"><img src="/images/00로고.png" alt="멍냥이 간식쇼핑몰"></a>
 	</div>
 	<p id="search">검색할꺼임</p>
 </body>

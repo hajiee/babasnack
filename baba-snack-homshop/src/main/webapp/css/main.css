@@ -14,7 +14,7 @@
 
 main {
 	width: 1400px;
-	margin-left: 50px;
+	margin-left: 40px;
 	border: 1px solid  deepskyblue;
 	min-height: 600px;
 	display: flex;
@@ -42,7 +42,7 @@ section{
 
 #ad{
 	position: relative;
-	left: 900px;
+	left: 880px;
 	bottom: 850px;
 }
 

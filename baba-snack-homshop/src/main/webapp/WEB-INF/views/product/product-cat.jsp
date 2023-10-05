@@ -6,9 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <title>BABA-SNACK-cat</title>
 <script>
 	// 루트 경로는 에러메시지 출력을 해줘야 한다
@@ -33,10 +37,12 @@
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main>
-			<aside>	<!-- 베스트상품 -->
-				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
+			<aside>
+				<!-- 베스트상품 -->
+				<p>best</p>
 			</aside>
-			<section> <!-- 메인 상품 -->
+			<section>
+				<!-- 메인 상품 -->
 				<h3 class="blind">상품 정보, 정렬</h3>
 				<div class="total-sort">
 					<p class="total" style="color: #a2a2a2;">
@@ -52,7 +58,8 @@
 							</ul>
 						</dd>
 					</dl>
-				</div> <!-- .total-sort -->
+				</div>
+				<!-- .total-sort -->
 
 				<!-- 상품리스트 -->
 				<div class="prdlist_default">
@@ -60,48 +67,46 @@
 					<!-- 상품추출 -->
 					<div class="mproduct_area">
 						<ul>
-						<c:forEach items="${productPage.products}" var="p">
-							<li>
-								<a href="#"	class="box">
-									<div class="img">
-										<img class="MS_prod_img_m" src="${p.Photos}" alt="">
-									</div>
-									<dl>
-										<dt>${p.productName}</dt>
-										<dd class="txt">${p.productSize}</dd>
-										<dd class="price_box">
-											<p>
-												<span class="price">${p.productPrice}</span>
-											</p>
-											<span class="rev">${p.productStock}개 남음</span>
-										</dd>
-									</dl>
-								</a>
-							</li>
-						</c:forEach>
+							<c:forEach items="${productPage.products}" var="p">
+								<li><a href="#" class="box">
+										<div class="img">
+											<img class="MS_prod_img_m" src="${p.Photos}" alt="">
+										</div>
+										<dl>
+											<dt>${p.productName}</dt>
+											<dd class="txt">${p.productSize}</dd>
+											<dd class="price_box">
+												<p>
+													<span class="price">${p.productPrice}</span>
+												</p>
+												<span class="rev">${p.productStock}개 남음</span>
+											</dd>
+										</dl>
+								</a></li>
+							</c:forEach>
 						</ul>
-							<div id=pagination style="display: flex; justify-content: center;">
-								<ul class="pagination">
-									<c:if test="${page.prev>0}">
-										<li class="page-item"><a class="page-link"
-											href="/product/list?pageno=${page.prev}">이전으로</a></li>
+						<div id=pagination style="display: flex; justify-content: center;">
+							<ul class="pagination">
+								<c:if test="${page.prev>0}">
+									<li class="page-item"><a class="page-link"
+										href="/product/list?pageno=${page.prev}">이전으로</a></li>
+								</c:if>
+								<c:forEach begin="${page.start}" end="${page.end}" var="i">
+									<c:if test="${i==page.pageno}">
+										<li class="page-item active"><a class="page-link"
+											href="/product/list?pageno=${i}">${i}</a></li>
 									</c:if>
-									<c:forEach begin="${page.start}" end="${page.end}" var="i">
-										<c:if test="${i==page.pageno}">
-											<li class="page-item active"><a class="page-link"
-												href="/product/list?pageno=${i}">${i}</a></li>
-										</c:if>
-										<c:if test="${i!=page.pageno}">
-											<li class="page-item"><a class="page-link"
-												href="/product/list?pageno=${i}">${i}</a></li>
-										</c:if>
-									</c:forEach>
-									<c:if test="${page.next>0}">
+									<c:if test="${i!=page.pageno}">
 										<li class="page-item"><a class="page-link"
-											href="/product/list?pageno=${page.next}">다음으로</a></li>
+											href="/product/list?pageno=${i}">${i}</a></li>
 									</c:if>
-								</ul>
-							</div>
+								</c:forEach>
+								<c:if test="${page.next>0}">
+									<li class="page-item"><a class="page-link"
+										href="/product/list?pageno=${page.next}">다음으로</a></li>
+								</c:if>
+							</ul>
+						</div>
 			</section>
 			<aside>
 				<!-- 광고 -->

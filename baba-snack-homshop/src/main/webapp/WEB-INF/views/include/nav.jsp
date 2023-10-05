@@ -11,7 +11,7 @@
 		height: 30px;
 
 		position: relative;
-		left: 780px;
+		left: 800px;
 		bottom: 470px;
 	}
 	#nav-notMamber td{
