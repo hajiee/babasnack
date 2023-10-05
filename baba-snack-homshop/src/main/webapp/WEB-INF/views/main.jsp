@@ -27,7 +27,7 @@
 			<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		</header>
 		<nav> <!-- 메뉴 -->
-			<p>나 메뉴</p>
+			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main>
 			<aside id="best"> <!-- 베스트상품 -->

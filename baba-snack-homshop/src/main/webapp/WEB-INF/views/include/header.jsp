@@ -10,6 +10,10 @@
 		width: 350px;
 		border: 1px solid skyblue;
 		height: 250px;
+		margin-bottom:180px;
+		
+		position: relative;
+		bottom: -100px;
 	}
 	
 	#search{
@@ -17,8 +21,8 @@
 		border: 1px solid lightgray;
 		height: 40px;
 		position: relative;
-		left: 800px;
-		bottom: 100px;
+		left: 700px;
+		bottom: 200px;
 	}
 </style>
 </head>
