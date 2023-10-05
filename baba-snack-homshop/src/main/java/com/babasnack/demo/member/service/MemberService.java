@@ -64,6 +64,7 @@ public class MemberService {
 		return memberDao.PsWithdrawl(username)==1;
 		
 	}
+	//마이페이지
 	public PsMyPage psmypage(String username) {
 		
 		Member m = memberDao.FindById(username);
