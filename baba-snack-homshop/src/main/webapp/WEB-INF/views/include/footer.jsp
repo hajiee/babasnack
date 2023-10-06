@@ -11,6 +11,10 @@
   		margin-left: 40px;
   		margin-top: 30px;
 	}
+	
+	li>img{
+		width: 1400px;
+	}
 </style>
 </head>
 <body>
@@ -19,7 +23,7 @@
 		<li>프로젝트 팀 : Three Stars  </li>
 		<li>대표 및 제작 : 김혜지 / 김형중 / 박혜린 </li>
 		<li>사료제조업등록번호(일자) : 제2023-512-icia-0904호</li>
-		<li><img alt="주의사항" src="./images/요구사항_조건.png"/></li>
+		<li><img alt="주의사항" src="/images/요구사항_조건.png"/></li>
 	</ul>
 </body>
 </html>

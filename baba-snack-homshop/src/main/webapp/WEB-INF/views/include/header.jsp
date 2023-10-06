@@ -11,10 +11,9 @@
 <style>
 	#logo {
 		width: 350px;
-		border: 1px solid skyblue;
 		height: 250px;
 		margin-bottom:180px;
-		
+		text-align: center;
 		position: relative;
 		bottom: -100px;
 	}
@@ -34,7 +33,7 @@
 </head>
 <body>
 	<div id="logo" class="col s12">
-		<a href="/"><img src="/images/00로고.png" alt="멍냥이 간식쇼핑몰"></a>
+		<a href="/"><img src="/images/00로고.png" style="height:245px" alt="멍냥이 간식쇼핑몰"></a>
 	</div>
 	<form id="search" class="d-flex">
         <input class="form-control me-2" type="text" placeholder="검색할꺼임">
