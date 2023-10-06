@@ -9,10 +9,9 @@
 	#nav{
 		width: 500px;
 		height: 30px;
-
 		position: relative;
 		left: 800px;
-		bottom: 460px;
+		bottom: 380px;
 	}
 	#nav-notMamber td{
 		padding-left: 15px;

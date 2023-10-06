@@ -24,6 +24,14 @@
 		contentType: false
 	})
 </script>
+<style>
+	#join-form>form{
+		width:400px;
+		height:500px;
+		border: 1px solid  saddlebrown;
+		padding: 10px;
+	}
+</style>
 </head>
 <body>
 	<div id="page">
@@ -33,12 +41,9 @@
 		<nav>
 			<jsp:include page="/WEB-INF/views/include/nav.jsp"/>
 		</nav>
-		<main>
-			<aside>
-				<jsp:include page="/WEB-INF/views/include/aside.jsp"/>
-			</aside>
-			<section>
-				<h1>회원 가입</h1>
+		<main style="border: none">
+			<h1>회원 가입</h1>
+			<section id="join-form">
 				<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form">
 					<div class="mb-3 mt-3">
 						<label for="username" class="form-label">아이디:</label>
@@ -58,9 +63,6 @@
           				<button type="button" id="join" class="btn btn-primary">가입</button>
 				</form>
 			</section>
-			<aside>
-				<jsp:include page="/WEB-INF/views/include/aside.jsp"/>
-			</aside>
 		</main>
 		<footer>
 			<jsp:include page="/WEB-INF/views/include/footer.jsp" />

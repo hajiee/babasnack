@@ -12,7 +12,7 @@
 	#logo {
 		width: 350px;
 		height: 250px;
-		margin-bottom:180px;
+		margin-bottom:100px;
 		text-align: center;
 		position: relative;
 		bottom: -100px;
@@ -23,7 +23,7 @@
 		height: 40px;
 		position: relative;
 		left: 700px;
-		bottom: 200px;
+		bottom: 150px;
 	}
 	#search>button{
 		width:100px;
