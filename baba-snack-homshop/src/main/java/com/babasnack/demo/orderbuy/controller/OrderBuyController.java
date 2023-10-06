@@ -28,18 +28,16 @@ public class OrderBuyController {
 		return new ModelAndView("redirect:/orderdetails/{username}");
 	}
 
-	// 장바구니에서 전체주문 - 작성중
+	// 장바구니에서 전체주문(결제) - 작성중
 	@PostMapping("/cart/pay/{username}")
 	public ModelAndView orderBuyCart(OrderBuyDto.OrderBuyCart orderBuyCart, Long odno, Long pno, Long ono,
 			@PathVariable("username") String username) {
 		// 회원 id + 주문번호가 null이 아닐 때
 		if (orderBuyService.findByUsernameAndOno(username, ono) != null) {
-			// 유저 카트 찾기
-
-			// 유저 카트 안에 있는 상품들
-
+		
 			// 최종 결제 금액
-
+			Long allReserve = 10L;
+			
 			// 장바구니 주문정보 저장(회원 id)
 			orderBuyService.addCart(orderBuyCart, username);
 
