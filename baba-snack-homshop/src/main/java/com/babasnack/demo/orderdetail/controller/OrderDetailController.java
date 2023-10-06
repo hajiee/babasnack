@@ -24,7 +24,7 @@ public class OrderDetailController {
 	private OrderDetailService orderDetailService;
 
 	// 주문상세 정보 저장
-	@PostMapping("/orderdetail/{username}")
+	@PostMapping("/orderdetails/{username}")
 	public ModelAndView addOrderDetail(OrderDetail orderDetail, @PathVariable("username") String username) {
 		orderDetailService.add(orderDetail, username);
 		return new ModelAndView("redirect:/orderdetails");
@@ -38,7 +38,7 @@ public class OrderDetailController {
 	}
 
 	// 회원 주문목록(관리자)
-	@PostMapping("/orderdetail/member-list")
+	@PostMapping("/orderdetails/member-list")
 	public ModelAndView orderDetailAdmin(Principal principal, Long ono) {
 		List<ReadOrderDetailAdmin> list = orderDetailService.orderDetailAdmin(principal.getName(), ono);
 		return new ModelAndView("redirect:/admin-member").addObject("list", list);

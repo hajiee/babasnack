@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto.ReadOrderDetailByOB;
 
@@ -18,13 +17,13 @@ public interface OrderBuyDao {
 	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(order_buy_seq.nextval, #{buyCnt}, #{orderDay}, #{allPrice}, '배송중', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
 	public Integer addOrderBuy(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username);
 
-	// 장바구니 주문정보 저장
-	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(order_buy_seq.nextval, #{buyCnt}, #{orderDay}, #{allPrice}, '배송중', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
-	public Integer addOrderBuyCart(OrderBuyDto.OrderBuyCart orderBuyCart, String username);
-
 	// 모든 상품가격을 적립금 10%로 저장(update문으로)
 	@Update("update product set reserve = product_price*0.1")
 	public void updateProductReserve();
+
+	// 장바구니 상품가격 합계
+	@Select("select sum(all_price) from cart where username=#{username}")
+	public Long sumProductByUsername(String username);
 
 	// 적립금 계산(장바구니에 들어간 모든 상품 적립금을 주문 테이블인 총적립금에 저장)
 

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.babasnack.demo.cart.dao.CartDao;
 import com.babasnack.demo.cart.dto.CartDto;
 import com.babasnack.demo.entity.Cart;
-import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 
 @Service
@@ -30,7 +29,7 @@ public class CartService {
 
 	// 장바구니 추가(상품이미지 테이블 상품이미지 저장파일 + 상품 테이블 가격, 상품명)
 	public Boolean add(Long pno, String username) {
-		Product product = cartDao.findByPnoProduct(pno);
+		CartDto.ProductDto product = cartDao.findByPnoProduct(pno);
 		Cart newCart = new Cart(pno, username, 1L, product.getProductPrice(), product.getProductPrice(),
 				product.getProductName());
 		cartDao.addCart(newCart);

@@ -27,7 +27,7 @@ public class DeliveryController {
 	}
 
 	// 배송지 저장 후 메인 페이지로
-	@PostMapping("/mypage/delivery/add")
+	@PostMapping("/delivery/add")
 	public ModelAndView add(Principal principal, Long dno) {
 		deliveryService.add(principal.getName(), dno);
 		return new ModelAndView("redirect:/");
