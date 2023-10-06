@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <title>Insert title here</title>
 <style>
 	#logo {
@@ -18,18 +21,24 @@
 	
 	#search{
 		width: 380px;
-		border: 1px solid lightgray;
 		height: 40px;
 		position: relative;
 		left: 700px;
 		bottom: 200px;
 	}
+	#search>button{
+		width:100px;
+	}
+	
 </style>
 </head>
 <body>
 	<div id="logo" class="col s12">
 		<a href="/"><img src="/images/00로고.png" alt="멍냥이 간식쇼핑몰"></a>
 	</div>
-	<p id="search">검색할꺼임</p>
+	<form id="search" class="d-flex">
+        <input class="form-control me-2" type="text" placeholder="검색할꺼임">
+        <button class="btn btn-primary" type="button">찾기</button>
+     </form>
 </body>
 </html>

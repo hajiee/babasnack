@@ -12,7 +12,7 @@
 
 		position: relative;
 		left: 800px;
-		bottom: 470px;
+		bottom: 460px;
 	}
 	#nav-notMamber td{
 		padding-left: 15px;
