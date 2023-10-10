@@ -25,15 +25,21 @@ public class OrderBuyService {
 		orderBuyDao.updateProductReserve();
 	}
 
-	// 장바구니에서 전체주문(적립금 누적, 적립금 사용시 누적감소)
+	// 장바구니에서 전체주문(적립금 누적, 적립금 사용시 누적감소) - 작성+수정중
 	public void orderBuyCartInsert(OrderBuyDto.CartByOrderBuy cartByOrderBuy,
-			OrderBuyDto.OrderBuyProduct orderBuyProduct, String username) {
-		Long allCPrice = orderBuyDao.sumProductByUsername(username);
-		Long allOBPrice = orderBuyProduct.getAllPrice();
-		Long allOBReserve = orderBuyProduct.getAllReserve();
+			OrderBuyDto.OrderBuyProduct orderBuyProduct, OrderBuyDto.ReserveByOrderBuy reserveByOrderBuy,
+			Long reservePlus, Long ono, String username) {
 
-		allOBPrice = allCPrice;
-		allOBReserve = allOBPrice;
+		Long totalPrice = 0L;
+
+		reserveByOrderBuy = orderBuyDao.findReserveByUsernameAndOno(username, ono);
+		Long totoalReserve = reserveByOrderBuy.getReservePlus();
+
+		if (totoalReserve > 0) {
+
+		} else if (totoalReserve <= 0) {
+			orderBuyDao.updatePlusReserve(reservePlus, ono, username);
+		}
 	}
 
 	// 로그인한 회원의 주문번호+아이디 가져오기

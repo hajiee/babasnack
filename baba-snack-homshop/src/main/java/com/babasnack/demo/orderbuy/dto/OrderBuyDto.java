@@ -1,10 +1,10 @@
 package com.babasnack.demo.orderbuy.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Locale.Category;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -64,8 +64,8 @@ public class OrderBuyDto {
 		private Long ono;
 		private Long pno;
 	}
-	
-	// 
+
+	// 장바구니 주문
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -77,7 +77,20 @@ public class OrderBuyDto {
 		private Long allPrice;
 		private String productName;
 	}
-	
+
+	// 적립금
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ReserveByOrderBuy {
+		private String username;
+		private Long firstReserve;
+		private Long reservePlus;
+		private LocalDate reserveDay = LocalDate.now();
+		private Long ono;
+		private Long amount;
+	}
+
 	// 06-3 상품 상세설명 페이지
 
 	// 07-1 장바구니 구상(주문하기)

@@ -22,7 +22,7 @@ public interface CartDao {
 	public List<Cart> findByUsername(String username);
 
 	// 장바구니 추가
-	@Insert("insert into cart values(#{pno}, #{username}, #{productCnt}, #{productPrice}, #{allPrice}, #{productName})")
+	@Insert("insert into cart values(#{username}, #{pno}, #{productCnt}, #{productPrice}, #{allPrice}, #{productName})")
 	public Integer addCart(Cart cart);
 
 	// 장바구니 추가용으로 product의 pno를 불러와 상품가격과 상품명을 가져올려고 만든 select문

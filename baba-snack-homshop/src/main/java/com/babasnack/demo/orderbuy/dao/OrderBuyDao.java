@@ -25,6 +25,22 @@ public interface OrderBuyDao {
 	@Select("select sum(all_price) from cart where username=#{username}")
 	public Long sumProductByUsername(String username);
 
+	// 장바구니 상품 총가격 10% 적립
+	@Select("select sum(all_price)*0.1 from cart where username=#{username}")
+	public Long sumProductReserveByUsername(String username);
+
+	// 적립금 정보 가져오기
+	@Select("select * from reserve where username=#{username} and ono=#{ono}")
+	public OrderBuyDto.ReserveByOrderBuy findReserveByUsernameAndOno(String username, Long ono);
+	
+	// 적립금 누적 증감 업데이트
+	@Insert("update reserve set reserve_plus+=#{reservePlus}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
+	public void updatePlusReserve(Long reservePlus, Long ono, String username);
+	
+	// 적립금 누적 차감 업데이트
+	@Insert("update reserve set reserve_plus-=#{reservePlus}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
+	public void updateMinusReserve(Long reservePlus, Long ono, String username);	
+
 	// 적립금 계산(장바구니에 들어간 모든 상품 적립금을 주문 테이블인 총적립금에 저장)
 
 	// 적립금 누적(적립금 초기상태일 때)
