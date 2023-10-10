@@ -24,11 +24,11 @@
 	#nav-notMamber td>a{
 		color: #000;
 		text-decoration: none;
-		font-size: 15px; /* 원래 글자 크기 */
-  		transition: font-size 0.3s; /* 글자 크기 변경에 애니메이션 효과 추가 */	
+		font-weight: normal; /* 원래 글자 두께 (일반) */
+  		transition: font-weight 0.3s; /* 글자 크기 변경에 애니메이션 효과 추가 */	
 	}
 	#nav-notMamber td>a:hover{
-  		font-size: 18px; /* 마우스 커서가 요소 위에 있을 때 글자 크기 증가 */
+  		font-weight: bold; /* 마우스 커서가 요소 위에 있을 때 글자를 진하게 표시 (굵게) */
 	}
 </style>
 </head>
