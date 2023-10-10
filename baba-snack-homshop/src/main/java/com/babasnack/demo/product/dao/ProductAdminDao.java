@@ -14,7 +14,7 @@ import com.babasnack.demo.product.dto.ProductDto;
 @Mapper
 public interface ProductAdminDao {
 	// 상품등록
-	@Insert("INSERT INTO your_table_name (pno, product_name, product_notice, product_stock, product_price, product_size, reserve, product_cnt, category, product_day) " +
+	@Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, reserve, product_cnt, category, product_day) " +
             "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{reserve}, #{productCnt}, #{category.name()}, #{productDay})")
     public Long addProduct(ProductDto.WriteP writeP);
 
@@ -34,9 +34,11 @@ public interface ProductAdminDao {
     @Select("SELECT * FROM product_photo WHERE pno = #{pno}")
     public List<String> findProductPhotos(Long pno);
    
+    // 상품삭제
     @Delete("DELETE FROM product WHERE pno = #{pno}")
     public Integer deleteProduct(Long pno);
 
+    // 상품에 연관된 사진삭제
     @Delete("DELETE FROM product_photo WHERE pno = #{pno}")
     public boolean deleteProductPhotos(Long pno);
     

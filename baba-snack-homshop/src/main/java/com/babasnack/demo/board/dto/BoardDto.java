@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardDto {
-	//문의, 공지등록
+	//게시판목록
 	@Data
 	public static class ListB{
 		private Long bno;
@@ -17,7 +17,7 @@ public class BoardDto {
 		private Boolean boardState;
 	}
 	
-	//게시판목록
+	//문의, 공지등록
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
