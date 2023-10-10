@@ -14,8 +14,8 @@
 
 main {
 	width: 1450px;
-	margin-left: 40px;
-	border: 1px solid  deepskyblue;
+	margin-left: 100px;
+	border: 1px dotted saddlebrown;
 	min-height: 600px;
 	display: flex;
 	flex-direction: column;

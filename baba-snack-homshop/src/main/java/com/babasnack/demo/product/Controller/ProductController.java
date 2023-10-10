@@ -5,23 +5,35 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.Product;
+import com.babasnack.demo.product.Service.ProductAdminService;
 import com.babasnack.demo.product.Service.ProductService;
 import com.babasnack.demo.product.dto.ProductDto;
 
 @Controller
 public class ProductController {
-	private final ProductService productService;
-
-    @Autowired 
-    public ProductController(ProductService productService) {
-        this.productService = productService; 
-    }
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private ProductAdminService productAdminService;
+	
+	// Main으로 이동
+	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping({ "/", "/main" })
+	public String showAllProducts(Model model) {
+		List<Product> products = productAdminService.getAllProducts();
+		model.addAttribute("products", products);
+		return "/main";
+	}
 
     // 상품 목록 조회 API 엔드 포인트(GET /products)
     @GetMapping("/product")

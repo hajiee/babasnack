@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,15 +24,6 @@ import com.babasnack.demo.product.dto.ProductDto;
 public class ProductAdminController {
 	@Autowired
 	private ProductAdminService productAdminService;
-
-	// Main으로 이동
-	@RequestMapping(method = RequestMethod.GET)
-	@GetMapping({ "/", "/main" })
-	public String showAllProducts(Model model) {
-		List<Product> products = productAdminService.getAllProducts();
-		model.addAttribute("products", products);
-		return "/main";
-	}
 	
 	// 상품 등록 페이지로 이동
 	@GetMapping("/product/product-write")

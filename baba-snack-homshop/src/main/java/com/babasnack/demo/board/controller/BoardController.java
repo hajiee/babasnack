@@ -73,7 +73,7 @@ public class BoardController {
 	}
 	
 	
-	@GetMapping("/board/board-edit/{bno}")
+	@GetMapping("/board/{bno}/board-edit")
     public String editBoardForm(Model model, @PathVariable Long bno) {
         Board board = boardAdminService.findbybNoForAdmin(bno);
 
@@ -83,7 +83,7 @@ public class BoardController {
         return "board/board-edit"; // 수정 화면으로 이동
     }
 	
-	@PostMapping("/board/board-edit/{bno}")
+	@PostMapping("/board/{bno}/board-edit")
 	public String editBoard(@ModelAttribute WriteB updatedBoard, @RequestParam("password") Long password) {
 	    Long bno = updatedBoard.getBno();
 

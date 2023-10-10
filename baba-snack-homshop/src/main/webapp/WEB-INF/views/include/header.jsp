@@ -16,13 +16,14 @@
 		text-align: center;
 		position: relative;
 		bottom: -100px;
+		left:80px;
 	}
 	
 	#search{
 		width: 380px;
 		height: 40px;
 		position: relative;
-		left: 700px;
+		left: 800px;
 		bottom: 150px;
 	}
 	#search>button{
