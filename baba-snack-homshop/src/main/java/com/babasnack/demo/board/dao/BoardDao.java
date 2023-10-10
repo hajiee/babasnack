@@ -33,6 +33,10 @@ public interface BoardDao {
 	@Select("SELECT * FROM board")
     public List<Board> FindAll();
 	
+	//공지글이면 위로 정렬하는 글목록
+	@Select("SELECT bno, title, board_notice AS boardNotice, board_writer AS boardWriter, board_date AS boardDate, CASE WHEN notice = 1 THEN true ELSE false END AS boardState, board_code AS boardCode FROM board ORDER BY CASE WHEN notice = 1 THEN 0 ELSE 1 END ASC, created_date DESC")
+    List<Board> getFindAll();
+	
 	//제목으로 조회
     @Select("SELECT * FROM board WHERE title = #{title}")
     public Board findByTitle(String Title);
@@ -43,5 +47,13 @@ public interface BoardDao {
 
     @Select("select count(*) from product")
 	public Long count();
+    
+    // 게시글 비밀번호 설정
+    @Update("UPDATE board SET board_code = #{boardCode} WHERE bno = #{bno}")
+    public Long setboardCode(BoardDto.WriteB writeB);
+
+    // 설정된 비밀번호 확인
+    @Select("SELECT COUNT(*) FROM board WHERE bno = #{bno} AND board_code = #{boardCode}")
+    public boolean checkboardCode(Long bno, Long password);
     
 }

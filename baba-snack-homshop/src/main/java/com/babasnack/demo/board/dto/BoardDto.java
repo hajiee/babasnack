@@ -22,6 +22,7 @@ public class BoardDto {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class WriteB{
+		private Long bno;
 		private String title;
 		private String boardNotice;
 		private Boolean boardState;
