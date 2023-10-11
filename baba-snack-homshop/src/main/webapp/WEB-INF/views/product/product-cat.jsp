@@ -37,9 +37,8 @@
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main>
-			<aside>
-				<!-- 베스트상품 -->
-				<p>best</p>
+			<aside>	<!-- 베스트상품 -->
+				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
 			</aside>
 			<section>
 				<!-- 메인 상품 -->

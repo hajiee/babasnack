@@ -12,6 +12,9 @@ import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductPhotoService;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Controller
 public class ProductPhotoController {
     @Autowired
@@ -37,19 +40,20 @@ public class ProductPhotoController {
                 productPhoto.setProductImg(originalFilename);
                 productPhoto.setProductSaveImg(savedFilename);
 
-				try {
-					// 사진 정보를 DB에 저장합니다.
-					productPhotoDao.saveProductPhoto(productPhoto);
+    			try {
+    				// 사진 정보를 DB에 저장합니다.
+    				productPhotoDao.saveProductPhoto(productPhoto);
                     messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장했습니다.";
-				}  catch (Exception e) {
-					productPhotoService.deleteFile(originalFilename);
-					productPhotoService.deleteFile(savedFilename);
+    			}  catch (Exception e) {
+    				productPhotoService.deleteFile(originalFilename);
+    				productPhotoService.deleteFile(savedFilename);
+                    log.error("Failed to save file: " + savedFilename, e);
                     messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장하는 도중 오류가 발생했습니다.";
-				}
-				
-				messageIndex++;
-			}
-		}
+    			}
+    			
+    			messageIndex++;
+    		}
+    	}
 
         model.addAttribute("messages", messages);
 

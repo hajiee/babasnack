@@ -35,4 +35,7 @@ public class Product {
     public void setPhotos(List<ProductPhoto> photos) {
         this.photos = photos;
     }
+	public void setImageUrls(List<ProductPhoto> imageUrls) {
+		this.photos=imageUrls;
+	}
 }

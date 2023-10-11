@@ -16,20 +16,28 @@ import org.springframework.web.servlet.ModelAndView;
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductAdminService;
+import com.babasnack.demo.product.Service.ProductService;
 import com.babasnack.demo.product.dto.Category;
 import com.babasnack.demo.product.dto.ProductDto;
+
 
 @Secured("ROLE_ADMIN")
 @Controller
 public class ProductAdminController {
+	private final ProductService productService;
+	private final ProductAdminService productAdminService;
+
 	@Autowired
-	private ProductAdminService productAdminService;
-	
+	public ProductAdminController(ProductService productService, ProductAdminService adminService) {
+		this.productService = productService;
+		this.productAdminService = adminService;
+	}
+
 	// 상품 등록 페이지로 이동
 	@GetMapping("/product/product-write")
 	public String showAddProductForm(Model model) {
 		model.addAttribute("categories", Category.values());
-		return "product/product-write";
+		return "product-write"; // product-write.jsp로 변경
 	}
 
 	// 상품 등록 처리
@@ -41,21 +49,31 @@ public class ProductAdminController {
 		return new ModelAndView("redirect:/product/admin-product/" + productId);
 	}
 
-	// 상품 상세 페이지로 이동
-	@GetMapping("/product/product-details/{pno}")
-	public String showProductDetails(@PathVariable("pno") Long pno, Model model) {
-		Product product = productAdminService.getProductById(pno);
-		model.addAttribute("product", product);
-		return "product/product-read";
+	@GetMapping("/product/product-read/{pno}")
+	public String showProductDetails(@PathVariable("pno") String pno, Model model) {
+	    try {
+	        Long productId = Long.parseLong(pno);
+	        Product product = productAdminService.getProductById(productId);
+	        model.addAttribute("product", product);
+	        return "product-read"; // product-read.jsp로 변경
+	    } catch (NumberFormatException e) {
+	        // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
+	        return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	    }
 	}
 
-	// 상품 수정 페이지로 이동
 	@GetMapping("/product/prouct-write/{pno}")
-	public String showEditProductForm(@PathVariable("pno") Long pno, Model model) {
-		Product product = productAdminService.getProductById(pno);
-		model.addAttribute("product", product);
-		model.addAttribute("categories", Category.values());
-		return "product/prouct-write";
+	public String showEditProductForm(@PathVariable("pno") String pno, Model model) {
+	    try {
+	        Long productId = Long.parseLong(pno);
+	        Product product = productAdminService.getProductById(productId);
+	        model.addAttribute("product", product);
+	        model.addAttribute("categories", Category.values());
+	        return "prouct-write"; // prouct-write.jsp로 변경
+	    } catch (NumberFormatException e) {
+	       // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
+	       return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	   }
 	}
 
 	// 상품 수정 처리

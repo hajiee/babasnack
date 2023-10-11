@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.board.dto.BoardDto;
 import com.babasnack.demo.board.dto.BoardDto.WriteB;
@@ -26,18 +27,9 @@ public class BoardController {
 	private BoardAdminService boardAdminService;
 	
 	@GetMapping("/board/board-list")
-	public String boardList(Model model, @RequestParam(required = false, defaultValue = "1") Long page) {
-		 BoardPage boardPage = boardService.page(page);
-
-		// 게시글 목록과 페이지네이션 정보를 모델에 추가
-		 model.addAttribute("boardes", boardPage.getBoardes());
-		 model.addAttribute("currentPage", boardPage.getPageno());
-		 model.addAttribute("start", boardPage.getStart());
-		 model.addAttribute("end", boardPage.getEnd());
-		 model.addAttribute("prev", boardPage.getPrev());
-		 model.addAttribute("next", boardPage.getNext());
-        
-        return "board/board-List"; // 뷰 이름 설정
+	public ModelAndView boardList(@RequestParam(defaultValue="1") Long pageno) {
+		BoardPage boardPage = boardService.page(pageno);
+		return new ModelAndView("board-list").addObject("boardPage", pageno);
 	}
 	
 	@GetMapping("/board/board-read/{title}")

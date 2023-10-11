@@ -1,5 +1,7 @@
 package com.babasnack.demo.entity;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 
 import lombok.AllArgsConstructor;
@@ -16,12 +18,17 @@ public class ProductPhoto {
 	private String productSaveImg;	// 저장된 파일명
 	
 	@Value("${productImgUrl}")
-	private String productImgUrl;
+	private List<String> productImgUrl;
 	
-	public void updateItemImg(String oriImgName, String imgName, String imgUrl) {
+	public void updateItemImg(String oriImgName, String imgName, List<String> imgUrl) {
         this.productImg = oriImgName;
         this.productSaveImg = imgName;
         this.productImgUrl = imgUrl;
 	}
+
+	public String getSavedFilename() {
+		return productSaveImg;
+	}
+	
 }
 

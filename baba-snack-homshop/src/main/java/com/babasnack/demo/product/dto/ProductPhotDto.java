@@ -1,5 +1,7 @@
 package com.babasnack.demo.product.dto;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,7 @@ public class ProductPhotDto {
 		private Long productImgNo;
 		private String productImg;
 		private String productSaveImg;
-		private String productImgUrl;
+		private List<String> productImgUrl;
 
 		public String getSavedFilename() {
 			return productSaveImg;
@@ -22,5 +24,6 @@ public class ProductPhotDto {
 		public void setSavedFilename(String savedFilename) {
 			this.productSaveImg = savedFilename;
 		}
+
 	}
 }

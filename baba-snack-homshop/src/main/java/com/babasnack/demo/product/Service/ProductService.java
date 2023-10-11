@@ -1,5 +1,6 @@
 package com.babasnack.demo.product.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.entity.Review;
 import com.babasnack.demo.product.dao.ProductAdminDao;
 import com.babasnack.demo.product.dao.ProductDao;
+import com.babasnack.demo.product.dao.ProductPhotoDao;
 import com.babasnack.demo.product.dao.ReviewDao;
 import com.babasnack.demo.product.dto.ProductDto;
 import com.babasnack.demo.product.dto.ProductPage;
@@ -22,6 +24,8 @@ public class ProductService {
 	private ProductDao productDao;
 	@Autowired
 	private ProductAdminDao productAdminDao;
+	@Autowired
+	private ProductPhotoDao	productPhotoDao;
 	@Autowired
 	private ReviewDao reviewDao;
 
@@ -39,7 +43,7 @@ public class ProductService {
 
 	// 상품 목록 조회 서비스 메서드
 	public List<Product> getProductList() {
-		return productDao.FindAll();
+		return productDao.findAllProducts();
 	}
 
 	// 특정 상품 조회 서비스 메서드 - 만약 해당하는 상품이 없다면 null이 반환
@@ -54,7 +58,7 @@ public class ProductService {
 
 	// 한 페이지당 상품 수 조회 서비스 메서드
 	public List<Product> getPageOne(Long startRownum, Long endRownum) {
-		return productDao.findAll(startRownum, endRownum);
+		return productDao.findProductsByPage(startRownum, endRownum);
 	}
 
 	// 상품, 이미지들, 리뷰들, 리뷰 개수, 리뷰 평점 평균을 읽어 출력
@@ -68,7 +72,14 @@ public class ProductService {
 		// 사진이 한 장도 없다면 default.jpg를 출력
 		if (images.isEmpty()) {
 			images = Arrays.asList(productImgUrl + "default.jpg");
-		}
+		}else {
+	        // 실제 이미지 URL로 변환하여 저장
+	        List<String> convertedImages = new ArrayList<>();
+	        for (String image : images) {
+	            convertedImages.add(productImgUrl + image);
+	        }
+	        images = convertedImages;
+	    }
 
 		List<Review> reviews = reviewDao.findByPno(pno);
 		Long countOfReview = reviewDao.countByPno(pno);
@@ -87,13 +98,16 @@ public class ProductService {
         Long startRownum = (pageno - 1) * numberOfProductsPerPage;
         Long endRownum = Math.min(startRownum + numberOfProductsPerPage, count);
 
-        List<Product> products = productDao.findAll(startRownum, endRownum);
+        List<Product> products = productDao.findProductsByPage(startRownum, endRownum);
 
         // 각 상품에 이미지 URL을 추가
         for (Product product : products) {
-            // Product 엔티티에 이미지 URL을 가져오는 메서드가 있다고 가정합니다.
-            List<ProductPhoto> imageUrl = product.getPhotos();
-            product.setPhotos(imageUrl);
+            List<ProductPhoto> photos = productPhotoDao.findByPno(product.getPno());
+            List<ProductPhoto> imageUrls = new ArrayList<>();
+            for (ProductPhoto photo : photos) {
+                imageUrls.add((ProductPhoto) photo.getProductImgUrl());
+            }
+            product.setImageUrls(imageUrls);
         }
 
         // 페이지네이션 계산
@@ -104,6 +118,6 @@ public class ProductService {
         Long next = (end< numberOfPages) ? end + 1 : null;
         
         // ProductPage 객체를 생성하고 이미지 URL을 포함하여 반환
-        return new ProductPage(prev, start, end, next, pageno, products);
+        return new ProductPage(start, end, prev, next, pageno, products);
     }
 }

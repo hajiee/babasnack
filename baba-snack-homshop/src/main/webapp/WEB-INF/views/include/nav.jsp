@@ -38,8 +38,8 @@
 			<tr>
 				<td><a href="/member/login">로그인</a></td>
 				<td><a href="/member/join">회원가입</a></td>
-				<td><a href="/product/product-dog">강아지간식</a></td>
-				<td><a href="/product/product-cat">고양이간식</a></td>
+				<td><a href="/product?category=dog">강아지간식</a></td>
+				<td><a href="/product?category=cat">고양이간식</a></td>
 				<td><a href="/board/board-list">게시판</a></td>
 			</tr>
 		</table>

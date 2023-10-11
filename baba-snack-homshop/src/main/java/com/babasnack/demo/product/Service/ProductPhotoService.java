@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.ProductPhoto;
+import com.babasnack.demo.error.Exception.FileSaveException;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 import com.babasnack.demo.product.dto.ProductPhotDto;
 
@@ -52,19 +53,19 @@ public class ProductPhotoService {
 	    }
 	}
 
-	public String saveFile(MultipartFile file) {
-		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-		String savedFileName = UUID.randomUUID().toString() + "." + extension;
-		File destFile = new File(productSaveImg, savedFileName);
+	public String saveFile(MultipartFile file) throws FileSaveException {
+	    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+	    String savedFileName = UUID.randomUUID().toString() + "." + extension;
+	    File destFile = new File(productSaveImg, savedFileName);
 
-		try {
-			file.transferTo(destFile);
-			return savedFileName; // 실제로는 파일이름이나 경로 등으로 대체되어야 합니다.
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Failed to save file: " + destFile.getAbsolutePath(), e);
-		}
-   }
+	    try {
+	        file.transferTo(destFile);
+	        return productImgUrl + savedFileName;
+	    } catch (IOException e) {
+	        log.error("Failed to save file: " + destFile.getAbsolutePath(), e);
+	        throw new FileSaveException("Failed to save file", e);
+	    }
+	}
 
 	public void deleteFile(String filePath) throws Exception {
 	    File deleteFile = new File(filePath);

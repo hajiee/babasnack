@@ -31,14 +31,14 @@
 		</nav>
 		<main>
 			<aside id="best"> <!-- 베스트상품 -->
-				<p>나 베스트</p>
+				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
 			</aside>
 			<section> <!-- 메인 상품 -->
 				<div class="category-product">
-					<a href="/product/product-dog"><img src="/images/카테고리_dog.png" class="mx-auto d-block" style="height:500px" alt="강아지 상품페이지"></a>
+					<a href="/product?category=dog"><img src="/images/카테고리_dog.png" class="mx-auto d-block" style="height:500px" alt="강아지 상품페이지"></a>
 				</div>
 				<div class="category-product">
-					<a href="/product/product-cat"><img src="/images/카테고리_cat.png" class="mx-auto d-block" style="height:500px" alt="고양이 상품페이지"></a>
+					<a href="/product?category=cat"><img src="/images/카테고리_cat.png" class="mx-auto d-block" style="height:500px" alt="고양이 상품페이지"></a>
 				</div>
 			</section>
 			<div id="ad">	
