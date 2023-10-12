@@ -86,56 +86,81 @@
 
 				<!-- 상품리스트 -->
 				<div class="prdlist_default">
-
-					<!-- 상품추출 -->
-					<div class="mproduct_area">
-						<ul>
-							<c:forEach items="${productPage.products}" var="p">
-								<li><a href="#" class="box">
-										<div class="img">
-											<img class="MS_prod_img_m" src="${p.Photos}" alt="">
-										</div>
-										<dl>
-											<dt>${p.productName}</dt>
-											<dd class="txt">${p.productSize}</dd>
-											<dd class="price_box">
-												<p>
-													<span class="price">${p.productPrice}</span>
-												</p>
-												<span class="rev">${p.productStock}개 남음</span>
-											</dd>
-										</dl>
-								</a></li>
-							</c:forEach>
-						</ul>
-						<div id=pagination style="display: flex; justify-content: center;">
-							<ul class="pagination">
-								<c:if test="${page.prev>0}">
-									<li class="page-item"><a class="page-link"
-										href="/product/list?pageno=${page.prev}">이전으로</a></li>
-								</c:if>
-								<c:forEach begin="${page.start}" end="${page.end}" var="i">
-									<c:if test="${i==page.pageno}">
-										<li class="page-item active"><a class="page-link"
-											href="/product/list?pageno=${i}">${i}</a></li>
-									</c:if>
-									<c:if test="${i!=page.pageno}">
-										<li class="page-item"><a class="page-link"
-											href="/product/list?pageno=${i}">${i}</a></li>
-									</c:if>
-								</c:forEach>
-								<c:if test="${page.next>0}">
-									<li class="page-item"><a class="page-link"
-										href="/product/list?pageno=${page.next}">다음으로</a></li>
-								</c:if>
-							</ul>
+					<c:if test="${empty productPage.products}">
+						<div class="product-item empty">
+							<!-- 비어있을 때 보여줄 내용 -->
 						</div>
+					</c:if>
+					<c:forEach items="${productPage.products}" var="p">
+						<div class="product-item">
+							<!-- 상품 목록 항목 내용 -->
+							<div class="product-image">
+								<img src="${p.imageUrls}" alt="${p.productName}">
+							</div>
+							<div class="product-details">
+								<h2>${p.productName}</h2>
+								<p class="product-description">${p.productDescription}</p>
+								<div class="product-price">
+									<span class="price-label">가격:</span> <span class="price-value">${p.productPrice}원</span>
+								</div>
+								<div class="product-stock">
+									<span class="stock-label">재고:</span> <span class="stock-value">${p.productStock}개
+										남음</span>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+				<!-- 상품추출 -->
+				<div class="mproduct_area">
+					<ul>
+						<c:forEach items="${productPage.products}" var="p">
+							<li><a href="#" class="box">
+									<div class="img">
+										<img class="MS_prod_img_m" src="${p.imageUrls}" alt="">
+									</div>
+									<dl>
+										<dt>${p.productName}</dt>
+										<dd class="txt">${p.productSize}</dd>
+										<dd class="price_box">
+											<p>
+												<span class="price">${p.productPrice}</span>
+											</p>
+											<span class="rev">${p.productStock}개 남음</span>
+										</dd>
+									</dl>
+							</a></li>
+						</c:forEach>
+					</ul>
+				</div>
+				<div id=pagination style="display: flex; justify-content: center;">
+					<ul class="pagination">
+						<c:if test="${page.prev>0}">
+							<li class="page-item"><a class="page-link"
+								href="/product/list?pageno=${page.prev}">이전으로</a></li>
+						</c:if>
+						<c:forEach begin="${page.start}" end="${page.end}" var="i">
+							<c:if test="${i==page.pageno}">
+								<li class="page-item active"><a class="page-link"
+									href="/product/list?pageno=${i}">${i}</a></li>
+							</c:if>
+							<c:if test="${i!=page.pageno}">
+								<li class="page-item"><a class="page-link"
+									href="/product/list?pageno=${i}">${i}</a></li>
+							</c:if>
+						</c:forEach>
+						<c:if test="${page.next>0}">
+							<li class="page-item"><a class="page-link"
+								href="/product/list?pageno=${page.next}">다음으로</a></li>
+						</c:if>
+					</ul>
+				</div>
 			</section>
-			<div id="ad">	
-			<aside>
-				<!-- 광고 -->
-				<jsp:include page="/WEB-INF/views/include/aside.jsp" />
-			</aside>
+			<div id="ad">
+				<aside>
+					<!-- 광고 -->
+					<jsp:include page="/WEB-INF/views/include/aside.jsp" />
+				</aside>
 			</div>
 		</main>
 		<footer>

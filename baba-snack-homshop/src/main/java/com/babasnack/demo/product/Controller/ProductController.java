@@ -103,11 +103,9 @@ public class ProductController {
 
 	// 상품 page
 	@GetMapping("/products/page/{pageno}")
-	public ModelAndView getProductPage(@PathVariable Long pageno) {
-		ProductPage productPage = productService.page(pageno);
-		ModelAndView modelAndView = new ModelAndView("product-page");
-		modelAndView.addObject("productPage", productPage);
-
-		return modelAndView;
+	public String getProductPage(@PathVariable Long pageno, Model model) {
+	    ProductPage productPage = productService.page(pageno);
+	    model.addAttribute("productPage", productPage);
+	    return "product-page"; // View 이름 반환
 	}
 }
