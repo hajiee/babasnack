@@ -17,6 +17,10 @@ public interface OrderBuyDao {
 	@Insert("insert into order_buy(ono, buy_cnt, order_day, all_price, delivery_state, base_delivery, all_reserve, dno, username, payno) values(order_buy_seq.nextval, #{buyCnt}, #{orderDay}, #{allPrice}, '배송중', #{baseDelivery}, #{allReserve}, #{dno}, #{username}, #{payno})")
 	public Integer addOrderBuy(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username);
 
+	// 주문 정보 불러오기
+	@Select("select * from order_buy where username=#{username} and ono=#{ono}")
+	public OrderBuyDto.OrderBuyProduct findOBByUsernameAndOno(String username, Long ono);
+
 	// 모든 상품가격을 적립금 10%로 저장(update문으로)
 	@Update("update product set reserve = product_price*0.1")
 	public void updateProductReserve();
@@ -32,14 +36,18 @@ public interface OrderBuyDao {
 	// 적립금 정보 가져오기
 	@Select("select * from reserve where username=#{username} and ono=#{ono}")
 	public OrderBuyDto.ReserveByOrderBuy findReserveByUsernameAndOno(String username, Long ono);
-	
+
 	// 적립금 누적 증감 업데이트
-	@Insert("update reserve set reserve_plus+=#{reservePlus}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
-	public void updatePlusReserve(Long reservePlus, Long ono, String username);
-	
+	@Update("update reserve set reserve_plus = reserve_plus + #{allReserve}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
+	public void updatePlusReserve(Long allReserve, Long ono, String username);
+
 	// 적립금 누적 차감 업데이트
-	@Insert("update reserve set reserve_plus-=#{reservePlus}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
-	public void updateMinusReserve(Long reservePlus, Long ono, String username);	
+	@Update("update reserve set reserve_plus = reserve_plus - #{reservePlus}, reserve_day=sysdate where ono=#{ono} and username=#{username}")
+	public void updateMinusReserve(Long reservePlus, Long ono, String username);
+
+	// 적립금 사용시 주문 테이블의 총주문 가격 변경(update문)
+	@Update("update order_buy set all_price = all_price - #{reservePlus} where ono=#{ono} and username=#{username}")
+	public void updateMinusOBAllPrice(Long reservePlus, Long ono, String username);
 
 	// 적립금 계산(장바구니에 들어간 모든 상품 적립금을 주문 테이블인 총적립금에 저장)
 

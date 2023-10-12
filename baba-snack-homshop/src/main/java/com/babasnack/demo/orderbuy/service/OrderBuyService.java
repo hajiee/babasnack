@@ -25,20 +25,24 @@ public class OrderBuyService {
 		orderBuyDao.updateProductReserve();
 	}
 
-	// 장바구니에서 전체주문(적립금 누적, 적립금 사용시 누적감소) - 작성+수정중
-	public void orderBuyCartInsert(OrderBuyDto.CartByOrderBuy cartByOrderBuy,
-			OrderBuyDto.OrderBuyProduct orderBuyProduct, OrderBuyDto.ReserveByOrderBuy reserveByOrderBuy,
-			Long reservePlus, Long ono, String username) {
+	// 장바구니에서 전체주문(적립금 누적, 적립금 사용시 적립금 누적감소 + 적립금만큼 총주문액 감소) - 작성+수정중
+	public void orderBuyCartInsert(Long reservePlus, Long allReserve, Long ono, String username) {
 
-		Long totalPrice = 0L;
+		OrderBuyDto.OrderBuyProduct orderBuyProduct = orderBuyDao.findOBByUsernameAndOno(username, ono);
+		allReserve = orderBuyProduct.getAllReserve();
 
-		reserveByOrderBuy = orderBuyDao.findReserveByUsernameAndOno(username, ono);
+		OrderBuyDto.ReserveByOrderBuy reserveByOrderBuy = orderBuyDao.findReserveByUsernameAndOno(username, ono);
 		Long totoalReserve = reserveByOrderBuy.getReservePlus();
 
-		if (totoalReserve > 0) {
-
-		} else if (totoalReserve <= 0) {
-			orderBuyDao.updatePlusReserve(reservePlus, ono, username);
+		if (totoalReserve != 0) {
+			if (reservePlus < totoalReserve) {
+				orderBuyDao.updatePlusReserve(allReserve, ono, username);
+			} else {
+				orderBuyDao.updateMinusOBAllPrice(reservePlus, ono, username);
+				orderBuyDao.updateMinusReserve(reservePlus, ono, username);
+			}
+		} else {
+			orderBuyDao.updatePlusReserve(allReserve, ono, username);
 		}
 	}
 
