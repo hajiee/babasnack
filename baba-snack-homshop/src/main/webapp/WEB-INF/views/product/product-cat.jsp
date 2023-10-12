@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/product.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -37,12 +38,12 @@
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main>
-			<aside>	<!-- 베스트상품 -->
+			<aside id="best">	<!-- 베스트상품 -->
 				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
 			</aside>
 			<section>
 				<!-- 메인 상품 -->
-				<h3 class="blind">상품 정보, 정렬</h3>
+				<h3 class="blind">고양이 간식상품</h3>
 				<div class="total-sort">
 					<p class="total" style="color: #a2a2a2;">
 						In this category are <strong>CAT</strong> products.
@@ -107,10 +108,12 @@
 							</ul>
 						</div>
 			</section>
+			<div id="ad">	
 			<aside>
 				<!-- 광고 -->
 				<jsp:include page="/WEB-INF/views/include/aside.jsp" />
 			</aside>
+			</div>
 		</main>
 		<footer>
 			<!-- 홈피정보 -->

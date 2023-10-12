@@ -9,6 +9,7 @@
 	#aside {
 		width: 300px;
 		background-color: #ccc;
+		margin-left:50px;
 	}
 	#aside div {
 		width: 200px;

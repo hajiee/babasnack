@@ -29,7 +29,7 @@ public class BoardController {
 	@GetMapping("/board/board-list")
 	public ModelAndView boardList(@RequestParam(defaultValue="1") Long pageno) {
 		BoardPage boardPage = boardService.page(pageno);
-		return new ModelAndView("board-list").addObject("boardPage", pageno);
+		return new ModelAndView("board/board-list").addObject("boardPage", pageno);
 	}
 	
 	@GetMapping("/board/board-read/{title}")

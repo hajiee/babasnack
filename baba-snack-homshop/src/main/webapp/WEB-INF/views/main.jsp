@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/main-main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -41,7 +42,7 @@
 					<a href="/product?category=cat"><img src="/images/카테고리_cat.png" class="mx-auto d-block" style="height:500px" alt="고양이 상품페이지"></a>
 				</div>
 			</section>
-			<div id="ad">	
+			<div id="ad">
 				<aside> <!-- 광고 -->
 					<jsp:include page="/WEB-INF/views/include/aside.jsp" />
 				</aside>

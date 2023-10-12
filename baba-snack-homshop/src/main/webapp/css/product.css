@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+main {
+  display: flex;
+}
+
+section{
+	width: 1350px;
+	margin: 0 50px;
+}
+
+#ad{
+	position: relative;
+	left: 890px;
+	bottom: 500px;
+}
+
+#board-main section {
+  display: flex;
+  justify-content: center; /* 가로 방향으로 아이템들을 가운데 정렬 */
+  align-items: center; /* 세로 방향으로 아이템들을 중앙 정렬 */
+}
+
+#best{
+	width: 1200px;
+	height: 250px;
+	margin-bottom: 80px;
+	margin-top: 50px;
+}
+
+
+/* 왼쪽 요소와 오른쪽 요소를 모두 포함하는 컨테이너 스타일 */
+.total-sort {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 왼쪽 요소의 스타일 */
+.total {
+    margin: 0 30px;
+}
+
+dl.sort {
+	margin-left: 800px;
+    text-align: right;
+}
+
+/* 오른쪽 요소 내부 목록의 스타일 */
+dl.sort ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* 오른쪽 요소 내부의 목록 항목에 대한 스타일 */
+dl.sort ul li {
+    display: inline;
+    margin-left: 10px;
+}
+
+/* 오른쪽 요소 내부의 링크에 대한 선택적 스타일 */
+dl.sort ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.pagination {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.pagination li {
+  display: inline;
+  margin: 0 5px;
+}

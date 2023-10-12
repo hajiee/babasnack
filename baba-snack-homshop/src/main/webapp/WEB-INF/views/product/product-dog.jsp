@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/product.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -21,25 +22,31 @@
 		alert("잘못된 작업입니다");
 
 	// RedirectAttribute을 이용한 에러 메시지 처리
-    const msg = '<c:out value="${msg}" />';
-    if (msg !== '')
-        alert(msg);
+	const msg = '<c:out value="${msg}" />';
+	if (msg !== '')
+		alert(msg);
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
-   // 재고 표시
-   var products = ${productPage.products};
-   for (var i = 0; i<products.length; i++) {
-      var product = products[i];
-      var stockMessage;
-      if (product.productStock >= 0) {
-         stockMessage = product.productStock + "개 남음";
-      } else {
-         stockMessage = "재고 없음";
-      }
-      $(".prdlist_default .price_box:eq("+i+")").append("<span>"+stockMessage+"</span>");
-   }
-});
+	$(document).ready(
+			function() {
+				// 재고 표시
+				var products = $
+				{
+					productPage.products
+				}
+				;
+				for (var i = 0; i < products.length; i++) {
+					var product = products[i];
+					var stockMessage;
+					if (product.productStock >= 0) {
+						stockMessage = product.productStock + "개 남음";
+					} else {
+						stockMessage = "재고 없음";
+					}
+					$(".prdlist_default .price_box:eq(" + i + ")").append(
+							"<span>" + stockMessage + "</span>");
+				}
+			});
 </script>
 </head>
 <body>
@@ -53,44 +60,83 @@ $(document).ready(function() {
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main>
-			<aside>
+			<aside id="best">
 				<!-- 베스트상품 -->
 				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
 			</aside>
 			<section>
 				<!-- 메인 상품 -->
-				<h3 class="blind">상품 정보, 정렬</h3>
+				<h3 class="blind">강아지 간식상품</h3>
 				<div class="total-sort">
-					<!-- total-sort 내용 추가 -->
+					<p class="total" style="color: #a2a2a2;">
+						In this category are <strong>DOG</strong> products.
+					</p>
+					<dl class="sort">
+						<dt class="blind">검색결과 정렬</dt>
+						<dd>
+							<ul>
+								<li><a href="javascript:sendsort('sellcnt')">인기순</a></li>
+								<li><a href="javascript:sendsort('regdate')">최신순</a></li>
+								<li><a href="javascript:sendsort('price')">낮은가격순</a></li>
+							</ul>
+						</dd>
+					</dl>
 				</div>
+				<!-- .total-sort -->
 
 				<!-- 상품리스트 -->
 				<div class="prdlist_default">
-					<!-- productPage.products의 각 상품에 대해 반복 -->
-					<c:forEach items="${productPage.products}" var="product">
-						<!-- 각 상품 정보 표시 -->
-						<a href="#" class="box"> <!-- 이미지 표시 -->
-							<div class="img">
-								<img src="${product.Photos}" alt="">
-							</div> <!-- 상품 정보 표시 -->
-							<dl>
-								<dt>${product.productName}</dt>
-								<dd class="txt">${product.productSize}</dd>
-								<dd class="price_box">
-									<p>
-										<span class="price">${product.productPrice}</span>
-									</p>
-									<!-- 재고 표시는 JavaScript로 동적으로 처리하도록 설정 -->
-								</dd>
-							</dl>
-						</a>
-					</c:forEach>
-				</div>
+
+					<!-- 상품추출 -->
+					<div class="mproduct_area">
+						<ul>
+							<c:forEach items="${productPage.products}" var="p">
+								<li><a href="#" class="box">
+										<div class="img">
+											<img class="MS_prod_img_m" src="${p.Photos}" alt="">
+										</div>
+										<dl>
+											<dt>${p.productName}</dt>
+											<dd class="txt">${p.productSize}</dd>
+											<dd class="price_box">
+												<p>
+													<span class="price">${p.productPrice}</span>
+												</p>
+												<span class="rev">${p.productStock}개 남음</span>
+											</dd>
+										</dl>
+								</a></li>
+							</c:forEach>
+						</ul>
+						<div id=pagination style="display: flex; justify-content: center;">
+							<ul class="pagination">
+								<c:if test="${page.prev>0}">
+									<li class="page-item"><a class="page-link"
+										href="/product/list?pageno=${page.prev}">이전으로</a></li>
+								</c:if>
+								<c:forEach begin="${page.start}" end="${page.end}" var="i">
+									<c:if test="${i==page.pageno}">
+										<li class="page-item active"><a class="page-link"
+											href="/product/list?pageno=${i}">${i}</a></li>
+									</c:if>
+									<c:if test="${i!=page.pageno}">
+										<li class="page-item"><a class="page-link"
+											href="/product/list?pageno=${i}">${i}</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test="${page.next>0}">
+									<li class="page-item"><a class="page-link"
+										href="/product/list?pageno=${page.next}">다음으로</a></li>
+								</c:if>
+							</ul>
+						</div>
 			</section>
+			<div id="ad">	
 			<aside>
 				<!-- 광고 -->
 				<jsp:include page="/WEB-INF/views/include/aside.jsp" />
 			</aside>
+			</div>
 		</main>
 		<footer>
 			<!-- 홈피정보 -->

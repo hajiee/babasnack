@@ -23,7 +23,7 @@ public class BoardAdminController {
 		Board board = boardAdminService.findbybNoForAdmin(bno);
 		// 관리자용 게시글 상세 정보를 모델에 추가
         model.addAttribute("board", board);
-        return "board/adminBoardDetail";
+        return "board/board-read";
     }
     
 	@GetMapping("/board/Admin-board")

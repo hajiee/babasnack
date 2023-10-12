@@ -45,7 +45,7 @@ public interface BoardDao {
 	@Select("SELECT * FROM (SELECT rownum as rnum, b.* FROM (SELECT /*+ index_desc(board board_pk_bno)*/ * FROM board) b WHERE rownum <= #{endRownum}) WHERE rnum >= #{startRownum}")
     public List<Board> findAll(Long startRownum, Long endRownum);		//page
 
-    @Select("select count(*) from product")
+	@Select("SELECT count(*) FROM board")
 	public Long count();
     
     // 게시글 비밀번호 설정

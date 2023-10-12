@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+section{
+	display: flex;
+	justify-content: center;
+}
+
+#ad{
+	position: relative;
+	left: 890px;
+	bottom: 900px;
+}
+
+
+#best{
+	width: 1200px;
+	height: 250px;
+	margin: auto;
+	margin-bottom: 150px;
+	margin-top: 50px;
+}
+
+.category-product {
+	width: 500px;
+	border: 1px solid gray;
+	height: 500px;
+	margin: auto 80px;
+}
+
+.category-product:hover {
+    transform: scale(1.05); /* 마우스 커서가 위에 있을 때 이미지 크기를 1.1배로 확대 */
+
+}
