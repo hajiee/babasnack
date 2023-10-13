@@ -28,8 +28,8 @@ public interface DeliveryDao {
 	public DeliveryDto.DeliveryEntity findByUsernameAndDno(String username, Long dno);
 
 	// 배송지 정보 변경
-	@Update("update delivery set dno=#{dno}, name=#{name}, pno_tell=#{pnoTell}, base_delivery=#{baseDelivery}, add_delivery=#{addDelivery} where username=#{username}")
-	public Integer change(Long dno, String name, Long pnoTell, String baseDelivery, String addDelivery,
+	@Update("update delivery set name=#{name}, pno_tell=#{pnoTell}, base_delivery=#{baseDelivery}, add_delivery=#{addDelivery} where username=#{username}")
+	public Integer change(String name, Long pnoTell, String baseDelivery, String addDelivery,
 			String username);
 
 }

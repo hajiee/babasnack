@@ -30,15 +30,15 @@ public class OrderBuyController {
 
 	// 장바구니에서 전체주문(결제) - 작성중
 	@PostMapping("/cart/pay/{username}")
-	public ModelAndView orderBuyCart(Long reservePlus, Long allReserve, Long odno, Long pno, Long ono, @PathVariable("username") String username) {
+	public ModelAndView orderBuyCart(Long reservePlus, Long allReserve, Long odno, Long pno, Long ono,
+			@PathVariable("username") String username) {
 		// 회원 id + 주문번호가 null이 아닐 때
 		if (orderBuyService.findByUsernameAndOno(username, ono) != null) {
 
 			// 최종 결제 금액
-			
+
 			// 적립금 누적,감소 작성중
 			orderBuyService.orderBuyCartInsert(reservePlus, allReserve, ono, username);
-			
 
 			// 주문후 상품 재고 감소
 			List<OrderBuyDto.ReadOrderDetailByOB> orderDetailProductsList = orderBuyService.findOrderDetailByOdno(odno);

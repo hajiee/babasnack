@@ -15,7 +15,7 @@ public class DeliveryService {
 	private DeliveryDao deliveryDao;
 
 	// 특정 회원의 배송지 조회
-	@Transactional(readOnly = true)
+	//@Transactional(readOnly = true)
 	public List<DeliveryDto.DeliveryEntity> search(String username) {
 		return deliveryDao.findByUsername(username);
 	}
@@ -35,8 +35,8 @@ public class DeliveryService {
 	}
 		
 	// 회원 배송지 정보 변경(업데이트)
-	public Boolean change(Long dno, String name, Long pnoTell, String baseDelivery, String addDelivery, String username) {
-		Integer changeResult = deliveryDao.change(dno, name, pnoTell, baseDelivery, addDelivery, username);
+	public Boolean change(String name, Long pnoTell, String baseDelivery, String addDelivery, String username) {
+		Integer changeResult = deliveryDao.change(name, pnoTell, baseDelivery, addDelivery, username);
 		return changeResult == 1;
 	}
 	
