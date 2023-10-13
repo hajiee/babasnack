@@ -55,8 +55,6 @@ public class ProductController {
 		return modelAndView;
 	}
 	
- 
-
 	// 상품명으로 상품 조회 API 엔드 포인트(GET /products/{productName})
 	@GetMapping("/product/name/{productName}")
 	public ModelAndView getProductByName(@PathVariable String productName) throws NotFoundException {
@@ -66,7 +64,7 @@ public class ProductController {
 			throw new NotFoundException("상품을 찾을 수 없습니다.");
 		}
 
-		ModelAndView modelAndView = new ModelAndView("product-details");
+		ModelAndView modelAndView = new ModelAndView("product/product-list");
 		modelAndView.addObject("product", product);
 
 		return modelAndView;
@@ -81,7 +79,7 @@ public class ProductController {
 			throw new NotFoundException("상품을 찾을 수 없습니다.");
 		}
 
-		ModelAndView modelAndView = new ModelAndView("product-details");
+		ModelAndView modelAndView = new ModelAndView("product/product-read");
 		modelAndView.addObject("product", product);
 
 		return modelAndView;
@@ -95,7 +93,7 @@ public class ProductController {
 		Long endRowNum = startRowNum + size - 1L;
 
 		List<Product> productList = productService.getPageOne(startRowNum, endRowNum);
-		ModelAndView modelAndView = new ModelAndView("product-page");
+		ModelAndView modelAndView = new ModelAndView("product/product-list");
 		modelAndView.addObject("products", productList);
 
 		return modelAndView;
@@ -106,6 +104,6 @@ public class ProductController {
 	public String getProductPage(@PathVariable Long pageno, Model model) {
 	    ProductPage productPage = productService.page(pageno);
 	    model.addAttribute("productPage", productPage);
-	    return "product-page"; // View 이름 반환
+	    return "product/product-list"; // View 이름 반환
 	}
 }
