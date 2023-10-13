@@ -131,7 +131,7 @@ function naverLogout() {
 						<input type="password" class="form-control" id="password" name="password" maxlength="10"> <span id="password-msg"></span>
 					</div>
 					<div class="mb-3 mt-3">
-						<button type="button" class="btn btn-primary" id="login">로그인</button>
+						<button type="submit" class="btn btn-primary" id="login">로그인</button>
 					</div>
 	
 				</form>

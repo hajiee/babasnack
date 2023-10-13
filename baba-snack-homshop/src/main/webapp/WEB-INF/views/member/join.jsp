@@ -7,23 +7,44 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 <title>Insert title here</title>
 <style>
   .fail { color: red; }
 </style>
-<script src="/script/join.js"></script>
-<script>
-	const formData = new FormData(document.querySelector('#join-form'));
-	$.ajax({
-		url:'http://localhost:8081/',
-		method:'post',
-		data:formData,
-		processData:false,
-		contentType: false
-	})
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#join').click(function() {
+        	const formData = new FormData($('#join-form')[0]);
+
+            $.ajax({
+                url: 'http://localhost:8081/member/join',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('가입이 완료되었습니다.');
+                    // 가입 성공 시 동작할 내용을 여기에 작성하세요.
+                    $('#join-form').hide(); // 가입 폼 숨김
+                    $('#join-success-msg').show(); // 가입 완료 메시지 표시
+                },
+                error: function(xhr, status, error) {
+                    console.log('가입 중 오류가 발생했습니다.');
+                    console.log(error);
+                    // 가입 실패 시 동작할 내용을 여기에 작성하세요.
+                }
+            });
+        });
+    });
 </script>
+
+
+
 <style>
 	#join-form>form{
 		width:400px;
@@ -60,8 +81,9 @@
             			<input type="text" class="form-control" id="email" name="email">
             			<span id="email-msg"></span>
           			</div>
-          				<button type="button" id="join" class="btn btn-primary">가입</button>
+          				<button type ="submit" id="join" class="btn btn-primary">가입</button>
 				</form>
+				 
 			</section>
 		</main>
 		<footer>

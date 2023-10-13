@@ -25,7 +25,7 @@ public class MemberRestController {
 	//아이디 찾기
 	@GetMapping(value="/member/username/{email}")
 	public ResponseEntity<String> findUsername(@PathVariable String email){
-		String username=service.FindById(email);
+		String username=service.findById(email);
 		if(username==null)
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("아이디를 찾을 수 없습니다");
 		return ResponseEntity.ok(username);
