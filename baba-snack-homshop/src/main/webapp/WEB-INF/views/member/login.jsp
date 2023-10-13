@@ -34,73 +34,23 @@
 
 	})
 </script>
-<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<ul>
-	<li>
-      <!-- 아래와같이 아이디를 꼭 써준다. -->
-      <a id="naverIdLogin_loginButton" href="javascript:void(0)">
-          <span>네이버 로그인</span>
-      </a>
-	</li>
-	<li onclick="naverLogout(); return false;">
-      <a href="javascript:void(0)">
-          <span>네이버 로그아웃</span>
-      </a>
-	</li>
-</ul>
-
-<!-- 네이버 스크립트 -->
-<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-
-<script>
-
-var naverLogin = new naver.LoginWithNaverId(
-		{
-			clientId: "80mdf88flkWWJT1f93Tz", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
-			callbackUrl: "http://localhost:8181/naverLogin", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
-			isPopup: false,
-			callbackHandle: true
-		}
-	);	
-
-naverLogin.init();
-
-window.addEventListener('load', function () {
-	naverLogin.getLoginStatus(function (status) {
-		if (status) {
-			var email = naverLogin.user.getEmail(); // 필수로 설정할것을 받아와 아래처럼 조건문을 줍니다.
-    		
-			console.log(naverLogin.user); 
-    		
-            if( email == undefined || email == null) {
-				alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
-				naverLogin.reprompt();
-				return;
-			}
-		} else {
-			console.log("callback 처리에 실패하였습니다.");
-		}
-	});
-});
 
 
-var testPopUp;
-function openPopUp() {
-    testPopUp= window.open("https://nid.naver.com/nidlogin.logout", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
-}
-function closePopUp(){
-    testPopUp.close();
+
+
+<style>
+#login-form>form{
+	width:400px;
+	height:500px;
+	border: 1px solid saddlebrown;
+	padding:10px;
 }
 
-function naverLogout() {
-	openPopUp();
-	setTimeout(function() {
-		closePopUp();
-		}, 1000);
-	
-	
+#login-form .border{
+	width:auto !important; /* 수정된 부분 */
+	margin-top:10px; /* 수정된 부분 */
 }
-</script>
+</style>
 
 <style>
 	#login-form>form{
@@ -110,6 +60,8 @@ function naverLogout() {
 		padding: 10px;
 	}
 </style>
+
+
 </head>
 <body>
 	<div id="page">
@@ -128,18 +80,82 @@ function naverLogout() {
 					</div>
 					<div class="mb-3 mt-3">
 						<label for="password" class="form-label">비밀번호:</label>
-						<input type="password" class="form-control" id="password" name="password" maxlength="10"> <span id="password-msg"></span>
+						<input type="password" class="form-control" id="password" name="password" maxlength="10"> <span id="password-msg"></span>	
 					</div>
-					<div class="mb-3 mt-3">
-						<button type="submit" class="btn btn-primary" id="login">로그인</button>
-					</div>
+				<div class="mb-3 mt-3">
+            <button type="button" class="btn btn-primary" id="login">로그인</button>
+          </div>
+		 <!-- 네이버 로그인 버튼 -->
+          <div class="mb-3 mt-3 border p-2">
+            <button type="button" class="btn btn-primary" id="naver-login-button">네이버 로그인</button>
+          </div>
+
 	
-				</form>
+				
+				
+    			</form>
 			</section>
+			
 		</main>
 		<footer>
 			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</footer>
+		<!-- 네이버 SDK 스크립트 -->
+  <script src="//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset='utf-8'></script>
+
+  <!-- JavaScript 코드 -->
+  <script type='text/javascript'>
+    // 네아로 SDK 초기화 완료 후 동작할 콜백 함수 등록
+    window.addEventListener('load', function () {
+      var naverLogin = new naver.LoginWithNaverId({
+        clientId: '80mdf88flkWWJT1f93Tz',
+        callbackUrl: 'http://localhost:8181/naverLogin',
+        isPopup: false,
+        callbackHandle: true,
+      });
+
+      // 네이버 SDK 초기화
+      naverLogin.init();
+
+      // 네이버 SDK 초기화 완료 후 동작할 콜백 함수 등록
+      naverLogin.getLoginStatus(function (status) {
+        if (status) {
+          var email = naverLogin.user.getEmail();
+          
+          console.log(naverLogin.user);
+          
+          if (email == undefined || email == null) {
+            alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
+            naverLogin.reprompt();
+            return;
+          }
+        } else {
+        	console.log("callback 처리에 실패하였습니다.");
+      	}
+    	});
+
+    	// 네이버 로그인 버튼 클릭 시 동작할 함수
+    	document.getElementById('naver-login-button').addEventListener('click', function() {
+      		naverLogin.getLoginStatus(function(status) { 
+        		if (status) { 
+          			console.log('Already logged in');
+          			// 이미 로그인된 상태일 경우 처리할 작업 수행
+          			// 예시: 다른 페이지로 이동 또는 추가 작업 수행
+          			location.href = "/main";
+        		} else { 
+        			console.log('Not logged in'); 
+        			naverLogin.reprompt(); 
+      			} 
+    	   });  
+    	});
+   });
+
+   // 네아로 로그아웃 버튼 클릭 시 동작할 함수
+   document.querySelector('.btn.btn-primary').addEventListener('click', function() {
+       location.href = "https://nid.naver.com/nidlogin.logout";
+   });
+  
+</script>
 	</div>
 </body>
 </html>

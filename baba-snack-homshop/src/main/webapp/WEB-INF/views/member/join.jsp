@@ -42,6 +42,33 @@
         });
     });
 </script>
+<script>
+$(document).ready(function() {
+	  $('#join').on('click', function() {
+	    const password = $('#password').val();
+	    const confirmPassword = $('#confirm-password').val();
+
+	    if (password === '') {
+	      alert('비밀번호를 입력하세요.');
+	      return;
+	    }
+
+	    if (confirmPassword === '') {
+	       alert('비밀번호 확인을 입력하세요.');
+	       return;
+	     }
+
+	     if (password !== confirmPassword) {
+	        alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+	        return;
+	     }
+
+	     // 서버로 폼 데이터 전송 등의 작업 수행
+	     $('#join-form').submit();
+	   });
+	});
+
+</script>
 
 
 
@@ -71,11 +98,15 @@
 						<input type="text" class="form-control" id="username" name="username" maxlength="10">
 						<span id="username-msg"></span>
 					</div>
-					<div class="mb-3 mt-3">
-           				<label for="password" class="form-label">비밀번호:</label>
-            			<input type="password" class="form-control" id="password" name="password" maxlength="10">
-            			<span id="password-msg"></span>
-          			</div>
+					 <div class= 'mb-3 mt-3'>
+      		<label for='password' class='form-label'>비밀번호:</label>
+      		<input type='password' class='form-control' id='password' name='password' maxlength='10'>
+     		 <!-- 비밀번호 확인 필드 추가 -->
+    		<label for='confirm-password' class='form-label'>비밀번호 확인:</label>
+    		<input type='password' class='form-control' id='confirm-password'>
+    		<span id ='confirm-password-msg'></span>  
+  			</div>  
+          			
           			<div class="mb-3 mt-3">
             			<label for="email" class="form-label">이메일:</label>
             			<input type="text" class="form-control" id="email" name="email">
