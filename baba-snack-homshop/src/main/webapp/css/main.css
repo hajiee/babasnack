@@ -7,14 +7,14 @@
 }
 
 #page {
-	width: 1650px;
+	width: 1600px;
 	margin: 0;
-	padding-left: 50px;
+	padding-left: 20px;
 }
 
 main {
-	width: 1450px;
-	margin-left: 150px;
+	width: 1500px;
+	margin-left: 50px;
 	border: 1px dotted saddlebrown;
 	min-height: 600px;
 	display: flex;
