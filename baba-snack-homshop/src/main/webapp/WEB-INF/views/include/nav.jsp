@@ -8,64 +8,59 @@
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-    var isLogged = true; // 로그인 여부 확인하는 변수, 로그인 상태로 가정
-    var isAdmin = true; // 관리자 여부 확인하는 변수, 관리자 상태로 가정
+    var isLogged = false; // 로그인 여부 확인하는 변수, 비로그인 상태로 가정
+    var isAdmin = false; // 관리자 여부 확인하는 변수, 비관리자 상태로 가정
 
     function updateMenu() {
-        if (isLogged && isAdmin) {
+        if (isLogged && isAdmin) {  // 관리자로 로그인한 경우
             $("#login-nav").html('<a href="/member/logout">로그아웃</a>');
             $("#join-nav").html('<a href="/admin">관리</a>');
             $("#cart-nav").remove(); // 장바구니 메뉴 삭제
-        } else if (isLogged && !isAdmin) {
+        } else if (isLogged && !isAdmin) {  // 일반 회원으로 로그인한 경우
             $("#login-nav").html('<a href="/member/logout">로그아웃</a>');
             $("#join-nav").html('<a href="/mypage">마이페이지</a>');
-        } else {
+        } else {  // 비로그인 상태일 경우
             $("#login-nav").html('<a href="/member/login">로그인</a>');
             $("#join-nav").html('<a href="/member/join">회원가입</a>');
-            $("#cart-nav").remove(); // 장바구니 메뉴 삭제
+
+			if ($("#cart-nav").length === 0) {  // 장바구니 메뉴가 없다면 추가
+                $('<td id="cart-nav"><a href="/cart/orderdetails-list">장바구니</a></td>').insertAfter("#board-menu");
+			}
         }
-        
-        if (!isLogged && !isAdmin) {  // 추가된 부분: 비로그인 상태일 때 "로그인"으로 변경
+
+        if (!isLogged && !isAdmin) {  // 비로그인 상태일 때 "로그인"으로 변경
         	$("#login-nav a").attr("href", "/member/login");
         	$("#login-nav a").text("로그인");
         }
     }
 
-    updateMenu();
-
     $(document).on("click", "#login-nav a", function(e) {
         e.preventDefault();
-        
-        if (isLogged && !isAdmin) {   // 로그인하기
-    		isLogged = true;
+
+        if (isLogged || isAdmin) {   // 현재 로그아웃하기 위해 클릭한 경우 (현재는 모든 사용자가 로그아웃 처리됨)
+    		isLogged = false;
         	isAdmin = false;
-        	updateMenu();
-        	if (window.location.pathname !== "/member/login") { // 현재 로그인 페이지가 아니라면
-        		window.location.href = "/member/login"; // 로그인 페이지로 이동
-    		}
-        }else if(isLogged && isAdmin){
-	     	isLogged = true;
-	        isAdmin = true;
-	    	updateMenu();
-        	if (window.location.pathname !== "/member/login") { // 현재 로그인 페이지가 아니라면
-        		window.location.href = "/member/login"; // 로그인 페이지로 이동
-    		}
-        } else {   // 로그아웃하기
-        	isLogged = false;
-        	isAdmin = false;
-        	if(window.location.pathname === "/member/login") { 
+
+	       	if(window.location.pathname !== "/member/login") { 
         		window.location.href = "/member/logout";
+    		} else {
+    			window.location.href = "/member/login";  // 페이지 이동 추가
+    		}
+    	} else if(!isLogged && !isAdmin){   // 현재 비회원이며 "로그인" 링크를 클릭하여 로그인 페이지로 이동하는 경우
+    		window.location.href = "/member/login";
     	}
-    	updateMenu();
-    	
-        if (isLogged && (isAdmin || !isAdmin)) {  // 추가된 부분: 비로그인 상태일 때 "로그인"으로 변경
-        	$("#login-nav a").attr("href", "/member/logout");
-        	$("#login-nav a").text("로그아웃");
-        }else{
+
+	    if (isLogged || isAdmin) {  // 현재는 모든 사용자가 "로그아웃"으로 표시됨.
+	    	$("#login-nav a").attr("href", "/member/logout");
+	    	$("#login-nav a").text("로그아웃");
+	    } else {
 			$("#login-nav a").attr("href", "/member/login");
-        	$("#login-nav a").text("로그인");
-        }
+	    	$("#login-nav a").text("로그인");
+	    }
     });
+
+    updateMenu();  // 초기 메뉴 업데이트 수행
+
 });
 </script>
 <style>

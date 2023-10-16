@@ -38,7 +38,10 @@
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main id="board-main">
-			<aside>
+			<aside id="aside-board-list">
+				<a href="/board/board-write">
+					<button type="button" class="btn btn-outline-warning">글올리기</button>
+				</a>
 			</aside>
 			<section>
 				<table class="table table-hover" id="board-table">
