@@ -26,6 +26,19 @@
 	if (msg !== '')
 		alert(msg);
 </script>
+<script>
+	$(document).ready(function() {
+		// 글쓴이와 날짜 정보 가져오기
+		$("tbody tr").each(function() {
+			var boardWriter = $(this).find("td:eq(2)").text();
+			var boardDate = $(this).find("td:eq(3)").text();
+
+			// 가져온 정보로 출력하기
+			$(this).find("td:eq(2)").text(boardWriter);
+			$(this).find("td:eq(3)").text(boardDate);
+		});
+	});
+</script>
 </head>
 <body>
 	<div id="page">

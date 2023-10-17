@@ -26,9 +26,9 @@
 		alert(msg);
 	
 	function submitForm(action) {
-        document.getElementById('boardForm').action = action;
-        document.getElementById('boardForm').submit();
-    }
+	    document.getElementById('boardForm').action = action;
+	    document.getElementById('boardForm').submit();
+	}
 	
 	function editBoard(bno) {
     	location.href = '/board/' + bno + '/edit';
@@ -46,6 +46,31 @@
 		document.getElementById('noticeCheckbox').checked = true;
 	}
 </script>
+<style>
+	#board-write-css{
+		width: 1700px;
+	}
+	
+	#board-write-css section{
+		width: 1200px;
+	}
+	
+	.form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn-group {
+        margin-top: 20px;
+    }
+    #board-write-css section form{
+    	margin-top: 60px;
+    }
+    
+    .text-right{
+    	margin-left:1000px;
+    	margin-bottom: 50px;
+    }
+</style>
 </head>
 <body>
 	<div id="page">
@@ -57,32 +82,34 @@
 			<!-- 메뉴 -->
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
-		<main>
+		<main id="board-write-css">
 			<aside>
 			</aside>
 			<section>
-				<form action='<c:url value='/board/boardInsert'/>' method="post">
+				<form id="boardForm" action='<c:url value='/board/boardInsert'/>' method="post">
 					<div class="form-group">
-						<label for="exampleFormControlInput1">제목</label> <input
-							type="text" class="form-control" id="exampleFormControlInput1"
+						<label for="exampleFormControlInput1" style="margin: 10px; color: darkgray;">제목</label>
+						<input type="text" class="form-control" id="exampleFormControlInput1"
 							name="title" placeholder="제목을 작성해주세요.">
 					</div>
 					<div class="form-group">
-						<label for="exampleFormControlTextarea1">내용</label>
-						<textarea class="form-control" id="exampleFormControlTextarea1"
-							name="contents" rows="10"></textarea>
+						<label for="exampleFormControlTextarea1" style="margin: 10px; color: darkgray;">내용</label>
+						<textarea class="form-control" id="exampleFormControlTextarea1" name="contents" placeholder="내용을 작성해주세요." rows="10"></textarea>
 					</div>
-					<button type= 'button' class= 'btn btn-info' onclick= "submitForm('/board/board-write')">등록</button>
+					<div class="text-right">
+						<button type='button' class='btn btn-outline-info' onclick="submitForm('/board/board-write')">등록</button>
+
+						<!-- 수정 버튼 -->
+						<button type='button' class='btn btn-outline-info' onclick="editBoard(${board.bno})">수정</button>
+
+						<!-- 삭제 버튼 -->
+						<button type='button' class='btn btn-outline-danger' onclick="deleteBoard(${board.bno})">삭제</button>
+					</div>
+
 					<c:forEach var="board" items="${boardes}">
 						<div class="board-item">
 							<h3>${board.title}</h3>
 							<p>${board.contents}</p>
-
-							<!-- 수정 버튼 -->
-							<button type="button" class="btn btn-info" onclick="editBoard(${board.bno})">수정</button>
-
-							<!-- 삭제 버튼 -->
-							<button type="button" class="btn btn-danger" onclick="deleteBoard(${board.bno})">삭제</button>
 						</div>
 					</c:forEach>
 				</form>

@@ -8,7 +8,7 @@
 <style>
 	ul {
   		list-style-type: none;
-  		margin-left: 150px;
+  		margin-left: 60px;
   		margin-top: 30px;
 	}
 	
