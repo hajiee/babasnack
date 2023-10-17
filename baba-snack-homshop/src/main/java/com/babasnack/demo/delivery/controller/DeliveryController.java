@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.delivery.dto.DeliveryDto;
@@ -27,15 +27,16 @@ public class DeliveryController {
 
 	// 배송지 조회(로그인 했을 시)
 //	@GetMapping("/delivery/delivery-list/{username}")
-//	public ModelAndView read(@RequestParam("username") String username) {
+//	public ModelAndView read(@PathVariable("username") String username) {
 //		List<DeliveryDto.DeliveryEntity> deliveryList = deliveryService.search(username);
 //		return new ModelAndView("delivery/delivery-list/{username}").addObject("deliveryList", deliveryList);
 //	}
+	
 
 	// 배송지 저장 후 메인 페이지로
 	@PostMapping("/delivery/add")
-	public ModelAndView add(Principal principal, Long dno) {
-		deliveryService.add(principal.getName(), dno);
+	public ModelAndView add(@PathVariable("username") String username, Long dno) {
+		deliveryService.add(username, dno);
 		return new ModelAndView("redirect:/");
 	}
 

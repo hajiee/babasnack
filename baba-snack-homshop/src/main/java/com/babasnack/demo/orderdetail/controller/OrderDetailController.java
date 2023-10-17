@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,14 @@ public class OrderDetailController {
 	}
 
 	// 회원 주문자 정보(관리자)
-	@PostMapping("/admin-member")
+	@GetMapping("/admin-member")
 	public ModelAndView orderDetailMember(Principal principal, Long ono) {
 		OrderDetailDto.ReadOrderDetailMember dto = orderDetailService.orderDetailMember(principal.getName(), ono);
 		return new ModelAndView("redirect:/admin-member").addObject("dto", dto);
 	}
 
 	// 회원 주문목록(관리자)
-	@PostMapping("/orderdetails/member-list")
+	@GetMapping("/orderdetails/member-list")
 	public ModelAndView orderDetailAdmin(Principal principal, Long ono) {
 		List<ReadOrderDetailAdmin> list = orderDetailService.orderDetailAdmin(principal.getName(), ono);
 		return new ModelAndView("redirect:/admin-member").addObject("list", list);

@@ -15,7 +15,7 @@ public class DeliveryService {
 	private DeliveryDao deliveryDao;
 
 	// 특정 회원의 배송지 조회
-	//@Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public List<DeliveryDto.DeliveryEntity> search(String username) {
 		return deliveryDao.findByUsername(username);
 	}
