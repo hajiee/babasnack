@@ -73,4 +73,9 @@ public class MemberService {
 
 	    return new MemberDto.PsMyPage(m.getUsername(), m.getEmail(), joinDayFormatted, daysSinceJoining);
 	}
+	@Transactional(readOnly=true)
+	public Member getMemberByUsername(String username) {
+	    return memberDao.findById(username);
+	}
+
 }

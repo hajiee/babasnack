@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,26 +14,49 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<script>
-	$(document).ready(function() {
+	<!-- JavaScript 코드 -->
+<script type='text/javascript'>
+  $(document).ready(function() {
+    const state = location.search.substr(1);
+    if (state === 'error')
+      alert('로그인에 실패했습니다');
 
-		const state = location.search.substr(1);
-		if (state === 'error')
-			alert('로그인에 실패했습니다');
-		$('#login').on('click', function() {
-			if ($('#username').val() == '') {
-				$('#username-msg').text('아이디를 입력하세요').css('color', 'red');
-				return;
-			}
-			if ($('#password').val() == '') {
-				$('#password-msg').text('비밀번호를 입력하세요').css('color', 'red');
-				return;
-			}
-			$('#login-form').submit();
-		})
+    $('#login').on('click', function() {
+      if ($('#username').val() == '') {
+        $('#username-msg').text('아이디를 입력하세요').css('color', 'red');
+        return;
+      }
+      if ($('#password').val() == '') {
+        $('#password-msg').text('비밀번호를 입력하세요').css('color', 'red');
+        return;
+      }
+      // 폼 데이터 제출
+      submitLoginForm();
+    });
 
-	})
+    // 로그인 폼 제출 함수 정의
+    function submitLoginForm() {
+      var form = document.getElementById("login-form");
+      // AJAX 요청으로 폼 데이터 전송
+      $.ajax({
+        url: "/member/login",
+        method: "POST", // POST 메서드로 변경
+        data: $(form).serialize(),
+        success: function(response) {
+          // 성공적으로 응답 받았을 때 처리할 작업 수행
+          console.log(response);
+          location.href = "/main";  // 예시: 다른 페이지로 이동
+        },
+        error: function(xhr, status, error) {
+           // 요청 실패 시 처리할 작업 수행
+           console.error(error);
+           alert("로그인에 실패했습니다.");
+        }
+      });
+    }
+  });
 </script>
+	
 
 
 
@@ -69,7 +92,7 @@
 			<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		</header>
 		<nav>
-			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+			
 		</nav>
 		<main style="border: none">
 			<section id="login-form">
@@ -104,6 +127,7 @@
   <script src="//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset='utf-8'></script>
 
   <!-- JavaScript 코드 -->
+  <!-- 
   <script type='text/javascript'>
     // 네아로 SDK 초기화 완료 후 동작할 콜백 함수 등록
     window.addEventListener('load', function () {
@@ -150,12 +174,13 @@
     	});
    });
 
-   // 네아로 로그아웃 버튼 클릭 시 동작할 함수
+   // 네이버 로그아웃 버튼 클릭 시 동작할 함수
    document.querySelector('.btn.btn-primary').addEventListener('click', function() {
        location.href = "https://nid.naver.com/nidlogin.logout";
    });
   
 </script>
+-->
 	</div>
 </body>
 </html>

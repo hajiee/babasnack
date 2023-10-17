@@ -1,5 +1,6 @@
 package com.babasnack.demo.member.controller;
 
+import java.lang.reflect.Member;
 import java.security.Principal;
 
 import javax.servlet.http.HttpSession;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,6 +36,30 @@ public class MemberController {
     public ModelAndView psLogin() {
     	return new ModelAndView("member/login");
     }
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/member/login")
+    public ModelAndView psLogin(@RequestParam("username") String username,
+                                    @RequestParam("password") String password) {
+        // 로그인 처리 로직 구현
+        if (authenticate(username, password)) {
+            // 인증 성공 시
+            return new ModelAndView("redirect:/main");  // 메인 페이지로 리다이렉트
+        } else {
+            // 인증 실패 시
+            ModelAndView modelAndView = new ModelAndView("member/login");
+            modelAndView.addObject("error", "Invalid username or password");  // 에러 메시지 추가
+            return modelAndView;
+        }
+    }
+
+    private boolean authenticate(String username, String password) {
+        // 실제 인증 처리를 수행하는 로직을 구현해야 합니다.
+        // 예를 들어, 데이터베이스에서 사용자 정보를 조회하고 비밀번호 일치 여부 등을 확인할 수 있습니다.
+        
+        // 임시로 예시적으로 'admin'이라는 사용자명과 'password'라는 비밀번호로만 인증되도록 설정합니다.
+        return "admin".equals(username) && "password".equals(password);
+    }
+
 
 	// 회원가입
 	@PostMapping("/member/join")
@@ -80,8 +107,24 @@ public class MemberController {
        return new ModelAndView("redirect:/member/user-profile");
    }
 
+   
+   @GetMapping("/member/{username}/user-profile")
+   public ModelAndView psWithdrawal(@PathVariable("username") String username) {
+       // GET 요청을 처리하는 로직 구현
+       // 예를 들어, 회원 정보 조회 등의 작업을 수행할 수 있습니다.
+       
+       
+       Member member = (Member) service.getMemberByUsername(username);
+       
+       ModelAndView modelAndView = new ModelAndView("withdrawal");
+       modelAndView.addObject("member", member);
+       
+       return new ModelAndView("member/user-profile");
+   }
+
+   
    // 회원 탈퇴 + 로그아웃 
-   @PostMapping("/main")
+   @PostMapping("/member/{username}")
    public ModelAndView psWithdrawal(Principal principal, HttpSession session) {
        session.invalidate();
        service.psWithdrawal(principal.getName());
