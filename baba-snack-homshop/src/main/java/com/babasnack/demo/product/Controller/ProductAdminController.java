@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.babasnack.demo.entity.Board;
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductAdminService;
@@ -91,4 +92,12 @@ public class ProductAdminController {
 		productAdminService.deleteProduct(pno);
 		return new ModelAndView("redirect:/product/admin-product/");
 	}
+	
+	@GetMapping("/product/Admin-product")
+    public String adminBoardList(Model model) {
+        List<Product> products = productAdminService.getAllProducts();
+        // 관리자용 게시글 목록을 모델에 추가
+        model.addAttribute("products", products);
+        return "product/admin-product";
+    }
 }

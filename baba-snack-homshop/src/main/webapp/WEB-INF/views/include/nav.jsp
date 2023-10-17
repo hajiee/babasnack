@@ -68,7 +68,7 @@ $(document).ready(function() {
 	width: 580px;
 	height: 30px;
 	position: relative;
-	left: 800px;
+	left: 830px;
 	bottom: 380px;
 }
 

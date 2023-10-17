@@ -16,7 +16,7 @@
 		text-align: center;
 		position: relative;
 		bottom: -100px;
-		left:80px;
+		left:10px;
 	}
 	
 	#search{

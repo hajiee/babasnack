@@ -13,8 +13,8 @@
 }
 
 main {
-	width: 1500px;
-	margin-left: 50px;
+	width: 1400px;
+	margin-left: 85px;
 	border: 1px dotted saddlebrown;
 	min-height: 600px;
 	display: flex;
