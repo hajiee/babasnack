@@ -7,9 +7,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class BeanConfig {
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		// 비밀번호 암호화에 사용되는 BCrypt의 구현 객체를 스프링에 등록
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                if (rawPassword == null) {
+                    throw new IllegalArgumentException("rawPassword cannot be null");
+                }
+                return super.encode(rawPassword);
+            }
+        };
+    }
 }

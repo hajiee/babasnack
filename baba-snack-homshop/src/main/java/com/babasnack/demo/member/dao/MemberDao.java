@@ -7,13 +7,13 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.babasnack.demo.entity.Member;
-import com.babasnack.demo.member.dto.MemberDto;
 
 @Mapper
 public interface MemberDao {
     @Insert("INSERT INTO member (username, password, pno_tell, ps_email, join_day) " +
             "VALUES (#{username}, #{password},#{pnoTell}, #{email}, #{joinDay})")
-    public Long save(MemberDto.Join member);
+   public Long save(Member member);
+
 
     @Select("SELECT * FROM member WHERE username = #{username} AND ROWNUM = 1")
     public Member findById(String username);

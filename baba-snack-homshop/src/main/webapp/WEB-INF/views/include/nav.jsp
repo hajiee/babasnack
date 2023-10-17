@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -95,6 +96,7 @@ $(document).ready(function() {
 </style>
 </head>
 <body>
+	<p>principal : <sec:authentication property="principal" /></p>
 	<div id="nav">
 		<table id="nav-notMamber">
 			<tr>

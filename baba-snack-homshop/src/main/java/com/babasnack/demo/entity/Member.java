@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class Member {
 	private String username;
 	private String password;
+	@Builder.Default
 	private Long pnoTell=0L;
 	private String email;
 	private LocalDateTime joinDay;

@@ -22,14 +22,23 @@ public class MemberService {
     @Autowired
     private PasswordEncoder encoder;
 
+    @Transactional
     public Boolean join(MemberDto.Join dto) {
-        String encodedPassword = encoder.encode(dto.getPassword());
-        Member member = new Member();
-        member.setUsername(dto.getUsername());
-        member.setPassword(encodedPassword);
+        if (dto.getPassword() != null) {
+            String encodedPassword = encoder.encode(dto.getPassword());
+            Member member = new Member();
+            member.setUsername(dto.getUsername());
+            member.setPassword(encodedPassword);
 
-        return memberDao.save(dto) == 1;
+            Long savedId = memberDao.save(member);
+            
+            return savedId != null; // 저장된 ID가 null이 아닌 경우에만 true 반환
+        } else {
+            // 예외 처리 또는 다른 처리 방법을 선택하세요.
+            return false; // 예를 들어, 비밀번호가 없으면 가입을 실패로 처리할 수 있습니다.
+        }
     }
+
 
     // 아이디 체크
     @Transactional(readOnly=true)

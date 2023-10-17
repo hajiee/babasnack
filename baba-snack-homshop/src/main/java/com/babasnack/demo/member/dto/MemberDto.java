@@ -4,20 +4,24 @@ import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+
 
 
 
 
 public class MemberDto {
-	@Data
-	@NoArgsConstructor
-	  public static class Join {
-	        private String username;
-	        private String password;
-	        private String email;
-	        private LocalDate joinDay=LocalDate.now();
-	    }
+	@Getter
+	public static class Join {
+	    private String username;
+	    private String password;
+	    private String email;
+	    private LocalDate joinDay = LocalDate.now();
+	    private Long pnoTell;
+
+	    // Getter for pnoTell
+	}
+
 
     @Data
     @AllArgsConstructor
@@ -26,5 +30,6 @@ public class MemberDto {
         private String email;
         private String joinDayFormatted;
         private Long daysSinceJoining;
-    }
+    }	
+
 }

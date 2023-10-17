@@ -112,6 +112,12 @@ $(document).ready(function() {
             			<input type="text" class="form-control" id="email" name="email">
             			<span id="email-msg"></span>
           			</div>
+          			<div class="mb-3 mt-3">
+   						 <label for="pnoTell" class="form-label">전화번호:</label>
+    					<input type="text" class="form-control" id="pnoTell" name="pnoTell">
+    					<span id="pnoTell-msg"></span>
+					</div>
+          			
           				<button type ="submit" id="join" class="btn btn-primary">가입</button>
 				</form>
 				 

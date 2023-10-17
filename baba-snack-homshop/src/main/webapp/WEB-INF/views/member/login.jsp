@@ -96,7 +96,7 @@
 		</nav>
 		<main style="border: none">
 			<section id="login-form">
-				<form action="/member/login" id="login-form" method="post">
+				<form action="/member/login" id="login-form" method="post" >
 					<div class="mb-3 mt-3">
 						<label for="username" class="form-label">아이디:</label>
 						<input type="text" class="form-control" id="username" name="username" maxlength="10"> <span id="username-msg"></span>
@@ -105,13 +105,13 @@
 						<label for="password" class="form-label">비밀번호:</label>
 						<input type="password" class="form-control" id="password" name="password" maxlength="10"> <span id="password-msg"></span>	
 					</div>
-				<div class="mb-3 mt-3">
-            <button type="button" class="btn btn-primary" id="login">로그인</button>
-          </div>
-		 <!-- 네이버 로그인 버튼 -->
-          <div class="mb-3 mt-3 border p-2">
-            <button type="button" class="btn btn-primary" id="naver-login-button">네이버 로그인</button>
-          </div>
+					<div class="mb-3 mt-3">
+            			<button type="submit" class="btn btn-primary" id="login-btn" >로그인</button>
+          			</div>
+		 			<!-- 네이버 로그인 버튼 -->
+          			<div class="mb-3 mt-3 border p-2">
+            			<button type="button" class="btn btn-primary" id="naver-login-button">네이버 로그인</button>
+          			</div>
 
 	
 				
@@ -124,6 +124,21 @@
 			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</footer>
 		<!-- 네이버 SDK 스크립트 -->
+	<script>
+		function aaa(e) {
+			/*
+			alert('fffffff');
+			e.preventDefault();
+			const username = $('#username').val();
+			const password = $('#password').val();
+			const form = $("<form action='/member/login' method='post'>");
+			$("<input type='hidden' name='username'>").val(username).appendTo(form);
+			$("<input type='hidden' name='password'>").val(password).appendTo(form);
+			console.log(form.serialize());
+			alert('fire');
+			*/
+		}
+	</script>
   <script src="//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset='utf-8'></script>
 
   <!-- JavaScript 코드 -->
