@@ -14,18 +14,22 @@ import org.springframework.web.servlet.ModelAndView;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.service.OrderBuyService;
 
-@Secured("ROLE_USER")
+//@Secured("ROLE_USER")
 @Controller
 public class OrderBuyController {
 	@Autowired
 	private OrderBuyService orderBuyService;
+	
+	@GetMapping("/cart/pay")
+	public void readOrderBuyTest() {
+	}
 
 	// 주문정보 저장(회원 id)
 	@PostMapping("/cart/orderdetails-list/{username}")
 	public ModelAndView orderBuyInsert(OrderBuyDto.OrderBuyProduct orderBuyProduct,
 			@PathVariable("username") String username) {
 		orderBuyService.add(orderBuyProduct, username);
-		return new ModelAndView("redirect:/orderdetails/{username}");
+		return new ModelAndView("redirect:/cart/orderdetails/{username}");
 	}
 
 	// 장바구니에서 전체주문(결제) - 작성중

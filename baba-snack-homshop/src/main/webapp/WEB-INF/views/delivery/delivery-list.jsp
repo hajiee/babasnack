@@ -48,10 +48,6 @@
 	border: 1px solid saddlebrown;
 	padding: 10px;
 }
-
-#displayFlex-form>form {
-	display: flex;
-}
 </style>
 
 <!-- 다음 우편 주소 api-->
