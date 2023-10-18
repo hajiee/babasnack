@@ -1,5 +1,7 @@
 package com.babasnack.demo.board.dto;
 
+import com.babasnack.demo.entity.BoardReview;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,13 +32,14 @@ public class BoardDto {
 	}
 		
 	//게시판관리
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class AminB{
-		private Long bno;
-		private String title;
-		private String boardDate;
-		private Long boardCode;
-	}
+		@Data
+		@AllArgsConstructor
+		@NoArgsConstructor
+		public static class AminB{
+			private Long bno;
+			private String title;
+			private String boardDate;
+			private Long boardCode;
+			private BoardReview boardReview;
+		}
 }
