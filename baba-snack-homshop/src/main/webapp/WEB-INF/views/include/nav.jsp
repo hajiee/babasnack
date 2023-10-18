@@ -106,8 +106,8 @@ $(document).ready(function() {
 						<th>관리자계정</th>
 						<td><a href="/member/logout">로그아웃</a></td>
 						<td><a href="/admin">관리</a></td>
-						<td><a href="/product?category=dog">강아지간식</a></td>
-						<td><a href="/product?category=cat">고양이간식</a></td>
+						<td><a href="/product?category=dog">강아지</a></td>
+						<td><a href="/product?category=cat">고양이</a></td>
 						<td><a href="/board/board-list">게시판</a></td>
 					</tr>
 				</sec:authorize>
@@ -117,8 +117,8 @@ $(document).ready(function() {
 						<th>${principal.username}님</th>
 						<td><a href="/member/logout">로그아웃</a></td>
 						<td><a href="/mypage">마이페이지</a></td>
-						<td><a href="/product?category=dog">강아지간식</a></td>
-						<td><a href="/product?category=cat">고양이간식</a></td>
+						<td><a href="/product?category=dog">강아지</a></td>
+						<td><a href="/product?category=cat">고양이</a></td>
 						<td><a href="/board/board-list">게시판</a></td>
 						<td><a href="/cart/orderdetails-list">장바구니</a></td>
 					</tr>
@@ -129,8 +129,8 @@ $(document).ready(function() {
 				<tr>
 					<td id="login-nav"><a href="/member/login">로그인</a></td>
 					<td id="join-nav"><a href="/member/join">회원가입</a></td>
-					<td><a href="/product?category=dog">강아지간식</a></td>
-					<td><a href="/product?category=cat">고양이간식</a></td>
+					<td><a href="/product?category=dog">강아지</a></td>
+					<td><a href="/product?category=cat">고양이</a></td>
 					<td><a href="/board/board-list">게시판</a></td>
 				</tr>
 			</sec:authorize>

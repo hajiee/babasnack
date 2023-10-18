@@ -35,19 +35,19 @@
 			<aside>
 			</aside>
 			<section>
-				<div id="adminMeber">
+				<div class="adminMember">
 					<a href="/member/admin-member">
-						<button type="button" class="btn btn-outline-secondary">회원관리</button>
+						<button type="button" class="btn btn-warning btn-lg">회원관리</button>
 					</a>
 				</div>
 				<div id="adminProduct">
 					<a href="/product/admin-product">
-						<button type="button" class="btn btn-outline-secondary">상품관리</button>
+						<button type="button" class="btn btn-warning btn-lg">상품관리</button>
 					</a>
 				</div>
 				<div id="adminBoard">
 					<a href="/board/admin-board">
-						<button type="button" class="btn btn-outline-secondary">게시판관리</button>
+						<button type="button" class="btn btn-warning btn-lg">게시판관리</button>
 					</a>
 				</div>
 			</section>

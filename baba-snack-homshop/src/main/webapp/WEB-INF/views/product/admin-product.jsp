@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,24 +27,17 @@
 </script>
 <script>
 $(document).ready(function() {
-	// 글쓴이와 날짜 정보 가져오기
-	$("tbody tr").each(function() {
-		var boardWriter = $(this).find("td:eq(2)").text();
-		var boardDate = $(this).find("td:eq(3)").text();
-		var reviewNumber = $(this).find("td:eq(4)").text().trim();
+	  // 날짜 정보 가져오기
+	  $("tbody tr").each(function() {
+	    var productDay = $(this).find("td:eq(3)").text();
 
-		// 가져온 정보로 출력하기
-		$(this).find("td:eq(2)").text(boardWriter);
-		$(this).find("td:eq(3)").text(boardDate);
-
-        // 리뷰 번호가 없으면 0으로 표시
-        if (reviewNumber === "") {
-            reviewNumber = "0";
-        }
-        
-        $(this).find("td:eq(4)").text(reviewNumber);
-    });
-});
+	    // 가져온 정보로 출력하기
+	    var date = new Date(productDay);
+	    var formattedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+	    
+	    $(this).find("td:eq(3)").text(formattedDate);
+	  });
+	});
 </script>
 </head>
 <body>
@@ -59,29 +52,27 @@ $(document).ready(function() {
 		</nav>
 		<main id="board-main">
 			<aside id="aside-board-list">
-				<a href="/board/board-write">
-					<button type="button" class="btn btn-outline-warning">글올리기</button>
+				<a href="/product/product-write">
+					<button type="button" class="btn btn-outline-warning">상품등록</button>
 				</a>
 			</aside>
 			<section>
 				<table class="table table-hover" id="board-table">
 					<thead>
 						<tr>
-							<th class="board-nav">번호</th>
-							<th>제목</th>
-							<th>글쓴이</th>
-							<th>날짜</th>
-							<th>답변번호</th>
+							<th class="board-nav">상품번호</th>
+							<th>상품명</th>
+							<th>재고</th>
+							<th>등록일자</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${page.list}" var="board">
+						<c:forEach items="${page.list}" var="product">
 							<tr>
-								<td class="board-nav">${board.bno}</td>
-								<td><a href="/read?bno=${board.bno}">${board.title}</a></td>
-								<td>${board.boardWriter}</td>
-								<td>${board.boardDate}</td>
-								<td>${board.boardReview.brno}</td>
+								<td class="board-nav">${product.pno}</td>
+								<td><a href="/read?pno=${product.pno}">${product.productName}</a></td>
+								<td>${product.productStock}</td>
+								<td>${product.productDay}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
