@@ -1,7 +1,5 @@
 package com.babasnack.demo.board.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -24,13 +22,5 @@ public class BoardAdminController {
 		// 관리자용 게시글 상세 정보를 모델에 추가
         model.addAttribute("board", board);
         return "board/board-read";
-    }
-    
-	@GetMapping("/board/Admin-board")
-    public String adminBoardList(Model model) {
-        List<Board> boards = boardAdminService.getAllBoardsForAdmin();
-        // 관리자용 게시글 목록을 모델에 추가
-        model.addAttribute("boards", boards);
-        return "board/admin-board";
     }
 }

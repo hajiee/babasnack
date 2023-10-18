@@ -105,7 +105,7 @@ $(document).ready(function() {
 					<tr>
 						<th>관리자계정</th>
 						<td><a href="/member/logout">로그아웃</a></td>
-						<td><a href="/Admin">관리</a></td>
+						<td><a href="/admin">관리</a></td>
 						<td><a href="/product?category=dog">강아지간식</a></td>
 						<td><a href="/product?category=cat">고양이간식</a></td>
 						<td><a href="/board/board-list">게시판</a></td>

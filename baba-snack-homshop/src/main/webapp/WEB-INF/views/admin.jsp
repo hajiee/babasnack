@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,17 +36,17 @@
 			</aside>
 			<section>
 				<div id="adminMeber">
-					<a href="/member/Admin-member">
+					<a href="/member/admin-member">
 						<button type="button" class="btn btn-outline-secondary">회원관리</button>
 					</a>
 				</div>
 				<div id="adminProduct">
-					<a href="/product/Admin-product">
+					<a href="/product/admin-product">
 						<button type="button" class="btn btn-outline-secondary">상품관리</button>
 					</a>
 				</div>
 				<div id="adminBoard">
-					<a href="/board/Admin-board">
+					<a href="/board/admin-board">
 						<button type="button" class="btn btn-outline-secondary">게시판관리</button>
 					</a>
 				</div>

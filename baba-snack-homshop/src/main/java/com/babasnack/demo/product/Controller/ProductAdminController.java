@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.babasnack.demo.entity.Board;
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductAdminService;
-import com.babasnack.demo.product.Service.ProductService;
 import com.babasnack.demo.product.dto.Category;
 import com.babasnack.demo.product.dto.ProductDto;
 
@@ -25,14 +23,8 @@ import com.babasnack.demo.product.dto.ProductDto;
 @Secured("ROLE_ADMIN")
 @Controller
 public class ProductAdminController {
-	private final ProductService productService;
-	private final ProductAdminService productAdminService;
-
 	@Autowired
-	public ProductAdminController(ProductService productService, ProductAdminService adminService) {
-		this.productService = productService;
-		this.productAdminService = adminService;
-	}
+	private ProductAdminService productAdminService;
 
 	// 상품 등록 페이지로 이동
 	@GetMapping("/product/product-write")
@@ -92,12 +84,4 @@ public class ProductAdminController {
 		productAdminService.deleteProduct(pno);
 		return new ModelAndView("redirect:/product/admin-product/");
 	}
-	
-	@GetMapping("/product/Admin-product")
-    public String adminBoardList(Model model) {
-        List<Product> products = productAdminService.getAllProducts();
-        // 관리자용 게시글 목록을 모델에 추가
-        model.addAttribute("products", products);
-        return "product/admin-product";
-    }
 }

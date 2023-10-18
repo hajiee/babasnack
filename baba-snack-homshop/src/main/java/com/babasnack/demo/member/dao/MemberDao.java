@@ -1,5 +1,7 @@
 package com.babasnack.demo.member.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +16,9 @@ public interface MemberDao {
             "VALUES (#{username}, #{password},#{pnoTell}, #{email}, #{joinDay})")
    public Long save(Member member);
 
-
+    @Select("SELECT*FROM member")
+    public List<Member> findAllForMember();
+    
     @Select("SELECT * FROM member WHERE username = #{username} AND ROWNUM = 1")
     public Member findById(String username);
 
