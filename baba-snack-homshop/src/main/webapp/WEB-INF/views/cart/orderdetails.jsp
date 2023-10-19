@@ -31,6 +31,10 @@
 }
 
 th {
+	background-color: #93DAFF;
+}
+
+tbody tr:nth-child(2n) {
 	background-color: #e3f2fd;
 }
 

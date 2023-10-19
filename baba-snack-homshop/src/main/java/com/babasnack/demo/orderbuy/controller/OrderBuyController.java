@@ -20,6 +20,10 @@ public class OrderBuyController {
 	@Autowired
 	private OrderBuyService orderBuyService;
 	
+	@GetMapping("/cart/order-end")
+	public void readOrderEndPageTest() {
+	}
+	
 	@GetMapping("/cart/pay")
 	public void readOrderBuyTest() {
 	}
@@ -57,7 +61,7 @@ public class OrderBuyController {
 			// 주문후 특정회원의 장바구니 상품 전체 삭제
 			orderBuyService.deleteAllCartByUsername(username);
 
-			return new ModelAndView("redirect:/order-end/{username}");
+			return new ModelAndView("redirect:/cart/order-end/{username}");
 		} else {
 			// 회원 id + 주문번호가 null이었을 때 메인페이지로 이동
 			return new ModelAndView("redirect:/");

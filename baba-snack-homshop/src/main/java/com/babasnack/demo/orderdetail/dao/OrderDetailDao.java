@@ -15,7 +15,7 @@ public interface OrderDetailDao {
 	@Insert("insert into order_detail(odno, all_price, username, buy_cnt, product_price, product_name, product_saveimg, ono, pno) values(order_detail_seq.nextval, #{allPrice}, #{username}, #{buyCnt}, #{productPrice}, #{productName}, #{productSaveimg}, #{ono}, #{pno})")
 	public Integer addOrderDetail(OrderDetail orderDetail, String username);
 
-	// 주문상품 상세 정보(회원용)
+	// 주문상품 상세 정보(회원, 관리자용)
 	@Select("select m.username, m.pno_tell, m.ps_email from member m inner join order_detail od on m.username=od.username where od.username=#{username} and od.odno=#{odno}")
 	public OrderDetailDto.ReadOrderDetailMember findByUsernameAndOdno(String username, Long odno);
 

@@ -23,13 +23,6 @@ public class OrderDetailController {
 	@Autowired
 	private OrderDetailService orderDetailService;
 
-	// 주문상세 정보 저장
-	@PostMapping("/cart/orderdetails/{username}")
-	public ModelAndView addOrderDetail(OrderDetail orderDetail, @PathVariable("username") String username) {
-		orderDetailService.add(orderDetail, username);
-		return new ModelAndView("redirect:/orderdetails");
-	}
-
 	// 회원 주문자 정보 출력 테스트
 	@GetMapping("/cart/orderdetails")
 	public void orderDetailMemberTest() {
@@ -49,6 +42,13 @@ public class OrderDetailController {
 		return new ModelAndView("redirect:/cart/orderdetails").addObject("list", list);
 	}
 
+	// 주문상세 정보 저장
+	@PostMapping("/cart/orderdetails/{username}")
+	public ModelAndView addOrderDetail(OrderDetail orderDetail, @PathVariable("username") String username) {
+		orderDetailService.add(orderDetail, username);
+		return new ModelAndView("redirect:/orderdetails");
+	}
+
 	// 회원 주문자 정보(관리자)
 	@GetMapping("/admin-member")
 	public ModelAndView orderDetailAdmin(Principal principal, Long ono) {
@@ -57,7 +57,7 @@ public class OrderDetailController {
 	}
 
 	// 회원 주문목록(관리자)
-	@GetMapping("/orderdetails/member-list")
+	@GetMapping("/admin-member/member-list")
 	public ModelAndView orderDetailAdminProduct(Principal principal, Long ono) {
 		List<ReadOrderDetailAdmin> list = orderDetailService.orderDetailAdmin(principal.getName(), ono);
 		return new ModelAndView("redirect:/admin-member").addObject("list", list);

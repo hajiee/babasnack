@@ -38,6 +38,10 @@
 }
 
 th {
+	background-color: #93DAFF;
+}
+
+tbody tr:nth-child(2n) {
 	background-color: #e3f2fd;
 }
 
@@ -51,6 +55,7 @@ th {
 #position-right {
 	position: relative;
 	right: 200px;
+	bottom: 10px;
 	font-size: 1.5em;
 }
 
@@ -58,9 +63,50 @@ th {
 	position: relative;
 	left: 200px;
 }
+
+#position-left2 {
+	position: relative;
+	left: 285px;
+	bottom: 5px;
+}
+
+.input-group-text {
+	width: 100px;
+}
 </style>
 
+<script>
+	$(document).ready(function() {
+		$('#PsPay').on("click", function() {
 
+			const name = $('#name').val();
+			const pnoTell = $('#pnoTell').val();
+			const delivery1_input = $('#delivery1_input').val();
+
+			if (name === '') {
+				alert('이름(성함)이 입력되어 있지 않습니다.');
+				return;
+			}
+			if (pnoTell === '') {
+				alert('전화번호가 입력되어 있지 않습니다.');
+				return;
+			}
+			if (delivery1_input === '') {
+				alert('기본 주소가 입력되어 있지 않습니다.');
+				return;
+			}
+
+			alert("임시 테스트\n결제 완료 페이지로 이동");
+			location.href = '/cart/order-end';
+
+			$(form).appendTo($('body')).submit();
+		});
+	})
+
+	function inputNumOnly(onlyNum) {
+		onlyNum.value = onlyNum.value.replace(/[^0-9]/g, '');
+	}
+</script>
 
 
 </head>
@@ -113,6 +159,7 @@ th {
 										<td>가격test</td>
 										<td>개수test</td>
 									</tr>
+
 								</tbody>
 							</table>
 							<div style="text-align: right;">
@@ -133,30 +180,33 @@ th {
 							<b>수령인 정보</b>
 
 							<div class="input-group">
-								<span class="input-group-text">이름</span> <input type="text"
-									class="form-control" placeholder="사용자 이름">
+								<span class="input-group-text">이름(성함)</span> <input type="text"
+									id="name" class="form-control" placeholder="사용자 이름">
 							</div>
 							<div class="input-group">
 								<span class="input-group-text">연락처</span> <input type="text"
-									class="form-control" placeholder="사용자 연락처">
+									id="pnoTell" class="form-control" oninput="inputNumOnly(this)"
+									placeholder="사용자 연락처">
 							</div>
 						</div>
 
 						<div class="mt-3">
 							<b>배송지 주소</b> <input type="text" class="form-control"
-								placeholder="주소">
+								id="delivery1_input" placeholder="주소">
 						</div>
 					</form>
 				</div>
 
 				<div id="ChoosePayBtn-form" class="mt-3">
 					<form>
-						<span id="position-right"><b>결제 방법</b></span> <span
-							id="position-left">
+						<span id="position-left2"><b>[적립금 사용]</b> <input
+							type="text" placeholder="적립금" style="width: 80px"
+							disabled="disabled"> <b>→</b> <input type="text"
+							style="width: 80px" id="useReserve"> <br> </span> <span
+							id="position-right"><b>결제 방법</b></span> <span id="position-left">
 							<button type="button" class="btn btn-success btn-lg"
-								id="naverPayBtn">네이버Pay로 결제하기</button>
-							<button type="button" class="btn btn-success btn-lg"
-								onclick="location.href=''">결제하기</button>
+								id="NaverPay">네이버Pay로 결제하기</button>
+							<button type="button" class="btn btn-success btn-lg" id="PsPay">결제하기</button>
 						</span>
 					</form>
 				</div>
@@ -184,7 +234,7 @@ th {
 		});
 
 		//직접 만드신 네이버페이 결제버튼에 click Event를 할당하세요
-		var elNaverPayBtn = document.getElementById("naverPayBtn");
+		var elNaverPayBtn = document.getElementById("NaverPay");
 
 		elNaverPayBtn.addEventListener("click", function() {
 			oPay.open({
@@ -199,6 +249,6 @@ th {
 		});
 	</script>
 	 -->
-	
+
 </body>
 </html>

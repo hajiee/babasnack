@@ -38,17 +38,20 @@
 }
 
 th {
+	background-color: #93DAFF;
+}
+
+tbody tr:nth-child(2n) {
 	background-color: #e3f2fd;
 }
 </style>
 
 <script>
 <!-- 주문하기 버튼 누를 때, 취소가 안된다는 창(확인, 취소)을 띄우고 주문상세 페이지로 이동 -->
-	function orderOkOrBack() {
-		if (!confirm('저희 쇼핑몰의 모든 상품은 수제로 만든 간식이기 때문에,\n주문하시게 되면 주문취소를 할 수가 없습니다.\n정말로 주문하시겠습니까?')) {
+	function PsOrderDetails() {
+		if (!confirm('저희 쇼핑몰의 모든 상품은 수제로 만든 간식이며,\n주문하시게 되면 주문취소를 할 수가 없습니다.\n이대로 주문을 진행하시겠습니까?')) {
 			return false;
-		}
-		else {
+		} else {
 			location.href = '/cart/orderdetails';
 		}
 	}
@@ -69,8 +72,12 @@ th {
 			<section>
 				<div id="cartBenefit-form" class="mt-3">
 					<form>
-						<h5><b>혜택정보</b></h5>
-						<span>모든 상품 10% 적립 가능</span>
+						<h5>
+							<b>혜택정보</b>
+						</h5>
+						<ol>
+							<li>모든 상품 10% 적립 가능</li>
+						</ol>
 					</form>
 				</div>
 
@@ -94,21 +101,21 @@ th {
 							</thead>
 							<tbody>
 								<tr>
-									<td><img src=""> 상품이미지test</td>
+									<td><img src="">상품이미지test</td>
 									<td>상품명test</td>
 									<td>가격test</td>
 									<td>개수test</td>
 								</tr>
 
 								<tr>
-									<td><img src=""> 상품이미지test</td>
+									<td><img src="">상품이미지test</td>
 									<td>상품명test</td>
 									<td>가격test</td>
 									<td>개수test</td>
 								</tr>
 							</tbody>
 						</table>
-						<div style="text-align: right;">						
+						<div style="text-align: right;">
 							[장바구니 상품 총가격 : <span>??</span>원]
 						</div>
 					</form>
@@ -119,7 +126,7 @@ th {
 						<button type="button" class="btn btn-success btn-lg"
 							onclick="location.href='/'">계속 쇼핑하기</button>
 						<button type="button" class="btn btn-success btn-lg"
-							onclick="orderOkOrBack()">주문하기</button>
+							onclick="PsOrderDetails()">주문하기</button>
 						<button type="button" class="btn btn-success btn-lg">전체삭제(취소)</button>
 					</form>
 				</div>

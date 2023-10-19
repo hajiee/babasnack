@@ -117,6 +117,10 @@
 			$(form).appendTo($('body')).submit();
 		});
 	})
+	
+	function inputNumOnly(onlyNum) {
+		onlyNum.value = onlyNum.value.replace(/[^0-9]/g, '');
+	}
 </script>
 
 </head>
@@ -133,7 +137,9 @@
 		<main style="border: none">
 			<section>
 				<div id="deliveryNameBox-form" class="mt-3">
-					<form>배송지 주소</form>
+					<form>
+						<b>배송지 주소</b>
+					</form>
 				</div>
 
 
@@ -141,7 +147,9 @@
 
 					<div id="deliveryList1-form" class="mb-3 mt-3">
 						<form action="/delivery/delivery-list/${username}" method="get">
-							<h5>주소1(기본주소)</h5>
+							<h5>
+								<b>주소1(기본주소)</b>
+							</h5>
 
 							<button type="button" class="btn btn-primary" id="delivery1_btn"
 								onclick="sample5_execDaumPostcode1()">주소 검색</button>
@@ -154,7 +162,9 @@
 
 					<div id="deliveryList2-form" class="mb-3 mt-3">
 						<form action="/delivery/delivery-list/${username}" method="get">
-							<h5>주소2</h5>
+							<h5>
+								<b>주소2</b>
+							</h5>
 							<button type="button" class="btn btn-primary" id="delivery2_btn"
 								onclick="sample5_execDaumPostcode2()">주소 검색</button>
 							<div class="mb-3 mt-3">
@@ -170,10 +180,10 @@
 				<div style="float: left;">
 					<div id="deliveryNamePhone-form" class="mb-3 mt-3">
 						<form action="/delivery/delivery-list/${username}" method="get">
-							<label>이름 : </label> <input type="text" class="form-control"
-								id="name" placeholder="사용자 이름"> <label class="mt-3">연락처
-								: </label> <input type="text" class="form-control" id="pnoTell"
-								placeholder="사용자 연락처">
+							<label><b>이름</b></label> <input type="text" class="form-control"
+								id="name" placeholder="사용자 이름"> <label class="mt-3"><b>연락처</b>
+							 ( - 없이 입력)</label> <input type="text" class="form-control" id="pnoTell"
+								oninput="inputNumOnly(this)" placeholder="사용자 연락처">
 
 							<div class="mb-3 mt-3">
 								<button type="button" id="add" class="btn btn-primary">배송지
