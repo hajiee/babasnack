@@ -69,7 +69,19 @@
 						<c:forEach items="${page.list}" var="board">
 							<tr>
 								<td class="board-nav">${board.bno}</td>
-								<td><a href="/read?bno=${board.bno}">${board.title}</a></td>
+								<td>
+									<a href="/board-read?bno=${board.bno}" onclick="showCodePopup(${board.bno})">${board.title}</a> <!-- 암호 확인 팝업 -->
+									<div id="CodePopup_${board.bno}" class="Code-popup"
+										style="display: none;">
+										<form onsubmit="event.preventDefault(); checkCode(${board.bno})">
+											<input type="hidden" name="bno" value="${board.bno}">
+											<input type="password" id="Code_${board.bno}" placeholder="암호를 입력하세요">
+											<button type="submit">확인</button>
+										</form>
+										<!-- 암호 불일치 안내 메시지 -->
+										<div id="CodeMismatch_${board.bno}" class="error-message" style="display: none;">암호가 일치하지 않습니다.</div>
+									</div>
+								</td>
 								<td>${board.boardWriter}</td>
 								<td>${board.boardDate}</td>
 							</tr>
@@ -106,4 +118,26 @@
 		</footer>
 	</div>
 </body>
+<script>
+function showCodePopup(bno) {
+    // 선택된 게시글의 비밀번호 확인 팝업 표시
+    document.getElementById("CodePopup_" + bno).style.display = "block";
+}
+
+function checkCode(bno) {
+    const CodeInput = document.getElementById("Code_" + bno);
+    
+    // 서버 측에 비밀번호 유효성 검사 요청을 보내고 결과 받아오기
+    // BoardService 객체 가져오기
+	const isCodeValid = ${boardService.checkBoardCode(bno, codeInput.value)};
+    
+    if (!isCodeValid) {
+        // 비밀번호가 일치하지 않으면 안내 메시지 표시
+        document.getElementById("CodeMismatch_" + bno).style.display = "block";
+        return false; // 폼 제출 방지
+    }
+    
+    return true; // 폼 제출 진행
+}
+</script>
 </html>

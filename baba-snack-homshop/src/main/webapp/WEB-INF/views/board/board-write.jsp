@@ -28,6 +28,21 @@ $(document).ready(function() {
 	  $('#submitBtn').click(function(e) {
 	    e.preventDefault(); // 기본 동작(폼 제출) 막기
 
+	 	// 암호 입력 여부 확인
+        var code = $('#exampleFormControlInput2').val();
+
+        if (code.trim() === '') { // 암호가 비어있는 경우
+            alert('암호를 입력해주세요.');
+            $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
+            return;
+        }
+
+        if (!/^\d{4}$/.test(code)) { // 숫자 4자리가 아닌 경우
+            alert('숫자 4자리로 입력해주세요.');
+            $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
+            return;
+        }
+	    
 	    // 제목과 내용 입력 여부 확인
 	    var title = $('#exampleFormControlInput1').val();
 	    var contents = $('#exampleFormControlTextarea1').val();
@@ -70,7 +85,16 @@ $(document).ready(function() {
 				<form id="boardForm" action='<c:url value='/board/boardInsert'/>' method="post">
 					<div class="form-group">
 						<label for="noticeCheckbox" style="margin: 10px; color: darkgray;">공지여부</label>
-						<input type="checkbox" id="noticeCheckbox" name="notice">
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<input type="checkbox" id="noticeCheckbox" name="notice">
+						</sec:authorize>
+						<sec:authorize access="!hasRole('ROLE_ADMIN')">
+							<input type="checkbox" id="noticeCheckbox" name="notice" disabled>
+						</sec:authorize>
+					</div>
+					<div class="form-group">
+						<label for="exampleFormControlInput2" style="margin: 10px; color: darkgray;">암호 : </label>
+						<input type="password" class="form-control"	id="exampleFormControlInput2" name="code" placeholder="비밀번호설정">
 					</div>
 					<div class="form-group">
 						<label for="exampleFormControlInput1" style="margin: 10px; color: darkgray;">제목</label>
@@ -83,20 +107,7 @@ $(document).ready(function() {
 					</div>
 					<div class="text-right">
 						<button type='button' class='btn btn-outline-info' onclick="submitForm('/board/board-write')">등록</button>
-
-						<!-- 수정 버튼 -->
-						<button type='button' class='btn btn-outline-info' onclick="editBoard(${board.bno})">수정</button>
-
-						<!-- 삭제 버튼 -->
-						<button type='button' class='btn btn-outline-danger' onclick="deleteBoard(${board.bno})">삭제</button>
 					</div>
-
-					<c:forEach var="board" items="${boardes}">
-						<div class="board-item">
-							<h3>${board.title}</h3>
-							<p>${board.contents}</p>
-						</div>
-					</c:forEach>
 				</form>
 			</section>
 			<aside>
@@ -114,45 +125,34 @@ function submitForm(action) {
     document.getElementById('boardForm').submit();
 }
 
-function editBoard(bno) {
-	location.href = '/board/' + bno + '/edit';
-}
-
-function deleteBoard(bno) {
-	if (confirm("정말로 삭제하시겠습니까?")) {
-		location.href = '/board/' + bno + '/delete';
-	}
-}
-
-const username = '${username}';
-const isAuthenticated = '${isAuthenticated}'; // 로그인 여부 확인
+//서버 측 변수 값을 클라이언트 측 JavaScript로 전달하기 위해 사용(JavaScript 코드는 HTML 내부에 포함되어 실행)
+<p>Username: <%= session.getAttribute("username") %></p>
+<p>Is User in Role ROLE_USER: <%= request.isUserInRole("ROLE_USER") %></p>
 
 window.addEventListener('DOMContentLoaded', () => {
-	const noticeLabel = document.querySelector('#noticeLabel');
-	const noticeInput = document.querySelector('#noticeCheckbox');
-	
-	if (!isAuthenticated && username && username !== 'admin') { // 로그인하지 않은 경우 또는 일반 사용자인 경우, 공지사항 선택금지 및 체크 해제
-	    if (noticeInput !== null) {
-	      noticeInput.checked = false;
-	      noticeInput.disabled = true;	//비활성화안되요...ㅠㅠ
-	    }
-	    return;
-	} else if(isAuthenticated && !username && username === 'admin'){
-		if (noticeInput !== null) {
-		  // 관리자인 경우, 공지사항 체크박스 기본 선택 설정 및 클릭 이벤트 리스너 추가
-		  noticeInput.checked = true;
+  const noticeInput = document.querySelector('#noticeCheckbox');
 
-		      noticeInput.addEventListener('click', () => {
-		      	if (noticeInput.checked) {
-		      		alert("공지로 등록되었습니다.");
-		      	} else {
-		      		alert("공지 등록이 해제되었습니다.");
-		      	}
-		      });
-		  noticeInput.disabled = false; // 관리자인 경우에만 체크박스 활성화
-		}
-	}
+  if (isAuthenticated && username === 'admin') {
+    if (noticeInput !== null) {
+      // 관리자인 경우, 공지사항 체크박스 기본 선택 설정 및 클릭 이벤트 리스너 추가
+      noticeInput.checked = true;
 
+      noticeInput.addEventListener('click', () => {
+        if (noticeInput.checked) {
+          alert("공지로 등록되었습니다.");
+        } else {
+          alert("공지 등록이 해제되었습니다.");
+        }
+      });
+
+      noticeInput.disabled = false; // 관리자인 경우에만 체크박스 활성화
+    }
+  } else {
+    if (noticeInput !== null) {
+      noticeInput.checked = false;
+      noticeInput.disabled = true;
+    }
+  }
 });
 </script>
 </html>

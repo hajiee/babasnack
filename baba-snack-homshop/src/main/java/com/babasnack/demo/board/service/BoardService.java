@@ -57,7 +57,7 @@ public class BoardService {
 	}
 
 	// 설정된 비밀번호 확인
-	public boolean checkboardCode(Long bno, Long password) {
+	public boolean checkBoardCode(Long bno, Long password) {
 	    return boardDao.checkboardCode(bno, password);
 	}
 	

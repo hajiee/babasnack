@@ -16,11 +16,11 @@ public class BoardAdminController {
 	@Autowired
 	private BoardAdminService boardAdminService;
 	
-	@GetMapping("/board/board-read/{bno}")
+	@GetMapping("/board/admin-board/board-read/{bno}")
     public String adminBoardDetail(Model model, @PathVariable Long bno) {
 		Board board = boardAdminService.findbybNoForAdmin(bno);
 		// 관리자용 게시글 상세 정보를 모델에 추가
         model.addAttribute("board", board);
-        return "board/board-read";
+        return "board/board-read/{bno}";
     }
 }
