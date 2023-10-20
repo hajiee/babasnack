@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<title>BABA-SNACK-User-Profile</title>
 <script>
   $(document).ready(function() {
 	  $('#change-email').on("click", function() {
@@ -20,6 +21,7 @@
 			const html = `
 			  <form action="/member/change-email" method="post">
 				  <input type="hidden" name="email" value="\${email}">
+				  <button id="change-email" class="btn btn-primary">이메일 변경</button>
 			  </form>
 			`;
 			$(html).appendTo($('body')).submit();
@@ -73,7 +75,21 @@ $(document).ready(function() {
 });
 
 </script>
-<title>Insert title here</title>
+<script>
+$('#change-email').on("click", function(e) {
+	  e.preventDefault(); // 기본 동작 취소
+	  
+	  const email = $('#email').val();
+	  if (email === '') {
+	    alert('이메일을 입력하세요.');
+	    return;
+	  }
+	  
+	  $('form').submit(); // 폼 제출
+	});
+
+</script>
+
 </head>
 <body>
 	<div id="page">
@@ -102,10 +118,13 @@ $(document).ready(function() {
 					</tr>
 					<tr>
 						<td>이메일</td>
-						<td>
-							<input type="text" name="email" id="email" value="${member.email}">
-							<button id="change-email" class="btn btn-primary">이메일 변경</button>
-						</td>
+					<td>
+ 				 <form action="/member/change-email" method="post">
+    			<input type="text" name="email" id="email" value="${member.email}">
+   				 <button id="change-email" class="btn btn-primary">이메일 변경</button>
+  				</form>
+					</td>
+						
 					</tr>
 					<tr>
 						<td>가입 정보</td>
@@ -113,6 +132,7 @@ $(document).ready(function() {
 							(${member.days}일째)
 						</td>
 					</tr>
+						
 				</table>
 				<input type="file" id="profile-image-input">
 				<button id="upload-profile-image">프로필 사진 업로드</button>
