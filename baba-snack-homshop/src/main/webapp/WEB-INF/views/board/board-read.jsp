@@ -29,6 +29,24 @@
     document.write('<p>' + errorMessage + '</p>');
   }
 </script>
+<!-- 리뷰 작성 후 게시글 업데이트 -->
+<script type='text/javascript'>
+    // 리뷰 작성 후 게시글 업데이트 함수
+    function updateBoard(boardId) {
+        $.ajax({
+            url: '/update-board/' + bno,
+            type: 'GET',
+            success: function(response) {
+                // 업데이트된 게시글 정보로 화면 갱신
+                $('#board-item-' + bno).html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('게시글 업데이트에 실패했습니다.');
+            }
+        });
+    }
+</script>
 </head>
 <body>
 	<div id="page">
@@ -53,7 +71,21 @@
 						<p>${board.boardWriter}</p>
 						<!-- 내용 출력 -->
 						<p>${board.boardNotice}</p>
-
+						<!-- 관리자인 경우에만 답변과 답변 등록 버튼 표시 -->
+						<c:if test="${session.getAttribute('isAdmin')}">
+							<c:if test="${not empty board.boardReview}">
+								<h4>관리자 답변</h4>
+								<c:forEach var="reply" items="${board.boardReview}">
+									<div class="reply-item">
+										<!-- 관리자명 출력 -->
+										<span>${reply.admin}</span>
+										<!-- 관리자 답변 내용 출력 -->
+										<p>${reply.adminNotice}</p>
+									</div>
+								</c:forEach>
+							</c:if>
+							<button type="submit" class="btn btn-primary" onclick="saveForm()">답변등록</button>
+						</c:if>
 						<!-- 수정폼으로 이동 -->
 						<c:if test="${session.getAttribute('username') eq board.username}">
 							<button type="button" class="btn btn-outline-info" onclick="editBoard(${board.bno})">수정</button>
@@ -81,7 +113,12 @@
 		</footer>
 	</div>
 </body>
-
+<script>
+// 저장 버튼 클릭 시 폼 전송 함수
+function saveForm() {
+    document.getElementById("myForm").submit();
+}
+</script>
 <script>
 function editBoard(bno) {
     document.getElementById("CodePopup_" + bno).style.display = "block";

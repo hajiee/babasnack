@@ -1,5 +1,7 @@
 package com.babasnack.demo.board.dto;
 
+import java.util.List;
+
 import com.babasnack.demo.entity.BoardReview;
 
 import lombok.AccessLevel;
@@ -40,6 +42,6 @@ public class BoardDto {
 			private String title;
 			private String boardDate;
 			private Long boardCode;
-			private BoardReview boardReview;
+			private List<BoardReview> boardReview;
 		}
 }
