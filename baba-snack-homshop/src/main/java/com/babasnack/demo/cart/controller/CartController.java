@@ -26,8 +26,8 @@ public class CartController {
 	// 로그인한 회원의 장바구니를 출력
 	@GetMapping("/cart/orderdetails-list/{username}")
 	public ModelAndView read(Principal principal) {
-		CartDto.ReadCart dto = cartService.read(principal.getName());
-		return new ModelAndView("cart/orderdetails-list").addObject("dto", dto);
+		CartDto.ReadCart cartDto = cartService.read(principal.getName());
+		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto);
 	}
 
 	// 로그인 아이디와 상품 번호로 장바구니에 상품 추가

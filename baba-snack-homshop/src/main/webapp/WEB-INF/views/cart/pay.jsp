@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -61,7 +62,7 @@ tbody tr:nth-child(2n) {
 
 #position-left {
 	position: relative;
-	left: 200px;
+	left: 250px;
 }
 
 #position-left2 {
@@ -97,6 +98,33 @@ tbody tr:nth-child(2n) {
 			}
 
 			alert("임시 테스트\n결제 완료 페이지로 이동");
+			location.href = '/cart/order-end';
+
+			$(form).appendTo($('body')).submit();
+		});
+	})
+	
+	$(document).ready(function() {
+		$('#NaverPay').on("click", function() {
+
+			const name = $('#name').val();
+			const pnoTell = $('#pnoTell').val();
+			const delivery1_input = $('#delivery1_input').val();
+
+			if (name === '') {
+				alert('이름(성함)이 입력되어 있지 않습니다.');
+				return;
+			}
+			if (pnoTell === '') {
+				alert('전화번호가 입력되어 있지 않습니다.');
+				return;
+			}
+			if (delivery1_input === '') {
+				alert('기본 주소가 입력되어 있지 않습니다.');
+				return;
+			}
+
+			alert("임시 테스트\n네이버Pay 결제 완료 페이지로 이동");
 			location.href = '/cart/order-end';
 
 			$(form).appendTo($('body')).submit();
@@ -205,7 +233,7 @@ tbody tr:nth-child(2n) {
 							style="width: 80px" id="useReserve"> <br> </span> <span
 							id="position-right"><b>결제 방법</b></span> <span id="position-left">
 							<button type="button" class="btn btn-success btn-lg"
-								id="NaverPay">네이버Pay로 결제하기</button>
+								id="NaverPay">네이버 Pay</button>
 							<button type="button" class="btn btn-success btn-lg" id="PsPay">결제하기</button>
 						</span>
 					</form>

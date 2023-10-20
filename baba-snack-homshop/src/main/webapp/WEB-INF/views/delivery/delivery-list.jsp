@@ -81,7 +81,7 @@
 
 <script>
 	$(document).ready(function() {
-		$('#add').on("click", function(){
+		$('#PsMain').on("click", function(){
 			
 			const name = $('#name').val();
 			const pnoTell = $('#pnoTell').val();
@@ -115,8 +115,42 @@
 				</form>
 			`;
 			$(form).appendTo($('body')).submit();
+			
+			alert("임시 테스트\n메인 페이지로 이동");
+			location.href = '/';
 		});
 	})
+	
+	$(document).ready(function() {
+		$('#PsChangeAd').on("click", function(){
+			
+			const name = $('#name').val();
+			const pnoTell = $('#pnoTell').val();
+			const delivery1_input = $('#delivery1_input').val();
+			const delivery2_input = $('#delivery2_input').val();
+			
+			if(name==='') {
+				  alert('이름(성함)을 입력해 주십시오');
+				  return;
+			}
+			if(pnoTell==='') {
+				  alert('전화번호를 입력해 주십시오');
+				  return;
+			} 
+			if(delivery1_input==='') {
+				  alert('기본 주소를 입력해 주십시오');
+				  return;
+			} 
+			if(delivery2_input==='') {
+				  alert('두번째 주소를 입력해 주십시오');
+				  return;
+			}
+			
+			
+			$(form).appendTo($('body')).submit();
+		});
+	})
+	
 	
 	function inputNumOnly(onlyNum) {
 		onlyNum.value = onlyNum.value.replace(/[^0-9]/g, '');
@@ -151,7 +185,7 @@
 								<b>주소1(기본주소)</b>
 							</h5>
 
-							<button type="button" class="btn btn-primary" id="delivery1_btn"
+							<button type="button" class="btn btn-primary" id="PsAdd1"
 								onclick="sample5_execDaumPostcode1()">주소 검색</button>
 							<div class="mb-3 mt-3">
 								<input type="text" class="form-control" id="delivery1_input"
@@ -165,7 +199,7 @@
 							<h5>
 								<b>주소2</b>
 							</h5>
-							<button type="button" class="btn btn-primary" id="delivery2_btn"
+							<button type="button" class="btn btn-primary" id="PsAdd2"
 								onclick="sample5_execDaumPostcode2()">주소 검색</button>
 							<div class="mb-3 mt-3">
 								<input type="text" class="form-control" id="delivery2_input"
@@ -186,9 +220,9 @@
 								oninput="inputNumOnly(this)" placeholder="사용자 연락처">
 
 							<div class="mb-3 mt-3">
-								<button type="button" id="add" class="btn btn-primary">배송지
+								<button type="button" id="PsMain" class="btn btn-primary">배송지
 									확인</button>
-								<button type="button" id="change" class="btn btn-primary">배송지
+								<button type="button" id="PsChangeAd" class="btn btn-primary">배송지
 									수정</button>
 							</div>
 						</form>

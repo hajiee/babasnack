@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -76,7 +77,7 @@ tbody tr:nth-child(2n) {
 			<!-- 메뉴 -->
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
-		<main>
+		<main style="border: none">
 			<section>
 				*구매완료 페이지
 
@@ -159,7 +160,7 @@ tbody tr:nth-child(2n) {
 				</div>
 
 				<div class="mt-3" style="text-align: right">
-					<button type="button" class="btn btn-outline-secondary btn-lg">
+					<button type="button" class="btn btn-outline-secondary btn-lg" onclick="location.href=''">
 						<b>주문상세</b>
 					</button>
 					<button type="button" class="btn btn-outline-secondary btn-lg"

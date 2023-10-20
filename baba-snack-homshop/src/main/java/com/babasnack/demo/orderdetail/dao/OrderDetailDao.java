@@ -19,7 +19,7 @@ public interface OrderDetailDao {
 	@Select("select m.username, m.pno_tell, m.ps_email from member m inner join order_detail od on m.username=od.username where od.username=#{username} and od.odno=#{odno}")
 	public OrderDetailDto.ReadOrderDetailMember findByUsernameAndOdno(String username, Long odno);
 
-	// 회원 주문 내역리스트(관리자 전용)
+	// 주문한 회원정보 상세 내역리스트(관리자 전용)
 	@Select("select od.username, od.pno, od.buy_cnt, ob.dno from order_buy ob inner join order_detail od on ob.ono=od.ono where od.username=#{username} and ob.ono=#{ono}")
 	public List<OrderDetailDto.ReadOrderDetailAdmin> orderDetailAdmin(String username, Long ono);
 }

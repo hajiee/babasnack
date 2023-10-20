@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -48,6 +49,9 @@ tbody tr:nth-child(2n) {
 	width: 1400px;
 }
 </style>
+
+<script>
+</script>
 
 </head>
 <body>
@@ -122,7 +126,7 @@ tbody tr:nth-child(2n) {
 
 
 					<div style="text-align: center;" class="mt-3">
-						<button type="button" class="btn btn-success btn-lg"
+						<button type="button" class="btn btn-success btn-lg" style="width: 180px;"
 							onclick="location.href='/cart/pay'">주문하기</button>
 					</div>
 
