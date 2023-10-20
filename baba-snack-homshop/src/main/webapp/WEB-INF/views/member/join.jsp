@@ -22,7 +22,7 @@
         	const formData = new FormData($('#join-form')[0]);
 
             $.ajax({
-                url: 'http://localhost:8081/member/join',
+                url: '/member/join',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -67,7 +67,6 @@ $(document).ready(function() {
 	     $('#join-form').submit();
 	   });
 	});
-
 </script>
 
 
@@ -92,7 +91,7 @@ $(document).ready(function() {
 		<main style="border: none">
 			<h1>회원 가입</h1>
 			<section id="join-form">
-				<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form">
+<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form">
 					<div class="mb-3 mt-3">
 						<label for="username" class="form-label">아이디:</label>
 						<input type="text" class="form-control" id="username" name="username" maxlength="10">
@@ -119,7 +118,8 @@ $(document).ready(function() {
 					</div>
           			
           				<button type ="submit" id="join" class="btn btn-primary">가입</button>
-				</form>
+						</form>
+		
 				 
 			</section>
 		</main>

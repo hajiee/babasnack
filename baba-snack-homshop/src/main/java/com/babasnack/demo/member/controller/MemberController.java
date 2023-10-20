@@ -24,7 +24,7 @@ public class MemberController {
     private MemberService service;
 
     // 접근제어
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/member/join")
     public ModelAndView psJoin() {
         return new ModelAndView("member/join");
@@ -113,14 +113,14 @@ public class MemberController {
        // GET 요청을 처리하는 로직 구현
        // 예를 들어, 회원 정보 조회 등의 작업을 수행할 수 있습니다.
        
-       
-       Member member = (Member) service.getMemberByUsername(username);
+       MemberDto.PsMyPage dto = service.psMypage(username);
        
        ModelAndView modelAndView = new ModelAndView("withdrawal");
-       modelAndView.addObject("member", member);
+       modelAndView.addObject("dto", dto);
        
-       return new ModelAndView("member/user-profile");
+       return modelAndView;
    }
+
 
    
    // 회원 탈퇴 + 로그아웃 

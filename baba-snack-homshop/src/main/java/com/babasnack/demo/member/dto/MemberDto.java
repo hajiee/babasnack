@@ -6,22 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
-
-
-
-
 public class MemberDto {
-	@Getter
-	public static class Join {
-	    private String username;
-	    private String password;
-	    private String email;
-	    private LocalDate joinDay = LocalDate.now();
-	    private Long pnoTell;
+    @Getter
+    public static class Join {
+        private String username;
+        private String password;
+        private String email;
+        private LocalDate joinDay = LocalDate.now();
+        private Long pnoTell;
 
-	    // Getter for pnoTell
-	}
+        // Getter and Setter for pnoTell
 
+        public Member toEntity(String encodedPassword) {
+            return new Member(username, encodedPassword, email, joinDay, pnoTell);
+        }
+    }
 
     @Data
     @AllArgsConstructor
@@ -30,6 +29,26 @@ public class MemberDto {
         private String email;
         private String joinDayFormatted;
         private Long daysSinceJoining;
-    }	
+    }
 
+    @Getter
+    public static class Member {
+     	private String username; 
+     	private String password; 
+     	private String email; 
+     	private LocalDate joinDay; 
+     	private Long pnoTell; 
+
+     	public Member(String username, String password, String email,
+                      LocalDate joinDay, Long pnoTell) { 
+     		this.username = username; 
+     		this.password = password; 
+     		this.email = email; 
+     		this.joinDay = joinDay; 
+     		this.pnoTell = pnoTell;  
+         } 
+
+    	// Getter and Setter methods for the fields
+
+     }
 }
