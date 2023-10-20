@@ -22,31 +22,72 @@
 		alert("잘못된 작업입니다");
 
 	// RedirectAttribute을 이용한 에러 메시지 처리
-	const msg = '<c:out value="${msg}" />';
+	const msg = '${msg}';
 	if (msg !== '')
 		alert(msg);
 </script>
-<script type="text/javascript">
-	$(document).ready(
-			function() {
-				// 재고 표시
-				var products = $
-				{
-					productPage.products
-				}
-				;
-				for (var i = 0; i < products.length; i++) {
-					var product = products[i];
-					var stockMessage;
-					if (product.productStock >= 0) {
-						stockMessage = product.productStock + "개 남음";
-					} else {
-						stockMessage = "재고 없음";
-					}
-					$(".prdlist_default .price_box:eq(" + i + ")").append(
-							"<span>" + stockMessage + "</span>");
-				}
-			});
+<script>
+$(document).ready(function() {
+    // 상품 정보 변수 설정
+    const productName = "<c:out value='${writeP.productName}' />";
+    const productStock = "<c:out value='${writeP.productStock}' />";
+    const productPrice = "<c:out value='${writeP.productPrice}' />";
+    const productSize = "<c:out value='${writeP.productSize}' />";
+
+    // ProductDto.WriteP 객체 생성 및 값 설정
+    const writeP = {
+        productName: productName,
+        productStock: productStock,
+        productPrice: productPrice,
+        productSize: productSize,
+        category: "dog" // 원하는 카테고리 값을 할당합니다.
+    };
+    
+    // 재고 표시 등의 작업 수행
+    $.ajax({
+        url: "/product?category=dog",
+        method: "GET",
+        type: "json",
+        data: {
+            writePJsonStringified : JSON.stringify(writeP) // writeP 객체를 JSON 문자열로 변환하여 전달합니다.
+        },
+        success:function(data){
+            try {
+                var products=data.products;
+                if (Array.isArray(products) && products.length > 0) {  // products 배열이 유효하면서 비어있지 않은 경우에만 처리
+                    for(var i=0;i<products.length;i++){
+                        var product=products[i];
+                        var stockMessage;
+                        if(product.productStock>=0){
+                            stockMessage=product.productStock+"개 남음";
+                        }else{
+                            stockMessage="재고 없음";
+                        }
+                        $(".prdlist_default .price_box:eq("+i+")").append("<span>"+stockMessage+"</span>");
+                    }
+                } else {
+                    console.error("유효하지 않은 또는 빈 products 데이터:", products);
+                    $(".prdlist_default .price_box").append("<span>재고 정보 없음</span>");  // 대체 텍스트 출력
+                }
+            } catch (e) {
+                console.error("JSON 파싱 에러:", e);
+            }
+         },
+         error:function(xhr,status,error){
+             // AJAX 요청이 실패한 경우의 처리 로직
+             var errorMessage=xhr.status+': '+xhr.statusText;
+             
+             // 에러 메시지를 콘솔에 출력합니다.
+             console.error(errorMessage);
+             
+             // 화면 상단 또는 원하는 위치에 에러 메시지를 표시합니다.
+             $('#error-message').text('AJAX 요청 실패 - '+errorMessage);
+             
+             // 또는 경고창(alert) 등으로 에러 메시지를 표시할 수도 있습니다.
+             alert('AJAX 요청 실패 - '+errorMessage);
+         }
+     });
+});
 </script>
 </head>
 <body>
@@ -110,21 +151,21 @@
 					<ul class="pagination">
 						<c:if test="${page.prev>0}">
 							<li class="page-item"><a class="page-link"
-								href="/product/list?pageno=${page.prev}">이전으로</a></li>
+								href="/product?category=dog?pageno=${page.prev}">이전으로</a></li>
 						</c:if>
 						<c:forEach begin="${page.start}" end="${page.end}" var="i">
 							<c:if test="${i==page.pageno}">
 								<li class="page-item active"><a class="page-link"
-									href="/product/list?pageno=${i}">${i}</a></li>
+									href="/product?category=dog?pageno=${i}">${i}</a></li>
 							</c:if>
 							<c:if test="${i!=page.pageno}">
 								<li class="page-item"><a class="page-link"
-									href="/product/list?pageno=${i}">${i}</a></li>
+									href="/product?category=dog?pageno=${i}">${i}</a></li>
 							</c:if>
 						</c:forEach>
 						<c:if test="${page.next>0}">
 							<li class="page-item"><a class="page-link"
-								href="/product/list?pageno=${page.next}">다음으로</a></li>
+								href="/product?category=dog?pageno=${page.next}">다음으로</a></li>
 						</c:if>
 					</ul>
 				</div>

@@ -19,8 +19,10 @@
 
 	// RedirectAttribute을 이용한 에러 메시지 처리
 	const msg = '${msg}';
-	if (msg !== '')
-		alert(msg);
+	if (msg !== '') {
+			alert("문의글 작성은 회원만 작성가능합니다");
+			window.location.href = "/member/login"; // 로그인 페이지로 리다이렉트
+	}
 </script>
 <script>
 $(document).ready(function() {
@@ -64,9 +66,6 @@ $(document).ready(function() {
 	  });
 	});
 </script>
-<style>
-
-</style>
 </head>
 <body>
 	<div id="page">
@@ -119,40 +118,39 @@ $(document).ready(function() {
 		</footer>
 	</div>
 </body>
-<script>
-function submitForm(action) {
-    document.getElementById('boardForm').action = action;
-    document.getElementById('boardForm').submit();
-}
+<script type='text/javascript'>
+    	var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
+    	var username = '<%=session.getAttribute("username")%>';
+    	var isAdmin = <%=request.isUserInRole("ROLE_ADMIN")%>;
 
-//서버 측 변수 값을 클라이언트 측 JavaScript로 전달하기 위해 사용(JavaScript 코드는 HTML 내부에 포함되어 실행)
-<p>Username: <%= session.getAttribute("username") %></p>
-<p>Is User in Role ROLE_USER: <%= request.isUserInRole("ROLE_USER") %></p>
-
-window.addEventListener('DOMContentLoaded', () => {
-  const noticeInput = document.querySelector('#noticeCheckbox');
-
-  if (isAuthenticated && username === 'admin') {
-    if (noticeInput !== null) {
-      // 관리자인 경우, 공지사항 체크박스 기본 선택 설정 및 클릭 이벤트 리스너 추가
-      noticeInput.checked = true;
-
-      noticeInput.addEventListener('click', () => {
-        if (noticeInput.checked) {
-          alert("공지로 등록되었습니다.");
-        } else {
-          alert("공지 등록이 해제되었습니다.");
+        // 비회원인 경우 처리
+        if (!isAuthenticated && !isAdmin) {
+            alert('로그인 후 이용해주세요.');
+            window.location.href = '/member/login';  // 로그인 페이지로 리다이렉트
         }
-      });
+</script>
+<script type='text/javascript'>
+      function submitForm(action) {
+          document.getElementById('boardForm').action = action;
+          document.getElementById('boardForm').submit();
+      }
 
-      noticeInput.disabled = false; // 관리자인 경우에만 체크박스 활성화
-    }
-  } else {
-    if (noticeInput !== null) {
-      noticeInput.checked = false;
-      noticeInput.disabled = true;
-    }
-  }
-});
+      var isAdmin = <%= request.isUserInRole("ROLE_ADMIN") %>;
+      
+      window.addEventListener('DOMContentLoaded', () => {
+          const noticeInput = document.querySelector('#noticeCheckbox');
+
+          if (isAdmin) {
+              if (noticeInput !== null) {
+                  // 관리자인 경우, 공지사항 체크박스 활성화
+                  noticeInput.disabled = false;
+              }
+          } else {
+              if (noticeInput !== null) {
+                  // 관리자가 아닌 경우, 공지사항 체크박스 비활성화
+                  noticeInput.disabled = true;
+              }
+          }
+      });
 </script>
 </html>

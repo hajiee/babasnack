@@ -22,8 +22,10 @@
 
 	// RedirectAttribute을 이용한 에러 메시지 처리
 	const msg = '${msg}';
-	if (msg !== '')
-		alert(msg);
+	if (msg !== '') {
+			alert("문의글 작성은 회원만 작성가능합니다");
+			window.location.href = "/member/login"; // 로그인 페이지로 리다이렉트
+	}
 </script>
 <script>
 	$(document).ready(function() {
@@ -125,19 +127,30 @@ function showCodePopup(bno) {
 }
 
 function checkCode(bno) {
-    const CodeInput = document.getElementById("Code_" + bno);
-    
-    // 서버 측에 비밀번호 유효성 검사 요청을 보내고 결과 받아오기
-    // BoardService 객체 가져오기
-	const isCodeValid = ${boardService.checkBoardCode(bno, codeInput.value)};
-    
-    if (!isCodeValid) {
-        // 비밀번호가 일치하지 않으면 안내 메시지 표시
-        document.getElementById("CodeMismatch_" + bno).style.display = "block";
-        return false; // 폼 제출 방지
-    }
-    
-    return true; // 폼 제출 진행
+    const codeInput = $("#Code_" + bno).val();
+
+    // AJAX 요청 보내기
+    $.ajax({
+        url: "/checkBoardCode",  // 비밀번호 유효성 검사를 처리하는 URL
+        type: "POST",
+        data: { bno: bno, code: codeInput },
+        success: function(response) {
+            if (response === true) {
+                // 비밀번호가 일치하는 경우
+                document.getElementById("CodeMismatch_" + bno).style.display = "none";
+                // 폼 제출 진행
+                $("form").submit();
+            } else {
+                // 비밀번호가 일치하지 않는 경우
+                document.getElementById("CodeMismatch_" + bno).style.display = "block";
+            }
+        },
+        error: function() {
+            console.log("비밀번호 유효성 검사에 실패했습니다.");
+        }
+    });
+
+    return false;  // 폼 제출 방지
 }
 </script>
 </html>

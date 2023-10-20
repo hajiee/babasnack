@@ -91,49 +91,58 @@ function checkCode(bno) {
     const codeInput = document.getElementById("Code_" + bno);
     
     // 서버 측에 비밀번호 유효성 검사 요청을 보내고 결과 받아오기
-      // BoardService 객체 가져오기
- 	const isCodeValid = ${boardService.checkBoardCode(bno, codeInput.value)};
- 		
-    if (!isCodeValid) {
-        // 비밀번호가 일치하지 않는 경우에 대한 처리 로직
-        document.getElementById("CodeMismatch_" + bno).style.display = "block";
-        return false; // 폼 제출 방지
-    }
-    
-    // 암호가 일치하는 경우, 게시글 수정 페이지로 이동
-    location.href = '/board/' + bno + '/board-edit';
+    $.ajax({
+      url: "/board/check-code",
+      type: "POST",
+      data: { bno: bno, code: codeInput.value },
+      success: function(response) {
+        if (response === true) {
+          // 암호가 일치하는 경우, 게시글 수정 페이지로 이동
+          location.href = '/board/' + bno + '/board-edit';
+        } else {
+          // 비밀번호가 일치하지 않는 경우에 대한 처리 로직
+          document.getElementById("CodeMismatch_" + bno).style.display = "block";
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error(error);  	// 에러 발생 시의 동작 정의 
+        alert("암호 유효성 검사에 실패했습니다.");
+      }
+    });
 }
 
+function submitForm(action) {
+	  document.getElementById('boardForm').action = action;
+	  document.getElementById('boardForm').submit();
+	}
 
-//서버 측 변수 값을 클라이언트 측 JavaScript로 전달하기 위해 사용(JavaScript 코드는 HTML 내부에 포함되어 실행)
-<p>Username: <%= session.getAttribute("username") %></p>
-<p>Is User in Role ROLE_USER: <%= request.isUserInRole("ROLE_USER") %></p>
+var isAdmin = <%= request.isUserInRole("ROLE_ADMIN") %>;
 
 window.addEventListener('DOMContentLoaded', () => {
-  const noticeInput = document.querySelector('#noticeCheckbox');
+	const noticeInput = document.querySelector('#noticeCheckbox');
 
-  if (isAuthenticated && username === 'admin') {
-    if (noticeInput !== null) {
-      // 관리자인 경우, 공지사항 체크박스 기본 선택 설정 및 클릭 이벤트 리스너 추가
-      noticeInput.checked = true;
-
-      noticeInput.addEventListener('click', () => {
-        if (noticeInput.checked) {
-          alert("공지로 등록되었습니다.");
-        } else {
-          alert("공지 등록이 해제되었습니다.");
-        }
-      });
-
-      noticeInput.disabled = false; // 관리자인 경우에만 체크박스 활성화
-    }
-  } else {
-    if (noticeInput !== null) {
-      noticeInput.checked = false;
-      noticeInput.disabled = true;
-    }
-  }
-});
+	  if (isAdmin) {
+	      if (noticeInput !== null) {
+	          // 관리자인 경우, 공지사항 체크박스 활성화
+	          noticeInput.disabled = false;
+	      }
+	  } else {
+	      if (noticeInput !== null) {
+	          // 관리자가 아닌 경우, 공지사항 체크박스 비활성화
+	          noticeInput.disabled = true;
+	      }
+	  }
+	});
 </script>
+<script type='text/javascript'>
+var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
+var username = '<%=session.getAttribute("username")%>';
+var isAdmin = <%=request.isUserInRole("ROLE_ADMIN")%>;
 
+// 비회원인 경우 처리
+if (!isAuthenticated && !isAdmin) {
+    alert('로그인 후 이용해주세요.');
+    window.location.href = '/member/login';  // 로그인 페이지로 리다이렉트
+}
+</script>
 </html>
