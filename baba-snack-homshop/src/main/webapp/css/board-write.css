@@ -12,16 +12,21 @@
 	margin-bottom: 20px;
 }
 
+#exampleFormControlInput2 {
+  margin-left: auto; /* 오른쪽으로 이동 */
+  width: 200px;
+}
+
 .btn-group {
 	margin-top: 20px;
 }
 
 #board-write-css section form {
-	margin-top: 60px;
+	margin-top: 40px;
 }
 
 .text-right {
-	margin-left: 1000px;
+	margin-left: 1130px;
 	margin-bottom: 50px;
 }
 

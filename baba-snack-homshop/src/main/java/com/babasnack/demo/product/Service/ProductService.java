@@ -42,8 +42,12 @@ public class ProductService {
 	private int sizeOfPagination;
 
 	// 상품 목록 조회 서비스 메서드
-	public List<Product> getProductList() {
-		return productDao.findAllProducts();
+	public List<Product> getProductList(String category) {
+	    if (category != null && ("dog".equals(category) || "cat".equals(category))) {
+	        return productDao.findByCategory(category);
+	    } else {
+	        return productDao.findAllProducts();
+	    }
 	}
 
 	// 특정 상품 조회 서비스 메서드 - 만약 해당하는 상품이 없다면 null이 반환

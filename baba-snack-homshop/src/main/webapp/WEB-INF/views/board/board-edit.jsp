@@ -139,7 +139,7 @@ $(document).ready(function() {
 								<textarea name="contents">${board.boardNotice}</textarea>
 								<button type='submit' class='btn btn-outline-info'>저장</button>
 								<!-- 암호 입력 필드 -->
-								<input type="password" name="code" placeholder="암호를 입력하세요">
+								<input type="password" name="code" id="exampleFormControlInput2" placeholder="암호를 입력하세요">
 							</form>
 						</c:if>
 

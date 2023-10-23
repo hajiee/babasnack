@@ -112,16 +112,6 @@ $(document).ready(function() {
 					<p class="total" style="color: #a2a2a2;">
 						In this category are <strong>CAT</strong> products.
 					</p>
-					<dl class="sort">
-						<dt class="blind">검색결과 정렬</dt>
-						<dd>
-							<ul>
-								<li><a href="javascript:sendsort('sellcnt')">인기순</a></li>
-								<li><a href="javascript:sendsort('regdate')">최신순</a></li>
-								<li><a href="javascript:sendsort('price')">낮은가격순</a></li>
-							</ul>
-						</dd>
-					</dl>
 				</div>
 				<!-- .total-sort -->
 

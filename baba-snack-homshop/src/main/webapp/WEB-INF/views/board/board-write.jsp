@@ -92,8 +92,7 @@ $(document).ready(function() {
 						</sec:authorize>
 					</div>
 					<div class="form-group">
-						<label for="exampleFormControlInput2" style="margin: 10px; color: darkgray;">암호 : </label>
-						<input type="password" class="form-control"	id="exampleFormControlInput2" name="code" placeholder="비밀번호설정">
+						<input type="password" class="form-control"	id="exampleFormControlInput2" name="code" placeholder="암호설정(숫자 4개)">
 					</div>
 					<div class="form-group">
 						<label for="exampleFormControlInput1" style="margin: 10px; color: darkgray;">제목</label>

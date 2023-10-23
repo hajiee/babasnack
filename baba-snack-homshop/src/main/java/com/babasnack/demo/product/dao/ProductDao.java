@@ -23,6 +23,10 @@ public interface ProductDao {
     // 상품조회
     @Select("SELECT * FROM product WHERE product_name = #{productName}")
     public Product findByProductName(String productName);
+    
+    // 카테고리별 상품 목록 조회
+    @Select("SELECT * FROM product WHERE category = #{category}")
+    public List<Product> findByCategory(String category);
 
     // 한 페이지당 상품 수
     @Select("SELECT * FROM (SELECT rownum as rnum,p.* FROM (SELECT /*+ index_desc(product_pk_pno)*/ * from 	product)p where rownum <=#{endRownum}) where rnum >=#{startRownum}") 
