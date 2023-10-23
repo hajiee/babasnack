@@ -54,26 +54,26 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-	<!-- 다음 우편 주소 api - 주소1(기본주소) -->
+	// 다음 우편 주소 api - 주소1(기본주소)
 	function sample5_execDaumPostcode1() {
 		new daum.Postcode({
 			oncomplete : function(data) {
 				var addr = data.address + ", [상세주소] : "; // 최종 주소 변수
 
 				// 주소 정보를 해당 필드에 넣는다.
-				document.getElementById("delivery1_input").value = addr;
+				document.getElementById("baseDelivery").value = addr;
 			}
 		}).open();
 	}
 
-	<!-- 다음 우편 주소 api - 주소2 -->
+	// 다음 우편 주소 api - 주소2
 	function sample5_execDaumPostcode2() {
 		new daum.Postcode({
 			oncomplete : function(data) {
 				var addr = data.address + ", [상세주소] : "; // 최종 주소 변수
 
 				// 주소 정보를 해당 필드에 넣는다.
-				document.getElementById("delivery2_input").value = addr;
+				document.getElementById("addDelivery").value = addr;
 			}
 		}).open();
 	}	
@@ -85,8 +85,8 @@
 			
 			const name = $('#name').val();
 			const pnoTell = $('#pnoTell').val();
-			const delivery1_input = $('#delivery1_input').val();
-			const delivery2_input = $('#delivery2_input').val();
+			const baseDelivery = $('#baseDelivery').val();
+			const addDelivery = $('#addDelivery').val();
 			
 			if(name==='') {
 				  alert('이름(성함)을 입력해 주십시오');
@@ -96,27 +96,22 @@
 				  alert('전화번호를 입력해 주십시오');
 				  return;
 			} 
-			if(delivery1_input==='') {
+			if(baseDelivery==='') {
 				  alert('기본 주소를 입력해 주십시오');
 				  return;
 			} 
-			if(delivery2_input==='') {
+			if(addDelivery==='') {
 				  alert('두번째 주소를 입력해 주십시오');
 				  return;
 			}
 			
-			const form = `
-				<form action='/delivery/add' method='post'>
-					<input type='hidden' name='username' value='\${username}'>
-					<input type='hidden' name='name' value='\${name}'>
-					<input type='hidden' name='pnoTell' value='\${pnoTell}'>
-					<input type='hidden' name='delivery1_input' value='\${delivery1_input}'>
-					<input type='hidden' name='delivery2_input' value='\${delivery2_input}'>
-				</form>
-			`;
-			$(form).appendTo($('body')).submit();
+			//$('form').attr('action', '/delivery/add');
 			
-			alert("임시 테스트\n메인 페이지로 이동");
+			
+			const form = $('form').attr('action','/delivery/add').attr('method','post');
+			form.submit();
+			
+			alert("임시 테스트\n메인 페이지로 이동");	
 			location.href = '/';
 		});
 	})
@@ -126,8 +121,8 @@
 			
 			const name = $('#name').val();
 			const pnoTell = $('#pnoTell').val();
-			const delivery1_input = $('#delivery1_input').val();
-			const delivery2_input = $('#delivery2_input').val();
+			const baseDelivery = $('#baseDelivery').val();
+			const addDelivery = $('#addDelivery').val();
 			
 			if(name==='') {
 				  alert('이름(성함)을 입력해 주십시오');
@@ -137,17 +132,20 @@
 				  alert('전화번호를 입력해 주십시오');
 				  return;
 			} 
-			if(delivery1_input==='') {
+			if(baseDelivery==='') {
 				  alert('기본 주소를 입력해 주십시오');
 				  return;
 			} 
-			if(delivery2_input==='') {
+			if(addDelivery==='') {
 				  alert('두번째 주소를 입력해 주십시오');
 				  return;
 			}
 			
+			const form = $('form').attr('action','/delivery/change').attr('method','post');
+			form.appendTo($('body')).submit();
 			
-			$(form).appendTo($('body')).submit();
+			alert("임시 테스트\n마이 페이지로 이동");
+			location.href = '';
 		});
 	})
 	
@@ -180,30 +178,32 @@
 				<div style="float: left;">
 
 					<div id="deliveryList1-form" class="mb-3 mt-3">
-						<form action="/delivery/delivery-list/${username}" method="get">
-							<h5>
-								<b>주소1(기본주소)</b>
-							</h5>
+						<form>
+							<div>
+								<h5>
+									<b>주소1(기본주소)</b>
+								</h5>
 
-							<button type="button" class="btn btn-primary" id="PsAdd1"
-								onclick="sample5_execDaumPostcode1()">주소 검색</button>
-							<div class="mb-3 mt-3">
-								<input type="text" class="form-control" id="delivery1_input"
-									placeholder="주소1(기본주소)" name="delivery1_input">
+								<button type="button" class="btn btn-primary" id="PsAdd1"
+									onclick="sample5_execDaumPostcode1()">주소 검색</button>
+								<div class="mb-3 mt-3">
+									<input type="text" class="form-control" id="baseDelivery"
+										placeholder="주소1(기본주소)" name="baseDelivery">
+								</div>
 							</div>
 						</form>
 					</div>
 
 					<div id="deliveryList2-form" class="mb-3 mt-3">
-						<form action="/delivery/delivery-list/${username}" method="get">
+						<form>
 							<h5>
 								<b>주소2</b>
 							</h5>
 							<button type="button" class="btn btn-primary" id="PsAdd2"
 								onclick="sample5_execDaumPostcode2()">주소 검색</button>
 							<div class="mb-3 mt-3">
-								<input type="text" class="form-control" id="delivery2_input"
-									placeholder="주소2" name="delivery2_input">
+								<input type="text" class="form-control" id="addDelivery"
+									placeholder="주소2" name="addDelivery">
 							</div>
 						</form>
 					</div>
@@ -213,15 +213,16 @@
 
 				<div style="float: left;">
 					<div id="deliveryNamePhone-form" class="mb-3 mt-3">
-						<form action="/delivery/delivery-list/${username}" method="get">
+						<form>
 							<label><b>이름</b></label> <input type="text" class="form-control"
-								id="name" placeholder="사용자 이름"> <label class="mt-3"><b>연락처</b>
-							 ( - 없이 입력)</label> <input type="text" class="form-control" id="pnoTell"
+								id="name" name="name" placeholder="사용자 이름"> <label
+								class="mt-3"><b>연락처</b> ( - 없이 입력)</label> <input type="text"
+								class="form-control" id="pnoTell" name="pnoTell"
 								oninput="inputNumOnly(this)" placeholder="사용자 연락처">
 
 							<div class="mb-3 mt-3">
 								<button type="button" id="PsMain" class="btn btn-primary">배송지
-									확인</button>
+									확인(저장)</button>
 								<button type="button" id="PsChangeAd" class="btn btn-primary">배송지
 									수정</button>
 							</div>
