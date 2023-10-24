@@ -5,8 +5,10 @@ import java.security.Principal;
 
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -109,10 +111,7 @@ public class MemberController {
 
    
    @GetMapping("/member/{username}/user-profile")
-   public ModelAndView psWithdrawal(@PathVariable("username") String username) {
-       // GET 요청을 처리하는 로직 구현
-       // 예를 들어, 회원 정보 조회 등의 작업을 수행할 수 있습니다.
-       
+   public ModelAndView psUserProfile(@PathVariable("username") String username) {
        MemberDto.PsMyPage dto = service.psMypage(username);
        
        ModelAndView modelAndView = new ModelAndView("withdrawal");
@@ -121,13 +120,16 @@ public class MemberController {
        return modelAndView;
    }
 
-
-   
-   // 회원 탈퇴 + 로그아웃 
    @PostMapping("/member/{username}")
-   public ModelAndView psWithdrawal(Principal principal, HttpSession session) {
-       session.invalidate();
-       service.psWithdrawal(principal.getName());
+   public ModelAndView psWithdrawal(Principal principal) {
+       String username = principal.getName();
+       
+       // 회원 탈퇴 처리
+       service.psWithdrawal(username);
+       
+       // 스프링 시큐리티의 로그아웃
+       SecurityContextHolder.clearContext();
+       
        return new ModelAndView("redirect:/");
    }
 }
