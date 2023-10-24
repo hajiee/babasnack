@@ -30,7 +30,7 @@ public class ProductAdminController {
 	@GetMapping("/product/product-write")
 	public String showAddProductForm(Model model) {
 		model.addAttribute("categories", Category.values());
-		return "product-write"; // product-write.jsp로 변경
+		return "product/product-write"; // product-write.jsp로 변경
 	}
 
 	// 상품 등록 처리
@@ -48,7 +48,7 @@ public class ProductAdminController {
 	        Long productId = Long.parseLong(pno);
 	        Product product = productAdminService.getProductById(productId);
 	        model.addAttribute("product", product);
-	        return "product-read"; // product-read.jsp로 변경
+	        return "product/product-read"; // product-read.jsp로 변경
 	    } catch (NumberFormatException e) {
 	        // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
 	        return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
@@ -62,7 +62,7 @@ public class ProductAdminController {
 	        Product product = productAdminService.getProductById(productId);
 	        model.addAttribute("product", product);
 	        model.addAttribute("categories", Category.values());
-	        return "prouct-write"; // prouct-write.jsp로 변경
+	        return "product/prouct-write"; // prouct-write.jsp로 변경
 	    } catch (NumberFormatException e) {
 	       // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
 	       return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.

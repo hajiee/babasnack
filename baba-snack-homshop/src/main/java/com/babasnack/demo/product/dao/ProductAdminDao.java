@@ -14,8 +14,8 @@ import com.babasnack.demo.product.dto.ProductDto;
 @Mapper
 public interface ProductAdminDao {
 	// 상품 등록
-    @Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, reserve, product_cnt, category, product_day) "
-            + "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{reserve}, #{productCnt}, #{category.name()}, #{productDay})")
+    @Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, category) "
+            + "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{category.name()})")
     public Long addProduct(ProductDto.WriteP writeP);
 
     // 상품 수정
@@ -33,14 +33,14 @@ public interface ProductAdminDao {
     public Product findByProduct(Long pno);
 
 	// 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
-	@Select("SELECT * FROM PRODUCT_PHOTO WHERE PNO=#{pNo}")
-	public List<String> findProductPhotos(Long pNo);
+	@Select("SELECT * FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
+	public List<String> findProductPhotos(Long pno);
 
 	// 상품 삭제
-	@Delete("DELETE FROM PRODUCT WHERE PNO=#{pNo}")
-	public Integer deleteProduct(Long pNo);
+	@Delete("DELETE FROM PRODUCT WHERE PNO=#{pno}")
+	public Integer deleteProduct(Long pno);
 
 	// 상품에 연관된 사진 삭제
-	@Delete("DELETE FROM PRODUCT_PHOTO WHERE PNO=#{pNo}")
-	public boolean deleteAllPhotosByPNo(Long pNo);
+	@Delete("DELETE FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
+	public boolean deleteAllPhotosByPNo(Long pno);
 }

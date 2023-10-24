@@ -28,10 +28,15 @@ public interface ProductDao {
     @Select("SELECT * FROM product WHERE category = #{category}")
     public List<Product> findByCategory(String category);
 
+    // 상품명으로 부분 일치 검색
+    @Select("SELECT * FROM product WHERE product_name LIKE CONCAT('%', #{keyword}, '%')")
+    public List<Product> findByKeyword(String keyword);
+    
     // 한 페이지당 상품 수
     @Select("SELECT * FROM (SELECT rownum as rnum,p.* FROM (SELECT /*+ index_desc(product_pk_pno)*/ * from 	product)p where rownum <=#{endRownum}) where rnum >=#{startRownum}") 
     public List<Product> findProductsByPage(@Param("startRownum") Long startRownum,@Param("endRownum") Long endRownum);
     
     @Select("select count(*) from products")
     public Long count();
+
 }

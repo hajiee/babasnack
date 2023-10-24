@@ -36,22 +36,25 @@ public class ProductController {
 
 	// 상품 목록 조회 API 엔드 포인트(GET /products)
 	@GetMapping("/product")
-	public ModelAndView getProductList(@RequestParam(value = "category", required = false, defaultValue = "") String category) {
-	    List<Product> productList;
-	    
-	    if (!category.isEmpty() && ("dog".equals(category) || "cat".equals(category))) {
-	        productList = productService.getProductList(category);
-	    } else {
-	        productList = productAdminService.getAllProducts();
-	        category = ""; // 기본값으로 카테고리를 빈 문자열로 설정
-	    }
-	    
-	    ModelAndView modelAndView = new ModelAndView("product/product-list");
-	    modelAndView.addObject("products", productList);
-	    modelAndView.addObject("category", category); // 카테고리 정보도 함께 전달
+    public ModelAndView getProductList(@RequestParam(value = "category", required = false, defaultValue = "") String category,
+                                       @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+        List<Product> productList;
+        
+        if (!category.isEmpty() && ("dog".equals(category) || "cat".equals(category))) {
+            productList = productService.getProductListByCategory(category);
+        } else if (!keyword.isEmpty()) {
+            productList = productService.getProductListByKeyword(keyword);
+        } else {
+            productList = productAdminService.getAllProducts();
+            category = ""; // 기본값으로 카테고리를 빈 문자열로 설정
+        }
+        
+        ModelAndView modelAndView = new ModelAndView("product/product-list");
+        modelAndView.addObject("products", productList);
+        modelAndView.addObject("category", category); // 카테고리 정보도 함께 전달
 
-	    return modelAndView;
-	}
+        return modelAndView;
+    }
 	
 	// 상품명으로 상품 조회 API 엔드 포인트(GET /products/{productName})
 	@GetMapping("/product/name/{productName}")

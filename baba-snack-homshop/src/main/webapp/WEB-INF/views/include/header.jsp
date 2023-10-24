@@ -66,6 +66,21 @@ $(document).ready(function() {
                   console.log("Error:", error);
               }
           });
+         
+         $.ajax({
+             url: "/product",
+             method: "GET",
+             data: {keyword: searchInput},
+             dataType: "html", 
+             success: function(response) {
+                 $("#product-list").html(response);
+              },
+              error:function(xhr,status,error){
+                  console.log("AJAX 요청 실패");
+                  console.log("Status Code:", xhr.status);
+                  console.log("Error:", error);
+              }
+          });
       });
 });
 </script>

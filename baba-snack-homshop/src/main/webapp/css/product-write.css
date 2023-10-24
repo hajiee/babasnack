@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+#product-write-css {
+	width: 1700px;
+}
+
+#product-write-css section {
+	width: 1200px;
+}
+
+#product-write-css section form {
+	margin-top: 40px;
+}
+
+.form-group {
+	margin-bottom: 20px;
+	position: relative; /* 상대적인 위치 지정 */
+	overflow: hidden; /* 자식 요소들을 감출 때 사용 */
+}
+
+.btn-group {
+	margin-top: 20px;
+}
+
+.text-right {
+	text-align: right; /* 오른쪽 정렬 */
+	margin-bottom: 50px;
+}
+
+/* 대표상품사진 왼쪽에 위치하도록 설정 */
+label[for="FormControlInput-photo"] {
+	display:inline-block; /* 인라인 블록 요소로 변경하여 다른 요소와 옆으로 배치될 수 있도록 함*/
+	vertical-align: top; 
+	margin-top :15px; 
+}
+
+/* 카테고리, 재고, 가격, 용량이 있는 테이블은 오른쪽 정렬 */
+#plusAdd{
+	float:right;
+	width: 300px;
+}
+
+#plusAdd tr{
+	text-align: right;
+}
+
+#plusAdd td{
+	display:inline-block;
+}
+
+#FormControlInput-category{
+	width: 150px;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+#FormControlInput-stock, #FormControlInput-price, #FormControlInput-size{
+	float:left;
+	width: 180px;
+	text-align: right;
+}
+
+#FormControlInput-stock-unit, #FormControlInput-price-unit, #FormControlInput-size-unit{
+	width: 100px;
+	float:right !important;
+	text-align: left;
+}

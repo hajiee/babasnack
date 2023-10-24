@@ -41,10 +41,19 @@ public class ProductService {
 	@Value("${sizeOfPagination}")
 	private int sizeOfPagination;
 
-	// 상품 목록 조회 서비스 메서드
-	public List<Product> getProductList(String category) {
+	// 상품 목록(카테고리) 조회 서비스 메서드
+	public List<Product> getProductListByCategory(String category) {
 	    if (category != null && ("dog".equals(category) || "cat".equals(category))) {
 	        return productDao.findByCategory(category);
+	    } else {
+	        return productDao.findAllProducts();
+	    }
+	}
+	
+	// 상품 목록(키워드) 조회 서비스 메서드
+	public List<Product> getProductListByKeyword(String keyword) {
+	    if (keyword != null && !keyword.isEmpty()) {
+	        return productDao.findByKeyword(keyword);
 	    } else {
 	        return productDao.findAllProducts();
 	    }

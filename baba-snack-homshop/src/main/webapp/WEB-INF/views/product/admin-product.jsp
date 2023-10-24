@@ -70,7 +70,7 @@ $(document).ready(function() {
 						<c:forEach items="${page.list}" var="product">
 							<tr>
 								<td class="board-nav">${product.pno}</td>
-								<td><a href="/read?pno=${product.pno}">${product.productName}</a></td>
+								<td><a href="/product-read?pno=${product.pno}">${product.productName}</a></td>
 								<td>${product.productStock}</td>
 								<td>${product.productDay}</td>
 							</tr>
@@ -80,21 +80,21 @@ $(document).ready(function() {
 				<ul class="pagination">
 					<c:if test="${page.prev>0}">
 						<li class="page-item"><a class="page-link"
-							href="/list?pageno=${page.prev}">이전</a></li>
+							href="/admin-product?pageno=${page.prev}">이전</a></li>
 					</c:if>
 					<c:forEach begin="${page.start}" end="${page.end}" var="i">
 						<c:if test="${page.pageno==i }">
 							<li class="page-item active"><a class="page-link"
-								href="/list?pageno=${i}">${i}</a></li>
+								href="/admin-product?pageno=${i}">${i}</a></li>
 						</c:if>
 						<c:if test="${page.pageno!=i }">
 							<li class="page-item"><a class="page-link"
-								href="/list?pageno=${i}">${i}</a></li>
+								href="/admin-product?pageno=${i}">${i}</a></li>
 						</c:if>
 					</c:forEach>
 					<c:if test="${page.next>0}">
 						<li class="page-item"><a class="page-link"
-							href="/list?pageno=${page.next}">다음</a></li>
+							href="/admin-product?pageno=${page.next}">다음</a></li>
 					</c:if>
 				</ul>
 			</section>
