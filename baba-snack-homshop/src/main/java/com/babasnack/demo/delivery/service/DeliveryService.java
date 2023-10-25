@@ -1,5 +1,6 @@
 package com.babasnack.demo.delivery.service;
 
+import java.io.Console;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,17 @@ public class DeliveryService {
 		} else {
 			// 없으면 해당 회원 배송지정보 추가
 			DeliveryDto.DeliveryEntity deliveryDno = deliveryDao.findByDno(dno);
-			DeliveryDto.DeliveryEntity newDelivery = new DeliveryDto.DeliveryEntity(dno, username, deliveryDno.getName(), deliveryDno.getPnoTell(), deliveryDno.getBaseDelivery(), deliveryDno.getAddDelivery());
+			DeliveryDto.DeliveryEntity newDelivery = new DeliveryDto.DeliveryEntity(dno, username,
+					deliveryDno.getName(), deliveryDno.getPnoTell(), deliveryDno.getBaseDelivery(),
+					deliveryDno.getAddDelivery());
 			return deliveryDao.addDelivery(newDelivery) == 1;
 		}
 	}
-		
+
 	// 회원 배송지 정보 변경(업데이트)
 	public Boolean change(String name, Long pnoTell, String baseDelivery, String addDelivery, String username) {
 		Integer changeResult = deliveryDao.change(name, pnoTell, baseDelivery, addDelivery, username);
 		return changeResult == 1;
 	}
-	
-	
 
 }

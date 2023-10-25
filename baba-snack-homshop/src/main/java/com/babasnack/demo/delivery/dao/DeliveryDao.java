@@ -16,7 +16,7 @@ public interface DeliveryDao {
 	public List<DeliveryDto.DeliveryEntity> findByUsername(String username);
 
 	// 회원 배송지 저장
-	@Insert("insert into delivery values(delivery_seq.nextval, #{username}, #{name}, #{pnoTell}, #{baseDelivery}, #{addDelivery}) where username=#{username}")
+	@Insert("insert into delivery(dno, username, name, pno_tell, base_delivery, add_delivery) values(delivery_seq.nextval, #{username}, #{name}, #{pnoTell}, #{baseDelivery}, #{addDelivery}) where username=#{username}")
 	public Integer addDelivery(DeliveryDto.DeliveryEntity deliveryEntity);
 
 	// 배송지 저장용으로 dno를 불러와 데이터를 얻는 select문

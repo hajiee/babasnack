@@ -76,84 +76,86 @@
 				document.getElementById("addDelivery").value = addr;
 			}
 		}).open();
-	}	
+	}
 </script>
 
 <script>
-	$(document).ready(function() {
-		$('#PsMain').on("click", function(){
-			
-			const name = $('#name').val();
-			const pnoTell = $('#pnoTell').val();
-			const baseDelivery = $('#baseDelivery').val();
-			const addDelivery = $('#addDelivery').val();
-			
-			if(name==='') {
-				  alert('이름(성함)을 입력해 주십시오');
-				  return;
-			}
-			if(pnoTell==='') {
-				  alert('전화번호를 입력해 주십시오');
-				  return;
-			} 
-			if(baseDelivery==='') {
-				  alert('기본 주소를 입력해 주십시오');
-				  return;
-			} 
-			if(addDelivery==='') {
-				  alert('두번째 주소를 입력해 주십시오');
-				  return;
-			}
-			
-			//$('form').attr('action', '/delivery/add');
-			
-			
-			const form = $('form').attr('action','/delivery/add').attr('method','post');
-			form.submit();
-			
-			alert("임시 테스트\n메인 페이지로 이동");	
-			location.href = '/';
-		});
-	})
-	
-	$(document).ready(function() {
-		$('#PsChangeAd').on("click", function(){
-			
-			const name = $('#name').val();
-			const pnoTell = $('#pnoTell').val();
-			const baseDelivery = $('#baseDelivery').val();
-			const addDelivery = $('#addDelivery').val();
-			
-			if(name==='') {
-				  alert('이름(성함)을 입력해 주십시오');
-				  return;
-			}
-			if(pnoTell==='') {
-				  alert('전화번호를 입력해 주십시오');
-				  return;
-			} 
-			if(baseDelivery==='') {
-				  alert('기본 주소를 입력해 주십시오');
-				  return;
-			} 
-			if(addDelivery==='') {
-				  alert('두번째 주소를 입력해 주십시오');
-				  return;
-			}
-			
-			const form = $('form').attr('action','/delivery/change').attr('method','post');
-			form.appendTo($('body')).submit();
-			
-			alert("임시 테스트\n마이 페이지로 이동");
-			location.href = '';
-		});
-	})
-	
-	
+	$(document).ready(
+			function() {
+				$('#PsMain').on(
+						"click",
+						function() {
+
+							const name = $('#name').val();
+							const pnoTell = $('#pnoTell').val();
+							const baseDelivery = $('#baseDelivery').val();
+							const addDelivery = $('#addDelivery').val();
+
+							if (name === '') {
+								alert('이름(성함)을 입력해 주십시오');
+								return;
+							}
+							if (pnoTell === '') {
+								alert('전화번호를 입력해 주십시오');
+								return;
+							}
+							if (baseDelivery === '') {
+								alert('기본 주소를 입력해 주십시오');
+								return;
+							}
+							if (addDelivery === '') {
+								alert('두번째 주소를 입력해 주십시오');
+								return;
+							}
+
+							$('#frm')
+									.attr('action', '/delivery/add/{username}')
+									.attr('method', 'post').submit();
+
+							alert("임시 테스트\n메인 페이지로 이동");
+							//location.href = '/';
+						});
+
+				$('#PsChangeAd').on(
+						"click",
+						function() {
+
+							const name = $('#name').val();
+							const pnoTell = $('#pnoTell').val();
+							const baseDelivery = $('#baseDelivery').val();
+							const addDelivery = $('#addDelivery').val();
+
+							if (name === '') {
+								alert('이름(성함)을 입력해 주십시오');
+								return;
+							}
+							if (pnoTell === '') {
+								alert('전화번호를 입력해 주십시오');
+								return;
+							}
+							if (baseDelivery === '') {
+								alert('기본 주소를 입력해 주십시오');
+								return;
+							}
+							if (addDelivery === '') {
+								alert('두번째 주소를 입력해 주십시오');
+								return;
+							}
+
+							$('#frm').attr('action',
+									'/delivery/change/{username}').attr(
+									'method', 'post').submit();
+
+							alert("임시 테스트\n마이 페이지로 이동");
+							//location.href = '';
+						});
+			});
+
 	function inputNumOnly(onlyNum) {
 		onlyNum.value = onlyNum.value.replace(/[^0-9]/g, '');
 	}
 </script>
+
 
 </head>
 <body>
@@ -178,7 +180,7 @@
 				<div style="float: left;">
 
 					<div id="deliveryList1-form" class="mb-3 mt-3">
-						<form>
+						<form id="frm">
 							<div>
 								<h5>
 									<b>주소1(기본주소)</b>
@@ -195,7 +197,7 @@
 					</div>
 
 					<div id="deliveryList2-form" class="mb-3 mt-3">
-						<form>
+						<form id="frm">
 							<h5>
 								<b>주소2</b>
 							</h5>
@@ -213,7 +215,7 @@
 
 				<div style="float: left;">
 					<div id="deliveryNamePhone-form" class="mb-3 mt-3">
-						<form>
+						<form id="frm">
 							<label><b>이름</b></label> <input type="text" class="form-control"
 								id="name" name="name" placeholder="사용자 이름"> <label
 								class="mt-3"><b>연락처</b> ( - 없이 입력)</label> <input type="text"
@@ -228,6 +230,16 @@
 							</div>
 						</form>
 					</div>
+				</div>
+
+				<div style="float: left;">
+					<form id="frm">
+						<label>테스트 아이디 : </label> <input type="text" class="form-control"
+							id="username" name="username" placeholder="사용자 아이디"> <label>테스트 배송지
+							dno(hidden으로 감춤) : </label> <input type="hidden"
+							class="form-control" id="dno" name="dno">
+					</form>
+
 				</div>
 
 			</section>

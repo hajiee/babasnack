@@ -34,14 +34,18 @@ public class DeliveryController {
 	
 
 	// 배송지 저장 후 메인 페이지로
-	@PostMapping("/delivery/add")
+	@PostMapping("/delivery/add/{username}")
 	public ModelAndView add(@PathVariable("username") String username, Long dno) {
+		System.out.println("=================");
+		System.out.println("username : " + username + ", dno : " + dno);
+		System.out.println("=================");
 		deliveryService.add(username, dno);
+		System.out.println("=================");
 		return new ModelAndView("redirect:/");
 	}
 
 	// 배송지 수정 후 마이 페이지로
-	@PostMapping("/delivery/change")
+	@PostMapping("/delivery/change/{username}")
 	public ModelAndView change(String name, Long pnoTell, String baseDelivery, String addDelivery,
 			Principal principal) {
 		deliveryService.change(name, pnoTell, baseDelivery, addDelivery, principal.getName());
