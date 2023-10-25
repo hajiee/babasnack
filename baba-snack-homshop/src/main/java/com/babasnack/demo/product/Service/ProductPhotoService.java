@@ -2,9 +2,11 @@ package com.babasnack.demo.product.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -53,16 +55,22 @@ public class ProductPhotoService {
 	    }
 	}
 
-	public String saveFile(MultipartFile file) throws FileSaveException {
-	    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-	    String savedFileName = UUID.randomUUID().toString() + "." + extension;
-	    File destFile = new File(productSaveImg, savedFileName);
-
+	public String saveFile(MultipartFile file) {
 	    try {
-	        file.transferTo(destFile);
-	        return productImgUrl + savedFileName;
+	        String uploadDir = "c:/upload/productImg"; 
+	        Path uploadPath = Paths.get(uploadDir);
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+
+	        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+	        Path filePath = uploadPath.resolve(uniqueFileName);
+
+	        Files.copy(file.getInputStream(), filePath);
+
+	        return uniqueFileName;
 	    } catch (IOException e) {
-	        log.error("Failed to save file: " + destFile.getAbsolutePath(), e);
 	        throw new FileSaveException("Failed to save file", e);
 	    }
 	}

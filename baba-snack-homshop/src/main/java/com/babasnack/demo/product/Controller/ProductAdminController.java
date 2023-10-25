@@ -1,5 +1,6 @@
 package com.babasnack.demo.product.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductAdminService;
+import com.babasnack.demo.product.Service.ProductPhotoService;
 import com.babasnack.demo.product.dto.Category;
 import com.babasnack.demo.product.dto.ProductDto;
 
@@ -25,6 +28,8 @@ import com.babasnack.demo.product.dto.ProductDto;
 public class ProductAdminController {
 	@Autowired
 	private ProductAdminService productAdminService;
+	@Autowired
+	private ProductPhotoService productPhotoService;
 
 	// 상품 등록 페이지로 이동
 	@GetMapping("/product/product-write")
@@ -36,10 +41,24 @@ public class ProductAdminController {
 	// 상품 등록 처리
 	@PostMapping("/product/add")
 	public ModelAndView addProduct(@ModelAttribute("productDto") ProductDto.WriteP productDto,
-			@RequestParam("photos") List<ProductPhoto> photos) {
-		Long productId = productAdminService.addProduct(productDto, photos);
+	        @RequestParam("productPhoto") List<MultipartFile> productPhotos) {
+	    List<ProductPhoto> photos = new ArrayList<>();
 
-		return new ModelAndView("redirect:/product/admin-product/" + productId);
+	    for (MultipartFile photo : productPhotos) {
+	        if (!photo.isEmpty()) {
+	            ProductPhoto productPhoto = new ProductPhoto();
+	            productPhoto.setProductImgNo(null); // Set the productImgNo as needed
+	            productPhoto.setProductImg(photo.getOriginalFilename());
+	            productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
+
+	            
+	            productPhoto.setProductImg(photo.getOriginalFilename());
+	            photos.add(productPhoto);
+	        }
+	    }
+	    Long productId = productAdminService.addProduct(productDto, photos);
+
+	    return new ModelAndView("redirect:/product/admin-product/" + productId);
 	}
 
 	@GetMapping("/product/product-read/{pno}")
@@ -70,7 +89,7 @@ public class ProductAdminController {
 	}
 
 	// 상품 수정 처리
-	@PostMapping("/product/{pno}/edit")
+	@PostMapping("/product/{pno}/product-edit")
 	public ModelAndView editProduct(@PathVariable("pno") Long pno,
 			@ModelAttribute("productDto") ProductDto.WriteP productDto,
 			@RequestParam("photos") List<ProductPhoto> photos) {

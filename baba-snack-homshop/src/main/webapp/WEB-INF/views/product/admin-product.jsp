@@ -64,6 +64,7 @@ $(document).ready(function() {
 							<th>상품명</th>
 							<th>재고</th>
 							<th>등록일자</th>
+							<td><td>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,6 +74,9 @@ $(document).ready(function() {
 								<td><a href="/product-read?pno=${product.pno}">${product.productName}</a></td>
 								<td>${product.productStock}</td>
 								<td>${product.productDay}</td>
+								<td>
+                  					<a href="/product-edit?pno=${product.pno}">수정</a> <!-- 수정 버튼 링크 추가 -->
+                				</td>
 							</tr>
 						</c:forEach>
 					</tbody>

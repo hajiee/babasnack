@@ -28,14 +28,14 @@
 <script>
 // 대표 사진 미리보기 함수
 function previewImage(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      $('#preview').attr('src', e.target.result);
-    }
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+	  if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    reader.onload = function(e) {
+	      $('#preview').attr('src', e.target.result);
+	    }
+	    reader.readAsDataURL(input.files[0]);
+	  }
+	}
 
 jQuery(document).ready(function($) {	
   // 메인화면 페이지 로드 함수
@@ -45,34 +45,34 @@ jQuery(document).ready(function($) {
     maxHeight: 400
   });
 
-  // 대표 사진 파일 선택 시 미리보기 처리
+//대표 사진 파일 선택 시 미리보기 처리
   $('#FormControlInput-photo').change(function() {
     previewImage(this);
   });
 
-   // 등록 버튼 클릭 시 동작
-   $('#submitBtn').click(function(e) {
-     e.preventDefault(); // 기본 동작(폼 제출) 막기
+  $('#submitBtn').click(function(e) {
+	  e.preventDefault(); // 기본 동작(폼 제출) 막기
 
-     // 상품명과 내용 입력 여부 확인
-     var productName = $('#FormControlInput-title').val();
-     var productNotice = $('#summernote').val();
+	  // 상품명과 내용 입력 여부 확인
+	  var productName = $('#FormControlInput-title').val();
+	  var productNotice = $('#summernote').val();
 
-     if (productName.trim() === '') { // 제목이 비어있는 경우
-       alert('상품명을 입력해주세요.');
-       $('#FormControlInput-title').focus(); // 커서를 제목 필드로 이동
-       return;
-     }
+	  if (productName.trim() === '') { // 제목이 비어있는 경우
+		    alert('상품명을 입력해주세요.');
+		    $('#FormControlInput-title').focus(); // 커서를 제목 필드로 이동
+		    return;
+		}
 
-     if (productNotice.trim() === '') { // 내용이 비어있는 경우
-       alert('내용을 입력해주세요.');
-       $('#summernote').focus(); // 커서를 내용 필드로 이동
-       return;
-     }
+	 	var productNotice = $('#summernote').summernote('code'); // 내용을 가져오는 부분 추가
+		if (!productNotice || productNotice.trim() === '') { // 내용이 비어있는 경우
+		    alert('내용을 입력해주세요.');
+		    $('#summernote').summernote('focus'); // 커서를 내용 필드로 이동
+		    return;
+		}
 
-     	// 폼 제출하기
-     	document.getElementById('productForm').submit();
-	 });
+	  // 폼 제출하기
+	  $('#productForm').submit();
+	});
 });
 </script>
 </head>
@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
 			<aside>
 			</aside>
 			<section>
-				<form id="productForm" action='<c:url value='/product/productInsert'/>' method="post">
+				<form id="productForm" action="/product/add" method="post" enctype="multipart/form-data">
 					<div class="form-group">
 						<label for="FormControlInput-title" style="margin: 10px; color: darkgray;">[상품명]</label>
 						<input type="text" class="form-control" id="FormControlInput-title"
@@ -102,15 +102,17 @@ jQuery(document).ready(function($) {
 						<!-- 파일 선택 시 미리보기할 이미지 영역 -->
 						<img id='preview' src='' alt=''	style='max-width: 500px; max-height: 300px; border: 1px dotted black;' />
 						<!-- 파일 선택 필드 -->
-						<input type='file' class='form-control-file' id='FormControlInput-photo' name='mainPhoto'>
+						<input type='file' class='form-control-file' id='FormControlInput-photo' name='productPhoto' multiple="multiple">
 					
 						<table id="plusAdd"><!-- 카테고리, 재고, 가격, 용량 -->
 							<tr>
-								<td><select name='category' id='FormControlInput-category' class='form-control'>
-										<option value='' selected disabled>카테고리선택</option>
-										<option value='Category 1'>강아지</option>
-										<option value='Category 2'>고양이</option>
-								</select></td>
+								<td>
+									<select name='category' id='FormControlInput-category' class='form-control'>
+    									<option value='' selected disabled>카테고리선택</option>
+    									<option value='CAT'>강아지</option>
+    									<option value='DOG'>고양이</option>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>
@@ -152,7 +154,7 @@ jQuery(document).ready(function($) {
 						<div id="summernote"></div>
 					</div>
 					<div class="text-right">
-						<button type='button' class='btn btn-outline-info' onclick="submitForm('/product/product-write')">등록</button>
+						<button type='submit' class='btn btn-outline-info' id="submitBtn">등록</button>
 					</div>
 				</form>
 			</section>
