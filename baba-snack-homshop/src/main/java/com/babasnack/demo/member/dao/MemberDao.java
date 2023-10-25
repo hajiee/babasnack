@@ -14,7 +14,7 @@ import com.babasnack.demo.entity.Member;
 public interface MemberDao {
     @Insert("INSERT INTO member (username, password, pno_tell, ps_email, join_day) " +
             "VALUES (#{username}, #{password},#{pnoTell}, #{email}, #{joinDay})")
-   public Long save(Member member);
+   public Integer save(Member member);
 
     @Select("SELECT*FROM member")
     public List<Member> findAllForMember();

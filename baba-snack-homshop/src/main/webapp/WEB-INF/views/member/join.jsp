@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +6,11 @@
 <link rel="stylesheet" href="/css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <title>BABA-SNACK-Join-Page</title>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <style>
   .fail { color: red; }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -38,9 +37,8 @@
             });
         });
     });
-</script>
-<script>
-$(document).ready(function() {
+    
+    $(document).ready(function() {
 	  $('#join').on('click', function() {
 	    const password = $('#password').val();
 	    const confirmPassword = $('#confirm-password').val();
@@ -66,8 +64,8 @@ $(document).ready(function() {
 	});
 </script>
 
-
-
+<link rel="stylesheet" href="/css/main.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 	#join-form>form{
 		width:400px;
@@ -88,7 +86,8 @@ $(document).ready(function() {
 		<main style="border: none">
 			<h1>회원 가입</h1>
 			<section id="join-form">
-<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form">
+				<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form" onsubmit="submitForm(event)">
+				
 					<div class="mb-3 mt-3">
 						<label for="username" class="form-label">아이디:</label>
 						<input type="text" class="form-control" id="username" name="username" maxlength="10">

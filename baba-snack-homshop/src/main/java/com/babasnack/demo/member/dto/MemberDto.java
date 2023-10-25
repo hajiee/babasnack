@@ -8,6 +8,7 @@ import lombok.Getter;
 
 public class MemberDto {
     @Getter
+    @Data
     public static class Join {
         private String username;
         private String password;
