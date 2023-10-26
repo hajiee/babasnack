@@ -17,17 +17,13 @@ import com.babasnack.demo.product.dto.ProductDto;
 
 @Service
 public class ProductAdminService {
-    private final ProductAdminDao productAdminDao;
-    private final ProductDao productDao;
-    private final ProductPhotoDao productPhotoDao;
+	@Autowired
+    private ProductAdminDao productAdminDao;
+	@Autowired
+	private ProductDao productDao;
+	@Autowired
+	private ProductPhotoDao productPhotoDao;
 
-    @Autowired
-    public ProductAdminService(ProductAdminDao productAdminDao, ProductDao productDao, ProductPhotoDao productPhotoDao) {
-        this.productAdminDao = productAdminDao;
-        this.productDao = productDao;
-        this.productPhotoDao = productPhotoDao;
-    }
-    
 	@Transactional
 	public Long addProduct(ProductDto.WriteP productDto, List<ProductPhoto> photos) {
 		// 상품 정보 등록
@@ -47,12 +43,14 @@ public class ProductAdminService {
 		// 상품 정보 업데이트
 		Long upProductId = productAdminDao.updateProduct(productDto);
 
-		// 등록된 상품의 사진 삭제 및 새로운 사진 등록 및 연관성 설정
-		deleteAllPhotosByPno(pno);
-		for (ProductPhoto photo : photos) {
-			photo.setPno(pno);
-			productPhotoDao.saveProductPhoto(photo);
-		}
+		// 등록된 상품의 사진 삭제
+        deleteAllPhotosByPno(pno);
+
+        // 새로운 사진 등록 및 연관성 설정
+        for (ProductPhoto photo : photos) {
+            photo.setPno(pno);
+            productPhotoDao.saveProductPhoto(photo);
+        }
 
 		return upProductId;
 	}

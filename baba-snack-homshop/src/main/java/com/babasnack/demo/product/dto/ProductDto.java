@@ -2,7 +2,6 @@ package com.babasnack.demo.product.dto;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.Product;
@@ -16,9 +15,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public class ProductDto {
-	@Autowired
-	Category category;
-	
 	//상품등록
 	@Data
 	public static class WriteP{	

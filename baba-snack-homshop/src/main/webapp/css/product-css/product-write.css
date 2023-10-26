@@ -38,6 +38,7 @@ label[for="FormControlInput-photo"] {
 #plusAdd{
 	float:right;
 	width: 300px;
+	clear: both;
 }
 
 #plusAdd tr{

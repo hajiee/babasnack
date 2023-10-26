@@ -4,9 +4,9 @@ CREATE TABLE product (
     product_notice    clob    NOT NULL,
     product_stock	number(3)	NOT NULL,
     product_price	number(7)	NOT NULL,
-    product_size	number(4)	NOT NULL,
-    reserve   number(7)   NOT NULL,    -- '상품(갯수무관)하나 주문할때 해당 상품가격의 10% 적립'
-    product_cnt number(2) NOT NULL,
+    product_size	NUMBER(8),
+    reserve    NUMBER(8, 2) DEFAULT NULL,    -- '상품(갯수무관)하나 주문할때 해당 상품가격의 10% 적립'
+    product_cnt NUMBER(8),
     category varchar2(10 char) not NULL,
     product_day date NOT NULL
 );
@@ -44,7 +44,7 @@ ALTER TABLE board ADD CONSTRAINT PK_BOARD PRIMARY KEY(bno);
 CREATE TABLE board_review (
     brno  number(8)   NOT NULL,
     bno   number(8)   NOT NULL,
-    admin varchar2(8 char)    NOT NULL    , -- '관리자가 기본값',
+    admin varchar2(8 char), -- '관리자가 기본값',
     admin_notice  varchar2(1000 char) NOT NULL,
     admin_date    date    NOT NULL
 );
