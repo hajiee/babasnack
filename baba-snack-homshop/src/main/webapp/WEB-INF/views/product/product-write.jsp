@@ -45,8 +45,8 @@ jQuery(document).ready(function($) {
     maxHeight: 400
   });
 
-//대표 사진 파일 선택 시 미리보기 처리
-  $('#FormControlInput-photo').change(function() {
+	//대표 사진 파일 선택 시 미리보기 처리
+  $('#FormControlInput-productPhoto').change(function() {
     previewImage(this);
   });
 
@@ -54,21 +54,21 @@ jQuery(document).ready(function($) {
 	  e.preventDefault(); // 기본 동작(폼 제출) 막기
 
 	  // 상품명과 내용 입력 여부 확인
-	  var productName = $('#FormControlInput-title').val();
+	  var productName = $('#FormControlInput-productName').val();
 	  var productNotice = $('#summernote').val();
 
 	  if (productName.trim() === '') { // 제목이 비어있는 경우
-		    alert('상품명을 입력해주세요.');
-		    $('#FormControlInput-title').focus(); // 커서를 제목 필드로 이동
-		    return;
-		}
+	    alert('상품명을 입력해주세요.');
+	    $('#FormControlInput-productName').focus(); // 커서를 제목 필드로 이동
+	    return;
+	  }
 
-	 	var productNotice = $('#summernote').summernote('code'); // 내용을 가져오는 부분 추가
-		if (!productNotice || productNotice.trim() === '') { // 내용이 비어있는 경우
-		    alert('내용을 입력해주세요.');
-		    $('#summernote').summernote('focus'); // 커서를 내용 필드로 이동
-		    return;
-		}
+	  var productNotice = $('#summernote').summernote('code'); // 내용을 가져오는 부분 추가
+	  if (!productNotice || productNotice.trim() === '') { // 내용이 비어있는 경우
+	    alert('내용을 입력해주세요.');
+	    $('#summernote').summernote('focus'); // 커서를 내용 필드로 이동
+	    return;
+	  }
 
 	  // 폼 제출하기
 	  $('#productForm').submit();
@@ -90,19 +90,19 @@ jQuery(document).ready(function($) {
 			<aside>
 			</aside>
 			<section>
-				<form id="productForm" action="/product/add" method="post" enctype="multipart/form-data">
+				<form id="productForm" action="/product/add" method="get" enctype="multipart/form-data">
 					<div class="form-group">
-						<label for="FormControlInput-title" style="margin: 10px; color: darkgray;">[상품명]</label>
-						<input type="text" class="form-control" id="FormControlInput-title"
-							name="title" placeholder="상품명을 작성해주세요.">
+						<label for="FormControlInput-productName" style="margin: 10px; color: darkgray;">[상품명]</label>
+						<input type="text" class="form-control" id="FormControlInput-productName"
+							name="productName" placeholder="상품명을 작성해주세요.">
 					</div>
 					<div class="form-group">
 						<!-- 대표 상품사진 -->
-						<label for='FormControlInput-photo'	style='margin: 10px; color: darkgray;'>[상품 대표사진]</label>
+						<label for='FormControlInput-productPhoto'	style='margin: 10px; color: darkgray;'>[상품 대표사진]</label>
 						<!-- 파일 선택 시 미리보기할 이미지 영역 -->
 						<img id='preview' src='' alt=''	style='max-width: 500px; max-height: 300px; border: 1px dotted black;' />
 						<!-- 파일 선택 필드 -->
-						<input type='file' class='form-control-file' id='FormControlInput-photo' name='productPhoto' multiple="multiple">
+						<input type='file' class='form-control-file' id='FormControlInput-productPhoto' name='productPhoto' multiple="multiple">
 					
 						<table id="plusAdd"><!-- 카테고리, 재고, 가격, 용량 -->
 							<tr>
@@ -116,7 +116,7 @@ jQuery(document).ready(function($) {
 							</tr>
 							<tr>
 								<td>
-									<input type="number" class="form-control" id="FormControlInput-stock" name="stock" placeholder="재고/입고량">
+									<input type="number" class="form-control" id="FormControlInput-stock" name="productStock" placeholder="재고/입고량">
 									<select class="form-select input-group-text" id="FormControlInput-stock-unit">
 										<option value="">단위</option>
 										<option value="개">개</option>
@@ -129,7 +129,7 @@ jQuery(document).ready(function($) {
 							</tr>
 							<tr>
 								<td>
-									<input type="number" class="form-control" id="FormControlInput-price" name="price" placeholder="상품가격">
+									<input type="number" class="form-control" id="FormControlInput-price" name="productPrice" placeholder="상품가격">
 									<select class="form-select input-group-text" id="FormControlInput-price-unit">
 										<option value="">단위</option>
 										<option value="원">원</option>
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
 							</tr>
 							<tr>
 								<td>
-									<input type="number" class="form-control" id="FormControlInput-size" name="size" placeholder="상품용량">
+									<input type="number" class="form-control" id="FormControlInput-size" name="productSize" placeholder="상품용량">
 									<select class ="form-select input-group-text" id="FormControlInput-size-unit">
 									<option value=""> 단위 </option >
 									<option value= “g”>G</option >

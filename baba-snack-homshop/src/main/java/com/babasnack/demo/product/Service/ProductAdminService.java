@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
@@ -23,18 +24,31 @@ public class ProductAdminService {
 	private ProductDao productDao;
 	@Autowired
 	private ProductPhotoDao productPhotoDao;
+	@Autowired
+	private ProductPhotoService productPhotoService;
 
 	@Transactional
 	public Long addProduct(ProductDto.WriteP productDto, List<ProductPhoto> photos) {
-		// 상품 정보 등록
-		Long productID = productAdminDao.addProduct(productDto);
+	    // 등록된 상품의 ID를 사용하여 사진 등록
+	    for (MultipartFile photo : productDto.getProductPhoto()) {
+	        if (!photo.isEmpty()) {
+	            ProductPhoto productPhoto = new ProductPhoto();
+	            productPhoto.setProductImg(photo.getOriginalFilename());
+	            productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
+	            photos.add(productPhoto);
+	        }
+	    }
 
-		// 등록된 상품의 ID를 사용하여 사진 등록
-		for (ProductPhoto photo : photos) {
-			photo.setPno(productID);
-			productPhotoDao.saveProductPhoto(photo);
-		}
-		return productID;
+	    // 상품 정보 등록
+	    Product product = productDto.toProduct();
+	    Long productID = productAdminDao.addProduct(product);
+
+	    // 등록된 상품의 ID를 사용하여 사진 등록
+	    for (ProductPhoto photo : photos) {
+	        photo.setPno(productID);
+	        productPhotoDao.saveProductPhoto(photo);
+	    }
+	    return productID;
 	}
 
 	// 상품 수정

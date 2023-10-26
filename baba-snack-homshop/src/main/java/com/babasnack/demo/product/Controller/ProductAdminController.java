@@ -48,18 +48,15 @@ public class ProductAdminController {
 	    for (MultipartFile photo : productPhotos) {
 	        if (!photo.isEmpty()) {
 	            ProductPhoto productPhoto = new ProductPhoto();
-	            productPhoto.setProductImgNo(null); // Set the productImgNo as needed
 	            productPhoto.setProductImg(photo.getOriginalFilename());
 	            productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
-
-	            
-	            productPhoto.setProductImg(photo.getOriginalFilename());
 	            photos.add(productPhoto);
 	        }
 	    }
-	    Long productId = productAdminService.addProduct(productDto, photos);
 
-	    return new ModelAndView("redirect:/product/admin-product/" + productId);
+	    Long newProductId = productAdminService.addProduct(productDto, photos);
+
+	    return new ModelAndView("redirect:/product/admin-product/" + newProductId);
 	}
 
 	@GetMapping("/product/product-read/{pno}")

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
 	//상품등록
 	@Data
+	@AllArgsConstructor
 	public static class WriteP{	
 		private String productName;
 		private String productNotice;
