@@ -1,8 +1,8 @@
 package com.babasnack.demo.product.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.entity.ProductPhoto;
@@ -25,7 +25,8 @@ public class ProductDto {
 		private Long productPrice;
 		private Long productSize;
 		private Category category;
-		private List<MultipartFile> productPhoto;
+		private BigDecimal reserve;
+		private List<ProductPhoto> productPhotos;
 		public Product toProduct() {
 			Product product = new Product();
 		    product.setProductName(this.productName);
@@ -33,6 +34,7 @@ public class ProductDto {
 		    product.setProductStock(this.productStock);
 		    product.setProductPrice(this.productPrice);
 		    product.setProductSize(this.productSize);
+		    product.setReserve(this.reserve);
 		    // 나머지 필드 초기화
 		    return product;
 		}

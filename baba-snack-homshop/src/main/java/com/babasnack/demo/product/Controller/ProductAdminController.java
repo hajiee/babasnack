@@ -25,7 +25,7 @@ import com.babasnack.demo.product.dto.ProductDto;
 
 @Secured("ROLE_ADMIN")
 @Controller
-@RequestMapping
+@RequestMapping("/product")
 public class ProductAdminController {
 	@Autowired
 	private ProductAdminService productAdminService;
@@ -33,37 +33,46 @@ public class ProductAdminController {
 	private ProductPhotoService productPhotoService;
 
 	// 상품 등록 페이지로 이동
-	@GetMapping("/product/product-write")
+	@GetMapping("/product-write")
 	public String showAddProductForm(Model model) {
 		model.addAttribute("categories", Category.values());
 		return "product/product-write"; // product-write.jsp로 변경
 	}
 
 	// 상품 등록 처리
-	@PostMapping("/product/add")
+	@PostMapping("/add")
 	public ModelAndView addProduct(@ModelAttribute("productDto") ProductDto.WriteP productDto,
-	        @RequestParam("productPhoto") List<MultipartFile> productPhotos) {
-	    List<ProductPhoto> photos = new ArrayList<>();
+	        @RequestParam("photos") List<MultipartFile> uploadedPhotos) {
+	    List<ProductPhoto> productPhotos = convertToProductPhotos(uploadedPhotos);
+	    productDto.setProductPhotos(productPhotos);
 
-	    for (MultipartFile photo : productPhotos) {
+	    List<MultipartFile> validPhotos = new ArrayList<>(); // 유효한 사진을 저장할 리스트
+
+	    for (MultipartFile photo : uploadedPhotos) {
 	        if (!photo.isEmpty()) {
 	            ProductPhoto productPhoto = new ProductPhoto();
 	            productPhoto.setProductImg(photo.getOriginalFilename());
 	            productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
-	            photos.add(productPhoto);
+	            productPhotos.add(productPhoto);
+	            validPhotos.add(photo); // 유효한 사진만 추가
 	        }
 	    }
 
-	    Long newProductId = productAdminService.addProduct(productDto, photos);
+	    Long newProductId = productAdminService.addProduct(productDto, validPhotos);
 
+	    // 새로 생성된 상품 번호를 상품 상세 페이지로 리다이렉트
 	    return new ModelAndView("redirect:/product/admin-product/" + newProductId);
 	}
-
-	@GetMapping("/product/product-read/{pno}")
+	
+	@GetMapping("/product-read/{pno}")
 	public String showProductDetails(@PathVariable("pno") String pno, Model model) {
 	    try {
 	        Long productId = Long.parseLong(pno);
 	        Product product = productAdminService.getProductById(productId);
+	        if (product == null) {
+	            // 상품이 존재하지 않을 경우 에러 처리
+	            return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	        }
 	        model.addAttribute("product", product);
 	        return "product/product-read"; // product-read.jsp로 변경
 	    } catch (NumberFormatException e) {
@@ -72,31 +81,56 @@ public class ProductAdminController {
 	    }
 	}
 
-	@GetMapping("/product/product-write/{pno}")
-	public String showEditProductForm(@PathVariable("pno") String pno, Model model) {
-	    try {
-	        Long productId = Long.parseLong(pno);
-	        Product product = productAdminService.getProductById(productId);
-	        model.addAttribute("product", product);
-	        model.addAttribute("categories", Category.values());
-	        return "product/product-write"; 
-	    } catch (NumberFormatException e) {
-	       // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
-	       return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
-	   }
+	@GetMapping("/product-write/{pno}")
+	public String showEditProductForm(@PathVariable("pno") Long pno, Model model) {
+	    Product product = productAdminService.getProductById(pno);
+	    if (product == null) {
+	        // 상품이 존재하지 않을 경우 에러 처리
+	        return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	    }
+	    
+	    model.addAttribute("product", product);
+	    model.addAttribute("categories", Category.values());
+	    return "product/product-write";
 	}
 
 	// 상품 수정 처리
-	@PostMapping("/product/{pno}/product-edit")
+	@PostMapping("/{pno}/product-edit")
 	public ModelAndView editProduct(@PathVariable("pno") Long pno,
-			@ModelAttribute("productDto") ProductDto.WriteP productDto,
-			@RequestParam("photos") List<ProductPhoto> photos) {
-		Long updatedProductId = productAdminService.updateProduct(pno, productDto, photos);
-		return new ModelAndView("redirect:/product/admin-product/" + updatedProductId);
+        @ModelAttribute("productDto") ProductDto.WriteP productDto,
+        @RequestParam("photos") List<MultipartFile> uploadedPhotos) {
+		List<ProductPhoto> photos = convertToProductPhotos(uploadedPhotos);
+
+	    for (MultipartFile photo : uploadedPhotos) {
+	        if (!photo.isEmpty()) {
+	            ProductPhoto productPhoto = new ProductPhoto();
+	            productPhoto.setProductImg(photo.getOriginalFilename());
+	            productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
+	            photos.add(productPhoto);
+	        }
+	    }
+
+	    Long updatedProductId = productAdminService.updateProduct(pno, productDto, photos);
+	    return new ModelAndView("redirect:/product/admin-product/" + updatedProductId);
 	}
+	
+	private List<ProductPhoto> convertToProductPhotos(List<MultipartFile> uploadedPhotos) {
+        List<ProductPhoto> photos = new ArrayList<>();
+
+        for (MultipartFile photo : uploadedPhotos) {
+            if (!photo.isEmpty()) {
+                ProductPhoto productPhoto = new ProductPhoto();
+                productPhoto.setProductImg(photo.getOriginalFilename());
+                productPhoto.setProductSaveImg(productPhotoService.saveFile(photo));
+                photos.add(productPhoto);
+            }
+        }
+
+        return photos;
+    }
 
 	// 상품 삭제 처리
-	@PostMapping("/product/{pno}/delete")
+	@PostMapping("/{pno}/delete")
 	public ModelAndView deleteProduct(@PathVariable("pno") Long pno) {
 		productAdminService.deleteProduct(pno);
 		return new ModelAndView("redirect:/product/admin-product/");

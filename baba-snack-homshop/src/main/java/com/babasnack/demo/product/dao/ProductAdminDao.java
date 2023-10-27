@@ -9,24 +9,23 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.product.dto.ProductDto;
 
 @Mapper
 public interface ProductAdminDao {
 	// 상품 등록
-    @Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, category) "
-            + "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{category.name()})")
+	@Insert("INSERT INTO product (pno, product_name, product_notice, product_stock, product_price, product_size, category, reserve) "
+            + "VALUES (product_seq.nextval, #{productName}, #{productNotice}, #{productStock}, #{productPrice}, #{productSize}, #{category}, #{reserve, jdbcType=NUMERIC})")
     public Long addProduct(Product product);
 
     // 상품 수정
-    @Update("UPDATE product SET " +
-            "product_name = #{productName}," +
-            "product_notice = #{productNotice}," +
-            "product_stock = #{productStock}," +
-            "prodcut_price = #{prodcutPrice}," + 
-            "prodcut_size =#{prodcutSize}," + 
-            "category =#{category} WHERE pno=#{pno}")
-    public Long updateProduct(ProductDto.WriteP UpProductWrite);
+	@Update("UPDATE product SET " +
+	        "product_name = #{productName}," +
+	        "product_notice = #{productNotice}," +
+	        "product_stock = #{productStock}," +
+	        "product_price = #{productPrice}," + 
+	        "product_size = #{productSize}," + 
+	        "category = #{category} WHERE pno = #{pno}")
+	public Long updateProduct(Product product);
 
     // 상품번호로 조회
     @Select("SELECT * FROM product WHERE pno=#{pno}")

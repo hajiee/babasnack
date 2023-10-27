@@ -5,12 +5,18 @@ CREATE TABLE product (
     product_stock	number(3)	NOT NULL,
     product_price	number(7)	NOT NULL,
     product_size	NUMBER(8),
-    reserve    NUMBER(8, 2) DEFAULT NULL,    -- '상품(갯수무관)하나 주문할때 해당 상품가격의 10% 적립'
-    product_cnt NUMBER(8),
+    reserve  NUMBER(8, 2) NULL,    -- '상품(갯수무관)하나 주문할때 해당 상품가격의 10% 적립'
+    product_cnt NUMBER(10, 2) NULL,
     category varchar2(10 char) not NULL,
     product_day date NOT NULL
 );
 
+CREATE OR REPLACE TRIGGER trg_product_before_insert
+BEFORE INSERT ON PRODUCT
+FOR EACH ROW
+BEGIN
+    :NEW.PRODUCT_DAY := SYSDATE;
+END;
 
 ALTER TABLE product ADD CONSTRAINT PK_PRODUCT PRIMARY KEY(pno);
 

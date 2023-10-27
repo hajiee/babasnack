@@ -1,6 +1,5 @@
 package com.babasnack.demo.product.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,38 +55,34 @@ public class ProductPhotoService {
 	}
 
 	public String saveFile(MultipartFile file) {
-	    try {
-	        String uploadDir = "c:/upload/productImg"; 
-	        Path uploadPath = Paths.get(uploadDir);
-	        if (!Files.exists(uploadPath)) {
-	            Files.createDirectories(uploadPath);
-	        }
+        try {
+            Path uploadPath = Paths.get(productSaveImg);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
-	        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
-	        Path filePath = uploadPath.resolve(uniqueFileName);
-
-	        Files.copy(file.getInputStream(), filePath);
-
-	        return uniqueFileName;
-	    } catch (IOException e) {
-	        throw new FileSaveException("Failed to save file", e);
-	    }
-	}
+            String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(productSaveImg, uniqueFileName);
+            Files.copy(file.getInputStream(), filePath);
+            return uniqueFileName;
+        } catch (IOException e) {
+            throw new FileSaveException("Failed to save file", e);
+        }
+    }
 
 	public void deleteFile(String filePath) throws Exception {
-	    File deleteFile = new File(filePath);
-	    if (deleteFile.exists()) {
-	        try{
-	        	deleteFile.delete();
-	        	log.info("파일을 삭제하였습니다.");
-	        }catch(Exception e){
-	        	log.error("파일 삭제 중 오류가 발생했습니다.", e);
-	        	throw e; // 예외 다시 던지기
-	        }
-	    } else {
-	        log.info("파일이 존재하지 않습니다.");
+	    Path fileToDelete = Paths.get(productSaveImg, filePath);
+	    try {
+	        Files.deleteIfExists(fileToDelete);
+	        log.info("파일을 삭제하였습니다.");
+	    } catch (IOException e) {
+	        log.error("파일 삭제 중 오류가 발생했습니다.", e);
+	        throw new Exception("Failed to delete the file", e);
 	    }
-   }
+	}
+	
+    public String getFilePath(String filename) {
+        return Paths.get(productSaveImg, filename).toString();
+    }
 
 }

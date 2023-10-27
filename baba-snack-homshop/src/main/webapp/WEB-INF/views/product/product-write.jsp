@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
 			<aside>
 			</aside>
 			<section>
-				<form id="productForm" action="/product/add" method="get" enctype="multipart/form-data">
+				<form id="productForm" action="/product/add/" method="post" enctype="multipart/form-data">
 					<div class="form-group">
 						<label for="FormControlInput-productName" style="margin: 10px; color: darkgray;">[상품명]</label>
 						<input type="text" class="form-control" id="FormControlInput-productName"
@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
 						<!-- 파일 선택 시 미리보기할 이미지 영역 -->
 						<img id='preview' src='' alt=''	style='max-width: 500px; max-height: 300px; border: 1px dotted black;' />
 						<!-- 파일 선택 필드 -->
-						<input type='file' class='form-control-file' id='FormControlInput-productPhoto' name='productPhoto' multiple="multiple">
+						<input type="file" class="form-control-file" id="FormControlInput-productPhoto" name="photos" multiple="multiple">
 					
 						<table id="plusAdd"><!-- 카테고리, 재고, 가격, 용량 -->
 							<tr>

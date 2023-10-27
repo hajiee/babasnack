@@ -27,17 +27,13 @@
 </script>
 <script>
 $(document).ready(function() {
-	  // 날짜 정보 가져오기
-	  $("tbody tr").each(function() {
-	    var productDay = $(this).find("td:eq(3)").text();
-
-	    // 가져온 정보로 출력하기
-	    var date = new Date(productDay);
-	    var formattedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-	    
-	    $(this).find("td:eq(3)").text(formattedDate);
-	  });
-	});
+    $("tbody tr").each(function() {
+      var productDay = $(this).find("td:eq(3)").text();
+      var date = new Date(productDay);
+      var formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      $(this).find("td:eq(3)").text(formattedDate);
+    });
+  });
 </script>
 </head>
 <body>
@@ -75,7 +71,9 @@ $(document).ready(function() {
 								<td>${product.productStock}</td>
 								<td>${product.productDay}</td>
 								<td>
-                  					<a href="/product-edit?pno=${product.pno}">수정</a> <!-- 수정 버튼 링크 추가 -->
+                  					<a href="/product-edit?pno=${product.pno}">
+                  						<button type="button" class="btn btn-outline-warning">수정</button>
+                  					</a> <!-- 수정 버튼 링크 추가 -->
                 				</td>
 							</tr>
 						</c:forEach>
