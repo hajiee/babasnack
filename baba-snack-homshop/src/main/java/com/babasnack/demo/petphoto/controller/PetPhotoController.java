@@ -25,12 +25,13 @@ public class PetPhotoController {
     public ResponseEntity<String> uploadProfile(@RequestParam("file") MultipartFile file, @RequestParam("petpno") Long petpno) {
         try {
             petphotoService.savePetPhoto(file, petpno);
-            return ResponseEntity.ok("Profile uploaded successfully!");
+            return ResponseEntity.ok("Pet photo uploaded successfully!");
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading profile.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading pet photo.");
         }
     }
+
     @PostMapping("/changePetImg")
     public ResponseEntity<String> changeProfile(@RequestParam("file") MultipartFile file, @RequestParam("petpno") Long petpno) {
         try {

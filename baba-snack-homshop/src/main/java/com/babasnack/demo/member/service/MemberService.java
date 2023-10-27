@@ -2,6 +2,7 @@ package com.babasnack.demo.member.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -33,22 +34,22 @@ public class MemberService {
     public Boolean join(MemberDto.Join dto) {
         if (dto.getPassword() != null) {
             String encodedPassword = passwordEncoder.encode(dto.getPassword());
-            Member member = new Member();
-            member.setUsername(dto.getUsername());
-            member.setEmail(dto.getEmail()); // email 값 설정 추가
-            member.setPassword(encodedPassword);
-            member.setJoinDay(LocalDateTime.now().withNano(0)); // 현재 날짜와 시간으로 설정하거나, 필요에 따라 다른 값을 사용할 수 있습니다.
-
+            Member member = Member.builder()
+                    .username(dto.getUsername())
+                    .email(dto.getEmail())
+                    .password(encodedPassword)
+                    .build();
+            
+            LocalDate joinDate = LocalDate.parse(dto.getJoinDay());
+            member.setJoinDay(joinDate);
 
             Integer savedId = memberDao.save(member);
 
-            return savedId != null; // 저장된 ID가 null이 아닌 경우에만 true 반환
+            return savedId != null;
         } else {
-            // 예외 처리 또는 다른 처리 방법을 선택하세요.
-            return false; // 예를 들어, 비밀번호가 없으면 가입을 실패로 처리할 수 있습니다.
+            return false;
         }
     }
-
 	  @Transactional(readOnly = true)
 	    public String findById(String email) { // 파라미터 이름을 email로 변경
 	        Member member = memberDao.findByEmail(email); // findByEmail로 변경
@@ -65,6 +66,25 @@ public class MemberService {
 	        return false;
 	    return passwordEncoder.matches(password, member.getPassword());
 	}
+	 @Transactional
+	    public boolean psChangePassword(String username, String currentPassword, String newPassword) {
+	        Member member = memberDao.findById(username);
+	        if (member == null) {
+	            return false; // 사용자가 존재하지 않을 경우 변경 실패로 처리
+	        }
+
+	        // 현재 비밀번호 확인
+	        boolean isCurrentPasswordCorrect = passwordEncoder.matches(currentPassword, member.getPassword());
+	        if (!isCurrentPasswordCorrect) {
+	            return false; // 현재 비밀번호가 일치하지 않을 경우 변경 실패로 처리
+	        }
+
+	        // 새로운 비밀번호 설정
+	        String encodedNewPassword = passwordEncoder.encode(newPassword);
+	        member.setPassword(encodedNewPassword);
+
+	        return true; // 비밀번호 변경 성공
+	    }
 
 	public Boolean psWithdrawal(String username) {
 	    return (memberDao.psWithdrawal(username) == 1);
@@ -80,7 +100,8 @@ public class MemberService {
 	   return new MemberDto.PsMyPage(m.getUsername(), m.getEmail(), joinDayFormatted, daysSinceJoining);
 	}
 
-	private Member getMemberByUsername(String username) { 
-	 	return 	memberDao.findById(username); 
-   }
+	@Transactional(readOnly = true)
+    public Member getMemberByUsername(String username) {
+        return memberDao.findById(username);
+    }
 }

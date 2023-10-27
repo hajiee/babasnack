@@ -86,35 +86,33 @@
 		<main style="border: none">
 			<h1>회원 가입</h1>
 			<section id="join-form">
-				<form action="/member/join" method="post" enctype="multipart/form-data" id="join-form" onsubmit="submitForm(event)">
+				<form action="/member/join" method="post" id="join-form" onsubmit="submitForm(event)">
+    <div class="mb-3 mt-3">
+        <label for="username" class="form-label">아이디:</label>
+        <input type="text" class="form-control" id="username" name="username" maxlength="10">
+        <span id="username-msg"></span>
+    </div>
+    <div class='mb-3 mt-3'>
+        <label for='password' class='form-label'>비밀번호:</label>
+        <input type='password' class='form-control' id='password' name='password' maxlength='10'>
+        <!-- 비밀번호 확인 필드 추가 -->
+        <label for='confirm-password' class='form-label'>비밀번호 확인:</label>
+        <input type='password' class='form-control' id='confirm-password'>
+        <span id='confirm-password-msg'></span>  
+    </div>  
+    <div class="mb-3 mt-3">
+        <label for="email" class="form-label">이메일:</label>
+        <input type="text" class="form-control" id="email" name="email">
+        <span id="email-msg"></span>
+    </div>
+    <div class="mb-3 mt-3">
+        <label for="pnoTell" class="form-label">전화번호:</label>
+        <input type="text" class="form-control" id="pnoTell" name="pnoTell">
+        <span id="pnoTell-msg"></span>
+    </div>
+    <button type="submit" id="join" class="btn btn-primary">가입</button>
+</form>
 				
-					<div class="mb-3 mt-3">
-						<label for="username" class="form-label">아이디:</label>
-						<input type="text" class="form-control" id="username" name="username" maxlength="10">
-						<span id="username-msg"></span>
-					</div>
-					 <div class= 'mb-3 mt-3'>
-      		<label for='password' class='form-label'>비밀번호:</label>
-      		<input type='password' class='form-control' id='password' name='password' maxlength='10'>
-     		 <!-- 비밀번호 확인 필드 추가 -->
-    		<label for='confirm-password' class='form-label'>비밀번호 확인:</label>
-    		<input type='password' class='form-control' id='confirm-password'>
-    		<span id ='confirm-password-msg'></span>  
-  			</div>  
-          			
-          			<div class="mb-3 mt-3">
-            			<label for="email" class="form-label">이메일:</label>
-            			<input type="text" class="form-control" id="email" name="email">
-            			<span id="email-msg"></span>
-          			</div>
-          			<div class="mb-3 mt-3">
-   						 <label for="pnoTell" class="form-label">전화번호:</label>
-    					<input type="text" class="form-control" id="pnoTell" name="pnoTell">
-    					<span id="pnoTell-msg"></span>
-					</div>
-          			
-          				<button type ="submit" id="join" class="btn btn-primary">가입</button>
-						</form>
 		
 				 
 			</section>

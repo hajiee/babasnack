@@ -19,27 +19,26 @@ public class MyUserDetailsService implements UserDetailsService {
     private PasswordEncoder encoder;
 
     @Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (username.equals("admin")) {
-			return User.builder()
-					.username("admin")
-					.password(encoder.encode("1234"))
-					.roles("ADMIN")
-					.build();
-		}
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.equals("admin")) {
+            return User.builder()
+                    .username("admin")
+                    .password(encoder.encode("1234"))
+                    .roles("ADMIN")
+                    .build();
+        }
 
-		Member member = memberDao.findById(username);
-		
-		if (member == null) {
-			throw new UsernameNotFoundException("");
-		}
+        Member member = memberDao.findById(username);
 
-	    return User.builder()
-	            .username(username)
-	            .password(member.getPassword())
-	            .roles(member.getRole())
-	            .build();
-  }
-}
+        if (member == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
 
+        return User.builder()
+                .username(username)
+                .password(member.getPassword())
+                .roles(member.getRole() != null ? member.getRole() : "")
+                .build();
+    }
 
+	}

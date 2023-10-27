@@ -1,22 +1,23 @@
 package com.babasnack.demo.member.controller;
 
-
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import javax.servlet.http.HttpSession;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.member.dto.MemberDto;
 import com.babasnack.demo.member.service.MemberService;
 
@@ -25,26 +26,28 @@ public class MemberController {
     @Autowired
     private MemberService service;
 
-    // 접근제어
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/join")
     public ModelAndView psJoin() {
         return new ModelAndView("member/join");
     }
 
-
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/login")
     public ModelAndView psLogin() {
-    	return new ModelAndView("member/login");
+        return new ModelAndView("member/login");
     }
+
     @PreAuthorize("isAnonymous()")
     @PostMapping("/member/login")
     public ModelAndView psLogin(@RequestParam("username") String username,
-                                    @RequestParam("password") String password) {
+                                @RequestParam("password") String password,
+                                HttpSession session) {
         // 로그인 처리 로직 구현
         if (authenticate(username, password)) {
-            // 인증 성공 시
+            // 인증 성공 시 세션에 로그인 정보 저장
+            session.setAttribute("isLogged", true);
+            session.setAttribute("username", username);
             return new ModelAndView("redirect:/main");  // 메인 페이지로 리다이렉트
         } else {
             // 인증 실패 시
@@ -57,79 +60,118 @@ public class MemberController {
     private boolean authenticate(String username, String password) {
         // 실제 인증 처리를 수행하는 로직을 구현해야 합니다.
         // 예를 들어, 데이터베이스에서 사용자 정보를 조회하고 비밀번호 일치 여부 등을 확인할 수 있습니다.
-        
         // 임시로 예시적으로 'admin'이라는 사용자명과 'password'라는 비밀번호로만 인증되도록 설정합니다.
         return "admin".equals(username) && "password".equals(password);
     }
 
+    @GetMapping("/member/logout")
+    public ModelAndView psLogout(HttpSession session) {
+        // 세션에서 로그인 정보 제거
+        session.removeAttribute("isLogged");
+        session.removeAttribute("username");
 
-	// 회원가입
-	@PostMapping("/member/join")
-	public ModelAndView psJoin(MemberDto.Join dto) {
-	    service.join(dto);
-	    return new ModelAndView("redirect:/main");
-	}
+        // 스프링 시큐리티의 로그아웃
+        SecurityContextHolder.clearContext();
 
-	@GetMapping("/member/findbypw")
-	public void checkPw() {
+        return new ModelAndView("redirect:/main");
+    }
 
-	}
+    @GetMapping("/member/user-profile")
+    @PreAuthorize("isAuthenticated()") // 인증된 사용자만 접근 가능
+    public ModelAndView psMyPage(Principal principal, HttpSession session) {
+        // 사용자 정보 조회 등의 로직 수행
+        String username = principal.getName(); // Principal에서 사용자명 가져오기
+        MemberDto.PsMyPage dto = service.psMypage(username);
 
-	// 비밀번호 확인
-	@PostMapping("/member/findbypw")
-	public ModelAndView checkPw(String password, Principal principal, HttpSession session, RedirectAttributes ra) {
-	    Boolean result = service.checkPw(password, principal.getName());
+        ModelAndView modelAndView = new ModelAndView("member/user-profile");
+        modelAndView.addObject("dto", dto);
 
-	    // 비밀번호가 틀린 경우 에러 메시지를 RedirectAttributes에 저장
-	    if (!result) {
-	        ra.addFlashAttribute("msg", "비밀번호를 확인하지 못했습니다");
-	        return new ModelAndView("redirect:/main");
-	    }
+        // 네비게이션 메뉴 표시를 위한 로직 추가
+        modelAndView.addObject("isLogged", true);
 
-	    // 비밀번호가 맞은 경우 세션에 비밀번호를 확인했다고 저장
-	    session.setAttribute("CheckPw", true);
-	    return new ModelAndView("redirect:/main");
-	}
+        return modelAndView;
+    }
+    
+    public MemberDto.PsMyPage psMypage(String username) {
+        Member m = getMemberByUsername(username);
+        if (m == null) {
+            // m이 null인 경우에 대한 처리를 추가합니다.
+            // 예를 들어, null을 반환하거나 기본 값을 설정할 수 있습니다.
+            return null; // 혹은 적절한 기본 값을 반환
+        }
 
-	// 내 정보 보기
-	@GetMapping("/member/user-profile")
-	public ModelAndView psMyPage(Principal principal, HttpSession session) {
-	    // 비밀번호 확인이 안된 경우 "/member/findbypw"로 이동
-        if (session.getAttribute("CheckPw") == null)
-            return new ModelAndView("redirect:/main");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년MM월dd일");
+        String joinDayFormatted = dtf.format(m.getJoinDay());
 
-        MemberDto.PsMyPage dto = service.psMypage(principal.getName());
-        return new ModelAndView("member/user-profile").addObject("dto", dto);
-	}
+        Long daysSinceJoining = ChronoUnit.DAYS.between(m.getJoinDay(), LocalDate.now());
 
-   // 이메일 변경
-   @PostMapping("/member/user-profile")
-   public ModelAndView psChangeEm(String email, Principal principal) {
-       service.psChangeEm(email, principal.getName());
-       return new ModelAndView("redirect:/member/user-profile");
-   }
+        return new MemberDto.PsMyPage(m.getUsername(), m.getEmail(), joinDayFormatted, daysSinceJoining);
+    }
 
-   
-   @GetMapping("/member/{username}/user-profile")
-   public ModelAndView psUserProfile(@PathVariable("username") String username) {
-       MemberDto.PsMyPage dto = service.psMypage(username);
-       
-       ModelAndView modelAndView = new ModelAndView("withdrawal");
-       modelAndView.addObject("dto", dto);
-       
-       return modelAndView;
-   }
+    private Member getMemberByUsername(String username) {
+        return service.getMemberByUsername(username);
+    }
 
-   @PostMapping("/member/{username}")
-   public ModelAndView psWithdrawal(Principal principal) {
-       String username = principal.getName();
-       
-       // 회원 탈퇴 처리
-       service.psWithdrawal(username);
-       
-       // 스프링 시큐리티의 로그아웃
-       SecurityContextHolder.clearContext();
-       
-       return new ModelAndView("redirect:/");
-   }
+
+
+	@PostMapping("/member/change-email")
+    public ModelAndView psChangeEmail(@RequestParam("email") String newEmail,
+                                      HttpSession session) {
+        // 로그인 상태 확인
+        if (session.getAttribute("isLogged") == null) {
+            return new ModelAndView("redirect:/member/login");
+        }
+
+        // 이메일 변경 로직 수행
+        String username = (String) session.getAttribute("username");
+        service.psChangeEm(username, newEmail);
+
+        // 변경된 이메일로 세션 정보 업데이트
+        session.setAttribute("email", newEmail);
+
+        return new ModelAndView("redirect:/member/user-profile");
+    }
+
+
+    @PostMapping("/member/change-password")
+    public ModelAndView psChangePassword(@RequestParam("currentPassword") String currentPassword,
+                                         @RequestParam("newPassword") String newPassword,
+                                         HttpSession session) {
+        // 로그인 상태 확인
+        if (session.getAttribute("isLogged") == null) {
+            return new ModelAndView("redirect:/member/login");
+        }
+
+        // 비밀번호 변경 로직 수행
+        String username = (String) session.getAttribute("username");
+        service.psChangePassword(username, currentPassword, newPassword);
+
+        return new ModelAndView("redirect:/member/user-profile");
+    }
+
+
+    // 회원 탈퇴 처리
+    @PostMapping("/member/withdrawal")
+    public ModelAndView psWithdrawal(HttpSession session) {
+        // 로그인 상태 확인
+        if (session.getAttribute("isLogged") == null) {
+            return new ModelAndView("redirect:/member/login");
+        }
+
+        // 회원 탈퇴 처리 로직 수행
+        String username = (String) session.getAttribute("username");
+        service.psWithdrawal(username);
+
+        // 세션에서 로그인 정보 제거
+        session.removeAttribute("isLogged");
+        session.removeAttribute("username");
+
+        // 스프링 시큐리티의 로그아웃
+        SecurityContextHolder.clearContext();
+
+        return new ModelAndView("redirect:/main");
+    }
+
+    // 추가적인 메소드들...
+
 }

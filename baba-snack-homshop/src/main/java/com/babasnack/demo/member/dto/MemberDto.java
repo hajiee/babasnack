@@ -13,13 +13,13 @@ public class MemberDto {
         private String username;
         private String password;
         private String email;
-        private LocalDate joinDay = LocalDate.now();
+        private String joinDay = LocalDate.now().toString();
         private Long pnoTell;
 
         // Getter and Setter for pnoTell
 
         public Member toEntity(String encodedPassword) {
-            return new Member(username, encodedPassword, email, joinDay, pnoTell);
+            return new Member(username, encodedPassword, email, LocalDate.parse(joinDay), pnoTell);
         }
     }
 
@@ -34,22 +34,22 @@ public class MemberDto {
 
     @Getter
     public static class Member {
-     	private String username; 
-     	private String password; 
-     	private String email; 
-     	private LocalDate joinDay; 
-     	private Long pnoTell; 
+        private String username;
+        private String password;
+        private String email;
+        private LocalDate joinDay;
+        private Long pnoTell;
 
-     	public Member(String username, String password, String email,
-                      LocalDate joinDay, Long pnoTell) { 
-     		this.username = username; 
-     		this.password = password; 
-     		this.email = email; 
-     		this.joinDay = joinDay; 
-     		this.pnoTell = pnoTell;  
-         } 
+        public Member(String username, String password, String email,
+                      LocalDate joinDay, Long pnoTell) {
+            this.username = username;
+            this.password = password;
+            this.email = email;
+            this.joinDay = joinDay;
+            this.pnoTell = pnoTell;
+        }
 
-    	// Getter and Setter methods for the fields
+        // Getter and Setter methods for the fields
 
-     }
+    }
 }
