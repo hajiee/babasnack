@@ -1,3 +1,6 @@
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -80,65 +83,125 @@
 </script>
 
 <script>
-	$(document).ready(
-			function() {
-				$('#PsMain').on(
-						"click",
-						function() {
-							const name = $('#name').val();
-							const pnoTell = $('#pnoTell').val();
-							const baseDelivery = $('#baseDelivery').val();
+	$(document)
+			.ready(
+					function() {
+						$('#PsMain')
+								.on(
+										"click",
+										function() {
+											const name = $('#name').val();
+											const pnoTell = $('#pnoTell').val();
+											const baseDelivery = $(
+													'#baseDelivery').val();
+											const username = $('#username')
+													.val();
 
-							const username = $('#username').val();
+											var query = {
+												username : $('#username').val()
+											};
 
-							if (name === '') {
-								alert('이름(성함)을 입력해 주십시오');
-								return;
-							}
-							if (pnoTell === '') {
-								alert('전화번호를 입력해 주십시오');
-								return;
-							}
-							if (baseDelivery === '') {
-								alert('기본 주소를 입력해 주십시오');
-								return;
-							}
+											if (name === '') {
+												alert('이름(성함)을 입력해 주십시오');
+												return;
+											}
+											if (pnoTell === '') {
+												alert('전화번호를 입력해 주십시오');
+												return;
+											}
+											if (baseDelivery === '') {
+												alert('기본 주소를 입력해 주십시오');
+												return;
+											}
 
+											// 배송지 회원 아이디 중복확인용
+											$
+													.ajax({
+														url : "/delivery/usernameCheck",
+														type : "post",
+														data : query,
+														success : function(data) {
 
-							$('#frm')
-									.attr('action', '/delivery/add/{username}')
-									.attr('method', 'post').submit();
+															if (data == 1) {
+																alert("["
+																		+ username
+																		+ "]님의 배송지 정보는 이미 저장되어있습니다.");
 
-							alert("임시 테스트\n메인 페이지로 이동");
-						});
+															} else {
+																$('#frm')
+																		.attr(
+																				'action',
+																				'/delivery/add/{username}')
+																		.attr(
+																				'method',
+																				'post')
+																		.submit();
+																alert("배송지가 저장 되었습니다.\n메인 페이지로 이동합니다.");
+															}
+														}
+													}); // ajax 끝
 
-				$('#PsChangeAd').on(
-						"click",
-						function() {
-							const name = $('#name').val();
-							const pnoTell = $('#pnoTell').val();
-							const baseDelivery = $('#baseDelivery').val();
+										});
 
-							if (name === '') {
-								alert('이름(성함)을 입력해 주십시오');
-								return;
-							}
-							if (pnoTell === '') {
-								alert('전화번호를 입력해 주십시오');
-								return;
-							}
-							if (baseDelivery === '') {
-								alert('기본 주소를 입력해 주십시오');
-								return;
-							}
+						$('#PsChangeAd')
+								.on(
+										"click",
+										function() {
+											const name = $('#name').val();
+											const pnoTell = $('#pnoTell').val();
+											const baseDelivery = $(
+													'#baseDelivery').val();
+											const username = $('#username')
+													.val();
 
-							$('#frm').attr('action',
-									'/delivery/change/{username}').attr(
-									'method', 'post').submit();
+											var query = {
+												username : $('#username').val()
+											};
 
-							alert("배송지 수정 되었습니다\n마이 페이지(임시로 메인페이지)로 이동합니다");
-						});
-			});
+											if (name === '') {
+												alert('이름(성함)을 입력해 주십시오');
+												return;
+											}
+											if (pnoTell === '') {
+												alert('전화번호를 입력해 주십시오');
+												return;
+											}
+											if (baseDelivery === '') {
+												alert('기본 주소를 입력해 주십시오');
+												return;
+											}
+
+											// 배송지 회원 아이디 중복확인용
+											$
+													.ajax({
+														url : "/delivery/usernameCheck",
+														type : "post",
+														data : query,
+														success : function(data) {
+
+															if (data == 0) {
+																alert("["
+																		+ username
+																		+ "]님의 배송지 정보는 이미 저장되어있습니다.");
+
+															} else {
+																$('#frm')
+																		.attr(
+																				'action',
+																				'/delivery/change/{username}')
+																		.attr(
+																				'method',
+																				'post')
+																		.submit();
+																alert("["
+																		+ username
+																		+ "]님의 배송지가 수정 되었습니다.\n마이 페이지(임시로 메인페이지)로 이동합니다.");
+															}
+														}
+													}); // ajax 끝
+
+										});
+					});
 
 	function inputNumOnly(onlyNum) {
 		onlyNum.value = onlyNum.value.replace(/[^0-9]/g, '');
@@ -196,11 +259,12 @@
 
 					<div style="float: left;">
 						<div id="deliveryNamePhone-form" class="mb-3 mt-3">
-							<label><b>이름</b></label> <input type="text" class="form-control"
-								id="name" name="name" placeholder="사용자 이름"> <label
-								class="mt-3"><b>연락처</b> ( - 없이 입력)</label> <input type="text"
-								class="form-control" id="pnoTell" name="pnoTell"
-								oninput="inputNumOnly(this)" placeholder="사용자 연락처">
+							<label><b>이름 (1~4자 사이)</b></label> <input type="text"
+								class="form-control" id="name" name="name" placeholder="사용자 이름"
+								maxlength="4"> <label class="mt-3"><b>연락처 (
+									- 없이 입력)</b></label> <input type="text" class="form-control" id="pnoTell"
+								name="pnoTell" oninput="inputNumOnly(this)"
+								placeholder="사용자 연락처" maxlength="11">
 
 							<div class="mb-3 mt-3">
 								<button type="button" id="PsMain" class="btn btn-primary">배송지
@@ -212,8 +276,10 @@
 					</div>
 
 					<div style="float: left;">
-						<label>테스트 아이디 : </label> <input type="text" class="form-control"
-							id="username" name="username" placeholder="사용자 아이디">
+						<label>로그인 아이디(테스트 확인용) : </label> <input type="text"
+							class="form-control" id="username" name="username"
+							placeholder="사용자 아이디" readonly="readonly"
+							value="<sec:authentication property="principal.username"/>">
 					</div>
 
 				</form>

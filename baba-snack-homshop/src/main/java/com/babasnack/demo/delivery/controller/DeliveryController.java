@@ -3,12 +3,16 @@ package com.babasnack.demo.delivery.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,20 +40,6 @@ public class DeliveryController {
 //	}
 
 	// 배송지 저장 후 메인 페이지로
-//	@PostMapping("/delivery/add/{username}")
-//	public ModelAndView add(@PathVariable("username") String username, Long dno, DeliveryDto.DeliveryEntity deliveryEntity) {
-//		
-//		
-//		System.out.println("=================");
-//		
-//		System.out.println("=================");
-//		deliveryService.add(username, dno);
-//		System.out.println("username : " + username + ", dno : " + dno);
-//		System.out.println(deliveryEntity);
-//		System.out.println("=================");
-//		return new ModelAndView("redirect:/main");
-//	}
-
 	@PostMapping("/delivery/add/{username}")
 	public ModelAndView add(DeliveryDto.DeliveryEntity deliveryEntity, @PathVariable("username") String username) {
 		// @PathVariable("username") String username (회원 아이디 테스트용)
@@ -57,31 +47,34 @@ public class DeliveryController {
 
 		System.out.println("=================");
 		deliveryService.add(deliveryEntity);
-		// deliveryService.add(deliveryEntity, principal.getName());
 		System.out.println(deliveryEntity);
 		System.out.println("=================");
 		return new ModelAndView("redirect:/");
 	}
 
-	// 회원 id 중복 체크(principal용)
-	@GetMapping("/delivery/usernamePrincipal")
+	// 배송지 회원 아이디 중복확인용
 	@ResponseBody
-	public String usernamePrincipal(Principal principal) {
-		String username = principal.getName();
-
-		return username;
+	@RequestMapping(value = "/delivery/usernameCheck", method = RequestMethod.POST)
+	public int postIdCheck(HttpServletRequest req) {
+		String username = req.getParameter("username");
+		Delivery deliveryIdCheck = deliveryService.findByUsername(username);
+		
+		int result = 0;
+		
+		if(deliveryIdCheck != null){
+			  result = 1;
+		 }
+		
+		return result;		
 	}
-	
 
 	// 배송지 수정 후 마이 페이지로
 	@PostMapping("/delivery/change/{username}")
 	public ModelAndView change(DeliveryDto.DeliveryEntity deliveryEntity, @PathVariable("username") String username) {
 		// @PathVariable("username") String username
 		// Principal principal
-
 		System.out.println("=================");
 		deliveryService.change(deliveryEntity);
-		// deliveryService.change(deliveryEntity, principal.getName());
 		System.out.println(deliveryEntity);
 		System.out.println("=================");
 		return new ModelAndView("redirect:/");

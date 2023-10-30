@@ -19,7 +19,11 @@ public interface DeliveryDao {
 	// 회원 배송지 저장 , String username
 	@Insert("insert into delivery(dno, username, name, pno_tell, base_delivery, add_delivery) values(delivery_seq.nextval, #{username}, #{name}, #{pnoTell}, #{baseDelivery}, #{addDelivery})")
 	public Integer addDelivery(Delivery delivery);
-	
+
+	// 배송지 저장시 중복 회원아이디 확인용 select문
+	@Select("select username from delivery where username=#{username}")
+	public Delivery findByUsername(String username);
+
 	// 배송지 저장용으로 dno를 불러와 데이터를 얻는 select문
 	@Select("select * from delivery where dno=#{dno} and rownum=1")
 	public DeliveryDto.DeliveryEntity findByDno(Long dno);

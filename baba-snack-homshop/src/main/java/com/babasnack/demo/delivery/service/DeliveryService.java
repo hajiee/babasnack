@@ -40,7 +40,7 @@ public class DeliveryService {
 //	}
 
 	public Boolean add(DeliveryDto.DeliveryEntity deliveryEntity) {
-		// 배송지 번호가 있고 해당 회원 아이디 일치시, false로 리턴
+		// 배송지 번호가 있으면, false로 리턴
 		// , String username , username
 		if (deliveryEntity.getDno() != null) {
 			return false;
@@ -54,17 +54,22 @@ public class DeliveryService {
 			newDelivery.setBaseDelivery(deliveryEntity.getBaseDelivery());
 			newDelivery.setAddDelivery(deliveryEntity.getAddDelivery());
 
-			deliveryDao.addDelivery(newDelivery);
-			return true;
+			return deliveryDao.addDelivery(newDelivery) == 1;
 		}
+	}
+
+	// 배송지 회원 아이디 중복확인용
+	public Delivery findByUsername(String username) {
+		return deliveryDao.findByUsername(username);
+
 	}
 
 	// 회원 배송지 정보 변경(업데이트) , username
 	public Boolean change(DeliveryDto.DeliveryEntity deliveryEntity) {
 		// , String username
-
 		if (deliveryEntity.getDno() != null) {
 			return false;
+
 		} else {
 			Delivery changeDelivery = new Delivery();
 			changeDelivery.setName(deliveryEntity.getName());
