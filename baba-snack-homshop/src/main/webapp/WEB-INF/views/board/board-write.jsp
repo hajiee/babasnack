@@ -26,45 +26,46 @@
 </script>
 <script>
 $(document).ready(function() {
-	  // 등록 버튼 클릭 시 동작
-	  $('#submitBtn').click(function(e) {
-	    e.preventDefault(); // 기본 동작(폼 제출) 막기
+	// 등록 버튼 클릭 시 동작
+    $('#submitBtn').click(function(e) {
+        e.preventDefault(); // 기본 동작(폼 제출) 막기
 
-	 	// 암호 입력 여부 확인
-        var code = $('#exampleFormControlInput2').val();
+        var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
 
-        if (code.trim() === '') { // 암호가 비어있는 경우
-            alert('암호를 입력해주세요.');
-            $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
+        // 회원인 경우에만 실행
+        if (isAuthenticated) {
+            // 암호 입력 여부 확인
+            var code = $('#exampleFormControlInput2').val();
+            if (code.trim() === '') { // 암호가 비어있는 경우
+                alert('암호를 입력해주세요.');
+                $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
+                return;
+            }
+            if (!/^\d{4}$/.test(code)) { // 숫자 4자리가 아닌 경우
+                alert('숫자 4자리로 입력해주세요.');
+                $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
+                return;
+            }
+        }
+
+        // 제목과 내용 입력 여부 확인
+        var title = $('#exampleFormControlInput1').val();
+        var contents = $('#exampleFormControlTextarea1').val();
+        if (title.trim() === '') { // 제목이 비어있는 경우
+            alert('제목을 입력해주세요.');
+            $('#exampleFormControlInput1').focus(); // 커서를 제목 필드로 이동
+            return;
+        }
+        if (contents.trim() === '') { // 내용이 비어있는 경우
+            alert('내용을 입력해주세요.');
+            $('#exampleFormControlTextarea1').focus(); // 커서를 내용 필드로 이동
             return;
         }
 
-        if (!/^\d{4}$/.test(code)) { // 숫자 4자리가 아닌 경우
-            alert('숫자 4자리로 입력해주세요.');
-            $('#exampleFormControlInput2').focus(); // 커서를 암호 필드로 이동
-            return;
-        }
-	    
-	    // 제목과 내용 입력 여부 확인
-	    var title = $('#exampleFormControlInput1').val();
-	    var contents = $('#exampleFormControlTextarea1').val();
-
-	    if (title.trim() === '') { // 제목이 비어있는 경우
-	      alert('제목을 입력해주세요.');
-	      $('#exampleFormControlInput1').focus(); // 커서를 제목 필드로 이동
-	      return;
-	    }
-
-	    if (contents.trim() === '') { // 내용이 비어있는 경우
-	      alert('내용을 입력해주세요.');
-	      $('#exampleFormControlTextarea1').focus(); // 커서를 내용 필드로 이동
-	      return;
-	    }
-
-	    // 폼 제출하기
-	    document.getElementById('boardForm').submit();
-	  });
-	});
+        // 폼 제출하기
+        $('#boardForm').submit();
+    });
+});
 </script>
 </head>
 <body>
@@ -81,18 +82,23 @@ $(document).ready(function() {
 			<aside>
 			</aside>
 			<section>
-				<form id="boardForm" action='<c:url value='/board/boardInsert'/>' method="post">
+				<form id="boardForm" action="/board/boardInsert" method="post">
 					<div class="form-group">
 						<label for="noticeCheckbox" style="margin: 10px; color: darkgray;">공지여부</label>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<input type="checkbox" id="noticeCheckbox" name="notice">
+							<input type="checkbox" id="noticeCheckbox" name="boardState">
 						</sec:authorize>
 						<sec:authorize access="!hasRole('ROLE_ADMIN')">
-							<input type="checkbox" id="noticeCheckbox" name="notice" disabled>
+							<input type="checkbox" id="noticeCheckbox" name="boardState" disabled>
 						</sec:authorize>
 					</div>
 					<div class="form-group">
-						<input type="password" class="form-control"	id="exampleFormControlInput2" name="code" placeholder="암호설정(숫자 4개)">
+						<sec:authorize access="!hasRole('ROLE_ADMIN')">
+							<input type="number" class="form-control"	id="exampleFormControlInput2" name="boardCode" placeholder="암호설정(숫자 4개)">
+						</sec:authorize>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<input type="number" class="form-control"	id="exampleFormControlInput2" name="boardCode" placeholder="암호설정(숫자 4개)" style="display: none;">
+						</sec:authorize>
 					</div>
 					<div class="form-group">
 						<label for="exampleFormControlInput1" style="margin: 10px; color: darkgray;">제목</label>
@@ -101,10 +107,10 @@ $(document).ready(function() {
 					</div>
 					<div class="form-group">
 						<label for="exampleFormControlTextarea1" style="margin: 10px; color: darkgray;">내용</label>
-						<textarea class="form-control" id="exampleFormControlTextarea1" name="contents" placeholder="내용을 작성해주세요." rows="10"></textarea>
+						<textarea class="form-control" id="exampleFormControlTextarea1" name="boardNotice" placeholder="내용을 작성해주세요." rows="10"></textarea>
 					</div>
 					<div class="text-right">
-						<button type='button' class='btn btn-outline-info' onclick="submitForm('/board/board-write')">등록</button>
+						<button type="submit" class="btn btn-outline-info" id="submitBtn">등록</button>
 					</div>
 				</form>
 			</section>
@@ -117,7 +123,7 @@ $(document).ready(function() {
 		</footer>
 	</div>
 </body>
-<script type='text/javascript'>
+<script>
     	var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
     	var username = '<%=session.getAttribute("username")%>';
     	var isAdmin = <%=request.isUserInRole("ROLE_ADMIN")%>;
@@ -128,11 +134,11 @@ $(document).ready(function() {
             window.location.href = '/member/login';  // 로그인 페이지로 리다이렉트
         }
 </script>
-<script type='text/javascript'>
-      function submitForm(action) {
-          document.getElementById('boardForm').action = action;
-          document.getElementById('boardForm').submit();
-      }
+<script>
+function submitForm(action) {
+    document.getElementById('boardForm').action = action;
+    document.getElementById('boardForm').submit();
+}
 
       var isAdmin = <%= request.isUserInRole("ROLE_ADMIN") %>;
       

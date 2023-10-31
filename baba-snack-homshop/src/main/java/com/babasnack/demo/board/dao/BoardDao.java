@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -14,16 +15,17 @@ import com.babasnack.demo.entity.Board;
 @Mapper
 public interface BoardDao {
 	//글 저장
-	@Insert("INSERT INTO board (bno, title, board_notice, board_state, board_code) " +
-            "VALUES (board_seq.nextval, #{title}, #{boardNotice}, #{boardState}, #{boardCode})")
-    public Long addBoard(BoardDto.WriteB writeB);
+	@Insert("INSERT INTO board (bno, title, board_notice, board_writer, board_date, board_state, board_code) " +
+	        "VALUES (board_seq.nextval, #{title}, #{boardNotice, jdbcType=VARCHAR}, #{boardWriter}, sysdate, #{boardState}, #{boardCode})")
+	@Options(useGeneratedKeys = true, keyProperty = "bno")
+	public Long addBoard(Board board);
 	
 	//글 수정
  	@Update("UPDATE board SET title = #{title}, " +
  	        "board_notice = #{boardNotice}, " +
  	        "board_state = #{boardState}, " +
  	        "board_code = #{boardCode} WHERE bno = #{bno}")
- 	public Long updateBoard(BoardDto.WriteB UpBoardWrite);
+ 	public Long updateBoard(Board board);
 	
 	//글 삭제
     @Delete("DELETE FROM board WHERE bno = #{bno}")
@@ -49,11 +51,11 @@ public interface BoardDao {
 	public Long count();
     
     // 게시글 비밀번호 설정
-    @Update("UPDATE board SET board_code = #{boardCode} WHERE bno = #{bno}")
+	@Update("UPDATE board SET board_code = #{boardCode} WHERE bno = #{bno}")
     public Long setboardCode(BoardDto.WriteB writeB);
 
     // 설정된 비밀번호 확인
     @Select("SELECT COUNT(*) FROM board WHERE bno = #{bno} AND board_code = #{boardCode}")
-    public boolean checkboardCode(Long bno, Long password);
+    public boolean checkboardCode(Long bno, int boardCode);
     
 }
