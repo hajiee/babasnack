@@ -58,28 +58,25 @@ public class ProductAdminController {
 	        }
 	    }
 
+	    Category category = productDto.getCategory();  // 이미 Category 열거형으로 선언된 값
+
+	    // 상품 객체 생성 및 필드 값 설정
+	    Product product = new Product();
+	    // 다른 필드 값 설정
+	    product.setProductName(productDto.getProductName());
+	    product.setProductNotice(productDto.getProductNotice());
+	    
+		// category 필드 값 설정
+		product.setCategory(category);
+
 	    Long newProductId = productAdminService.addProduct(productDto, validPhotos);
 
+	    System.out.println(newProductId);
 	    // 새로 생성된 상품 번호를 상품 상세 페이지로 리다이렉트
-	    return new ModelAndView("redirect:/product/admin-product/" + newProductId);
+	    //return new ModelAndView("redirect:/product/admin-product/" + newProductId);
+	    return new ModelAndView("redirect:/product/admin-product/");
 	}
 	
-	@GetMapping("/product-read/{pno}")
-	public String showProductDetails(@PathVariable("pno") String pno, Model model) {
-	    try {
-	        Long productId = Long.parseLong(pno);
-	        Product product = productAdminService.getProductById(productId);
-	        if (product == null) {
-	            // 상품이 존재하지 않을 경우 에러 처리
-	            return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
-	        }
-	        model.addAttribute("product", product);
-	        return "product/product-read"; // product-read.jsp로 변경
-	    } catch (NumberFormatException e) {
-	        // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
-	        return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
-	    }
-	}
 
 	@GetMapping("/product-write/{pno}")
 	public String showEditProductForm(@PathVariable("pno") Long pno, Model model) {
@@ -97,9 +94,9 @@ public class ProductAdminController {
 	// 상품 수정 처리
 	@PostMapping("/{pno}/product-edit")
 	public ModelAndView editProduct(@PathVariable("pno") Long pno,
-        @ModelAttribute("productDto") ProductDto.WriteP productDto,
-        @RequestParam("photos") List<MultipartFile> uploadedPhotos) {
-		List<ProductPhoto> photos = convertToProductPhotos(uploadedPhotos);
+	                                @ModelAttribute("productDto") ProductDto.WriteP productDto,
+	                                @RequestParam("photos") List<MultipartFile> uploadedPhotos) {
+	    List<ProductPhoto> photos = new ArrayList<>();
 
 	    for (MultipartFile photo : uploadedPhotos) {
 	        if (!photo.isEmpty()) {
@@ -110,7 +107,7 @@ public class ProductAdminController {
 	        }
 	    }
 
-	    Long updatedProductId = productAdminService.updateProduct(pno, productDto, photos);
+	    Long updatedProductId = productAdminService.updateProduct(pno, productDto, uploadedPhotos);
 	    return new ModelAndView("redirect:/product/admin-product/" + updatedProductId);
 	}
 	

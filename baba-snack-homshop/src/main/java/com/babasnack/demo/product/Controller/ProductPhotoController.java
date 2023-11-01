@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.babasnack.demo.entity.ProductPhoto;
 import com.babasnack.demo.product.Service.ProductPhotoService;
-import com.babasnack.demo.product.dao.ProductPhotoDao;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,51 +17,37 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Controller
 public class ProductPhotoController {
-	@Autowired
-	private ProductPhotoService productPhotoService;
-	@Autowired
-	private ProductPhotoDao productPhotoDao;
+    @Autowired
+    private ProductPhotoService productPhotoService;
 
-	@PostMapping("/product/{pno}/photos")
-	public String saveProductPhotos(@PathVariable Long pno, @RequestParam("photos") MultipartFile[] photos, Model model) throws Exception {
-		String[] messages = new String[photos.length];
-		int messageIndex = 0;
+    @PostMapping("/product/{pno}/photos")
+    public String saveProductPhotos(@PathVariable Long pno, @RequestParam("photos") MultipartFile[] photos, Model model) throws Exception {
+        String[] messages = new String[photos.length];
+        int messageIndex = 0;
 
-		for (MultipartFile photo : photos) {
-			if (!photo.isEmpty()) {
-				String originalFilename = photo.getOriginalFilename();
-				String savedFilename = productPhotoService.saveFile(photo);
+        for (MultipartFile photo : photos) {
+            if (!photo.isEmpty()) {
+                try {
+                    // 사진 정보를 DB에 저장합니다.
+                    productPhotoService.saveProductPhotos(pno, photo);
+                    messages[messageIndex] = "파일 " + photo.getOriginalFilename() + "을(를) 저장했습니다.";
+                } catch (Exception e) {
+                    log.error("Failed to save file: " + photo.getOriginalFilename(), e);
+                    messages[messageIndex] = "파일 " + photo.getOriginalFilename() + "을(를) 저장하는 도중 오류가 발생했습니다.";
+                }
 
-				ProductPhoto productPhoto = new ProductPhoto();
-				productPhoto.setPno(pno);
-				productPhoto.setProductImgNo(null); // 이 부분은 필요에 따라 수정해야 합니다.
-				productPhoto.setProductImg(originalFilename);
-				productPhoto.setProductSaveImg(savedFilename);
+                messageIndex++;
+            }
+        }
 
-				try {
-					// 사진 정보를 DB에 저장합니다.
-					productPhotoDao.saveProductPhoto(productPhoto);
-					messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장했습니다.";
-				} catch (Exception e) {
-					productPhotoService.deleteFile(originalFilename);
-					productPhotoService.deleteFile(savedFilename);
-					log.error("Failed to save file: " + savedFilename, e);
-					messages[messageIndex] = "파일 " + savedFilename + "을(를) 저장하는 도중 오류가 발생했습니다.";
-				}
+        model.addAttribute("messages", messages);
 
-				messageIndex++;
-			}
-		}
+        // 내용이 비어있는 경우 에러 처리 및 페이지 반환
+        if (messageIndex == 0) {
+            model.addAttribute("error", "대표사진이 비어있습니다.");
+            return "product/product-write";
+        }
 
-		model.addAttribute("messages", messages);
-
-		// 내용이 비어있는 경우 에러 처리 및 페이지 반환
-		if (messages.length == 0) {
-			model.addAttribute("error", "대표사진이 비어있습니다.");
-			return "product/product-write";
-		}
-
-		return "result"; // 결과 페이지로 이동
-	}
-
+        return "result"; // 결과 페이지로 이동
+    }
 }

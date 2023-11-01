@@ -151,7 +151,7 @@ jQuery(document).ready(function($) {
 						</table>
 					</div>
 					<div class="form-group">
-						<div id="summernote"></div>
+						<textarea id="summernote" name="productNotice"></textarea>
 					</div>
 					<div class="text-right">
 						<button type='submit' class='btn btn-outline-info' id="submitBtn">등록</button>

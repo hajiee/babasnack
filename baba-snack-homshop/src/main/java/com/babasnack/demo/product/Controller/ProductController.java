@@ -85,6 +85,23 @@ public class ProductController {
 
 	    return modelAndView;
 	}
+	
+	@GetMapping("/product-read/{pno}")
+	public String showProductDetails(@PathVariable("pno") String pno, Model model) {
+	    try {
+	        Long productId = Long.parseLong(pno);
+	        Product product = productAdminService.getProductById(productId);
+	        if (product == null) {
+	            // 상품이 존재하지 않을 경우 에러 처리
+	            return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	        }
+	        model.addAttribute("product", product);
+	        return "product/product-read"; // product-read.jsp로 변경
+	    } catch (NumberFormatException e) {
+	        // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
+	        return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
+	    }
+	}
 
 	// 한 페이지당 상품 수 조회 API 엔드 포인트(GET /products/page/{page}/{size})
 	@GetMapping("/product/page/{page}/{size}")

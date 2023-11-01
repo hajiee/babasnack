@@ -1,7 +1,7 @@
 package com.babasnack.demo.product.Service;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,25 +20,26 @@ import com.babasnack.demo.product.dto.ProductDto;
 
 @Service
 public class ProductAdminService {
-	@Autowired
+    @Autowired
     private ProductAdminDao productAdminDao;
-	@Autowired
-	private ProductDao productDao;
-	@Autowired
-	private ProductPhotoDao productPhotoDao;
-	@Autowired
-	private ProductPhotoService productPhotoService;
-	
+    @Autowired
+    private ProductDao productDao;
+    @Autowired
+    private ProductPhotoDao productPhotoDao;
+    @Autowired
+    private ProductPhotoService productPhotoService;
+
     @Value("${productSaveImg}")
     private String productSaveImg;
 
+    // 상품 등록
     @Transactional
     public Long addProduct(ProductDto.WriteP productDto, List<MultipartFile> uploadedPhotos) {
         Product product = productDto.toProduct();
-        Long newProductId = productAdminDao.addProduct(product);
-
-    	List<ProductPhoto> photos = new ArrayList<>();
-
+        product.setProductDay(LocalDate.now()); // 현재 날짜로 설정
+        product.calculateReserve(); // 적립금 계산 및 설정
+        productAdminDao.addProduct(product);
+        
         for (MultipartFile uploadedPhoto : uploadedPhotos) {
             if (!uploadedPhoto.isEmpty()) {
                 String originalFilename = uploadedPhoto.getOriginalFilename();
@@ -47,25 +48,21 @@ public class ProductAdminService {
                 ProductPhoto productPhoto = new ProductPhoto();
                 productPhoto.setProductImg(originalFilename);
                 productPhoto.setProductSaveImg(savedFilename);
-                photos.add(productPhoto);
+                productPhoto.setPno(product.getPno()); // 상품 번호 설정
+                productAdminDao.addProductPhoto(productPhoto); // 사진 정보 등록
             }
         }
-        
-        for (ProductPhoto photo : photos) {
-            photo.setPno(newProductId);
-            productPhotoDao.saveProductPhoto(photo);
-        }
-
-        return newProductId;
+		
+        return product.getPno();
     }
 
-	// 상품 수정
-	@Transactional
-	public Long updateProduct(Long pno, ProductDto.WriteP productDto, List<ProductPhoto> photos) {
+    // 상품 수정
+    @Transactional
+    public Long updateProduct(Long pno, ProductDto.WriteP productDto, List<MultipartFile> uploadedPhotos) {
         // 기존 상품 정보 조회
         Product existingProduct = productAdminDao.findByProduct(pno);
         if (existingProduct == null) {
-            throw new RuntimeException(pno+"상품정보를 읽어오지 못했습니다");
+            throw new RuntimeException(pno + "번 상품 정보를 읽어오지 못했습니다.");
         }
 
         // 상품 정보 업데이트
@@ -76,31 +73,39 @@ public class ProductAdminService {
         existingProduct.setProductSize(productDto.getProductSize());
         existingProduct.setCategory(productDto.getCategory());
 
-        Long updatedProductId = productAdminDao.updateProduct(existingProduct);
+        productAdminDao.updateProduct(existingProduct);
 
         // 등록된 상품의 사진 삭제
         deleteAllPhotosByPno(pno);
 
-        // 새로운 사진 등록 및 연관성 설정
-        for (ProductPhoto photo : photos) {
-            photo.setPno(pno);
-            productPhotoDao.saveProductPhoto(photo);
+        // 새로운 사진 등록
+        for (MultipartFile uploadedPhoto : uploadedPhotos) {
+            if (!uploadedPhoto.isEmpty()) {
+                String originalFilename = uploadedPhoto.getOriginalFilename();
+                String savedFilename = productPhotoService.saveFile(uploadedPhoto);
+
+                ProductPhoto productPhoto = new ProductPhoto();
+                productPhoto.setProductImg(originalFilename);
+                productPhoto.setProductSaveImg(savedFilename);
+                productPhoto.setPno(pno); // 상품 번호 설정
+                productAdminDao.addProductPhoto(productPhoto); // 사진 정보 등록
+            }
         }
 
-        return updatedProductId;
+        return pno;
     }
 
-	@Transactional
-	public void deleteProduct(Long pno) {
-		// 상품에 연관된 모든 사진 삭제
-		deleteAllPhotosByPno(pno);
+    @Transactional
+    public void deleteProduct(Long pno) {
+        // 상품에 연관된 모든 사진 삭제
+        deleteAllPhotosByPno(pno);
 
-		// 상품 정보 삭제
-		int deletedCount = productAdminDao.deleteProduct(pno);
-		if (deletedCount == 0) {
-			throw new RuntimeException("Failed to delete the product from the database");
-		}
-	}
+        // 상품 정보 삭제
+        int deletedCount = productAdminDao.deleteProduct(pno);
+        if (deletedCount == 0) {
+            throw new RuntimeException("Failed to delete the product from the database");
+        }
+    }
 
     private void deleteAllPhotosByPno(Long pno) {
         List<ProductPhoto> photos = productPhotoDao.getProductPhotosByPNo(pno);

@@ -13,7 +13,7 @@ import com.babasnack.demo.entity.Product;
 @Mapper
 public interface ProductDao {
     // 상품목록
-    @Select("SELECT * FROM product")
+    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno")
     public List<Product> findAllProducts();
 
     // 상품번호로 조회
