@@ -1,3 +1,5 @@
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
@@ -17,13 +19,13 @@
 <title>BABA-SNACK - cart(작성중)</title>
 
 <style>
-#cartBenefit-form>form {
+#cartBenefit-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
 }
 
-#cartProductsDetail-form>form {
+#cartProductsDetail-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
@@ -48,24 +50,52 @@ tbody tr:nth-child(2n) {
 </style>
 
 <script>
-	// 주문하기 버튼 누를 때, 취소가 안된다는 창(확인, 취소)을 띄우고 주문상세 페이지로 이동
-	function PsOrderDetails() {
-		if (!confirm('저희 쇼핑몰의 모든 상품은 수제로 만든 간식이며,\n주문하시게 되면 주문취소를 할 수가 없습니다.\n이대로 주문을 진행하시겠습니까?')) {
-			return false;
-		} else {
-			location.href = '/cart/orderdetails';
-		}
-	}
-		
-	
+	// 주문하기 버튼 누를 때, 장바구니 안에 상품이 비어있으면 주문할 수 없게끔 기능 구현
+	// 장바구니 안에 상품이 존재하면 취소가 안된다는 창(확인, 취소)을 띄우고 주문상세 페이지로 이동
+	$(document)
+			.ready(
+					function() {
+						$('#PsOrderDetails')
+								.on(
+										"click",
+										function() {
+											var query = {
+												username : $('#username').val()
+											};
+
+											// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
+											$
+													.ajax({
+														url : "/cart/usernameCheck",
+														type : "post",
+														data : query,
+														success : function(data) {
+															if (data == 0) {
+																alert("장바구니가 비어있어 주문할 수 없습니다.");
+															} else {
+																if (!confirm('저희 쇼핑몰의 모든 상품은 수제로 만든 간식이며,\n주문하시게 되면 주문취소를 할 수가 없습니다.\n이대로 주문을 진행하시겠습니까?')) {
+																	return false;
+																} else {
+																	location.href = '/cart/orderdetails';
+																}
+															}
+														}
+													}); // ajax 끝
+										});
+					});
+
 	// 상품 전체삭제	
-	$(document).ready(function() {
-		$('#PsCartDelete').on("click", function() {
-			const form = $('<form>').attr('action','/cart/orderdetails-list/delete').attr('method','post');	
-			form.appendTo($('body')).submit();
-			alert("전체삭제 테스트");			
-		});
-	});
+	$(document).ready(
+			function() {
+				$('#PsCartDelete').on(
+						"click",
+						function() {
+							$('#frm').attr('action',
+									'/cart/orderdetails-list/delete').attr(
+									'method', 'post').submit();
+							alert("전체삭제 테스트");
+						});
+			});
 </script>
 
 </head>
@@ -81,18 +111,16 @@ tbody tr:nth-child(2n) {
 		</nav>
 		<main style="border: none">
 			<section>
-				<div id="cartBenefit-form" class="mt-3">
-					<form>
+				<form id="frm" name="frm">
+					<div id="cartBenefit-form" class="mt-3">
 						<h5>
 							<b>혜택정보</b>
 						</h5>
 						<ol>
 							<li>모든 상품 10% 적립 가능</li>
 						</ol>
-					</form>
-				</div>
-				<div id="cartProductsDetail-form" class="mt-3">
-					<form action="" method="get">
+					</div>
+					<div id="cartProductsDetail-form" class="mt-3">
 						<b>장바구니 상품</b>
 						<table class="board_list">
 							<colgroup>
@@ -131,21 +159,23 @@ tbody tr:nth-child(2n) {
 						<div style="text-align: right;">
 							[장바구니 상품 총가격 : <span>${cartDto.allPrice}</span>원]
 						</div>
+					</div>
 
-					</form>
-				</div>
-
-				<div style="text-align: center;" class="mt-3">
-					<form>
+					<div style="text-align: center;" class="mt-3">
 						<button type="button" class="btn btn-success btn-lg"
 							onclick="location.href='/'">계속 쇼핑하기</button>
 						<button type="button" class="btn btn-success btn-lg"
-							onclick="PsOrderDetails()">주문하기</button>
+							id="PsOrderDetails">주문하기</button>
 						<button type="button" class="btn btn-success btn-lg"
 							id="PsCartDelete">전체삭제(취소)</button>
-					</form>
-				</div>
+					</div>
+				</form>
 
+				<div>
+					<label>*로그인 아이디 확인용 : </label> <input type="text" id="username"
+						name="username" readonly="readonly"
+						value="<sec:authentication property="principal.username"/>">
+				</div>
 			</section>
 
 		</main>

@@ -17,13 +17,13 @@
 <title>BABA-SNACK - pay(작성중)</title>
 
 <style>
-#payProduct-form>form {
+#payProduct-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
 }
 
-#payMemberProfile-form>form {
+#payMemberProfile-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 800px;
@@ -46,7 +46,7 @@ tbody tr:nth-child(2n) {
 	background-color: #e3f2fd;
 }
 
-#ChoosePayBtn-form>form {
+#ChoosePayBtn-form {
 	border: 1px dashed saddlebrown;
 	padding: 10px;
 	width: 1000px;
@@ -100,10 +100,10 @@ tbody tr:nth-child(2n) {
 			alert("임시 테스트\n결제 완료 페이지로 이동");
 			location.href = '/cart/order-end';
 
-			$(form).appendTo($('body')).submit();
+			$("#frm").appendTo($('body')).submit();
 		});
 	})
-	
+
 	$(document).ready(function() {
 		$('#NaverPay').on("click", function() {
 
@@ -127,7 +127,7 @@ tbody tr:nth-child(2n) {
 			alert("임시 테스트\n네이버Pay 결제 완료 페이지로 이동");
 			location.href = '/cart/order-end';
 
-			$(form).appendTo($('body')).submit();
+			$("#frm").appendTo($('body')).submit();
 		});
 	})
 
@@ -139,7 +139,6 @@ tbody tr:nth-child(2n) {
 
 </head>
 <body>
-
 	<div id="page">
 		<header>
 			<!-- 공지, 로고 -->
@@ -151,11 +150,12 @@ tbody tr:nth-child(2n) {
 		</nav>
 		<main style="border: none">
 			<section>
-				<form>*결제 페이지</form>
+				<form id="frm" name="frm">
+					*결제 페이지
 
-				<div class="mt-3">
-					<div id="payProduct-form" class="mt-3">
-						<form>
+					<div class="mt-3">
+						<div id="payProduct-form" class="mt-3">
+
 							<b>결제상품 리스트</b>
 							<table class="payBoard_list">
 								<colgroup>
@@ -198,35 +198,38 @@ tbody tr:nth-child(2n) {
 									[주문상품 총적립금 : <span>??</span>원]
 								</div>
 							</div>
-						</form>
-					</div>
-				</div>
 
-				<div id="payMemberProfile-form" class="mt-3">
-					<form>
+						</div>
+					</div>
+
+					<div id="payMemberProfile-form" class="mt-3">
+
 						<div>
 							<b>수령인 정보</b>
 
 							<div class="input-group">
 								<span class="input-group-text">이름(성함)</span> <input type="text"
-									id="name" class="form-control" placeholder="사용자 이름">
+									id="name" class="form-control" placeholder="사용자 이름"
+									maxlength="4" value="${DBOrderBuyDto.name}">
 							</div>
 							<div class="input-group">
 								<span class="input-group-text">연락처</span> <input type="text"
 									id="pnoTell" class="form-control" oninput="inputNumOnly(this)"
-									placeholder="사용자 연락처">
+									placeholder="사용자 연락처" maxlength="11"
+									value="${DBOrderBuyDto.pnoTell}">
 							</div>
 						</div>
 
 						<div class="mt-3">
 							<b>배송지 주소</b> <input type="text" class="form-control"
-								id="delivery1_input" placeholder="주소">
+								id="delivery1_input" placeholder="주소"
+								value="${DBOrderBuyDto.baseDelivery}">
 						</div>
-					</form>
-				</div>
 
-				<div id="ChoosePayBtn-form" class="mt-3">
-					<form>
+					</div>
+
+					<div id="ChoosePayBtn-form" class="mt-3">
+
 						<span id="position-left2"><b>[적립금 사용]</b> <input
 							type="text" placeholder="적립금" style="width: 80px"
 							disabled="disabled"> <b>→</b> <input type="text"
@@ -236,8 +239,9 @@ tbody tr:nth-child(2n) {
 								id="NaverPay">네이버 Pay</button>
 							<button type="button" class="btn btn-success btn-lg" id="PsPay">결제하기</button>
 						</span>
-					</form>
-				</div>
+
+					</div>
+				</form>
 			</section>
 
 		</main>

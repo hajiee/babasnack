@@ -24,8 +24,16 @@ public class OrderBuyController {
 	public void readOrderEndPageTest() {
 	}
 	
+//	@GetMapping("/cart/pay")
+//	public void readOrderBuyTest() {
+//	}
+	
 	@GetMapping("/cart/pay")
-	public void readOrderBuyTest() {
+	public ModelAndView readPay(Principal principal) {
+		// 수령인 정보 출력
+		OrderBuyDto.DeliveryByOrderBuy DBOrderBuyDto = orderBuyService.readDelivery(principal.getName());
+		
+		return new ModelAndView("cart/pay").addObject("DBOrderBuyDto", DBOrderBuyDto);
 	}
 
 	// 주문정보 저장(회원 id)

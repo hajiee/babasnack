@@ -239,6 +239,7 @@
 								<div class="mb-3 mt-3">
 									<input type="text" class="form-control" id="baseDelivery"
 										placeholder="주소1(기본주소)" name="baseDelivery">
+
 								</div>
 							</div>
 						</div>
@@ -252,6 +253,7 @@
 							<div class="mb-3 mt-3">
 								<input type="text" class="form-control" id="addDelivery"
 									placeholder="주소2" name="addDelivery">
+
 							</div>
 						</div>
 					</div>
@@ -265,6 +267,7 @@
 									- 없이 입력)</b></label> <input type="text" class="form-control" id="pnoTell"
 								name="pnoTell" oninput="inputNumOnly(this)"
 								placeholder="사용자 연락처" maxlength="11">
+
 
 							<div class="mb-3 mt-3">
 								<button type="button" id="PsMain" class="btn btn-primary">배송지

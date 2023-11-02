@@ -1,3 +1,5 @@
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
@@ -16,7 +18,7 @@
 <title>BABA-SNACK - orderdetails(작성중)</title>
 
 <style>
-#orderDetailsProduct-form>form {
+#orderDetailsProduct-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
@@ -43,7 +45,7 @@ tbody tr:nth-child(2n) {
 	text-align: right;
 }
 
-#orderDetailsMemberProfile-form>form {
+#orderDetailsMemberProfile-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
@@ -51,11 +53,11 @@ tbody tr:nth-child(2n) {
 </style>
 
 <script>
+	
 </script>
 
 </head>
 <body>
-
 	<div id="page">
 		<header>
 			<!-- 공지, 로고 -->
@@ -67,12 +69,13 @@ tbody tr:nth-child(2n) {
 		</nav>
 		<main style="border: none">
 			<section>
-				<div class="mt-3">
+				<form id="frm" name="frm">
+					<div class="mt-3">
 
-					<form>*주문 상세 페이지</form>
+						*주문 상세 페이지
 
-					<div id="orderDetailsProduct-form" class="mt-3">
-						<form>
+						<div id="orderDetailsProduct-form" class="mt-3">
+
 							<b>주문상세 리스트</b>
 
 							<table class="orderDetailsBoard_list">
@@ -110,28 +113,29 @@ tbody tr:nth-child(2n) {
 							<div style="text-align: right;">
 								[주문상품 총가격 : <span>??</span>원]
 							</div>
-						</form>
-					</div>
 
-					<div id="orderDetailsMemberProfile-form" class="mt-3">
-						<form>
-							<p><b>※ 주문자 정보</b></p>
+						</div>
+
+						<div id="orderDetailsMemberProfile-form" class="mt-3">
+
+							<b>※ 주문자 정보</b>
+
 							<ul>
-								<li>아이디 : <span>??</span></li>
-								<li>연락처 : <span>??</span></li>
-								<li>이메일 : <span>??</span></li>
+								<li><b>아이디 :</b> <span><sec:authentication
+											property="principal.username" /></span></li>
+								<li><b>연락처 :</b> <span>${ODMemberDto.pnoTell}</span></li>
+								<li><b>이메일 :</b> <span>${ODMemberDto.email}</span></li>
 							</ul>
-						</form>
+						</div>
+
+
+						<div style="text-align: center;" class="mt-3">
+							<button type="button" class="btn btn-success btn-lg"
+								style="width: 180px;" onclick="location.href='/cart/pay'">주문하기</button>
+						</div>
+
 					</div>
-
-
-					<div style="text-align: center;" class="mt-3">
-						<button type="button" class="btn btn-success btn-lg" style="width: 180px;"
-							onclick="location.href='/cart/pay'">주문하기</button>
-					</div>
-
-				</div>
-
+				</form>
 			</section>
 		</main>
 

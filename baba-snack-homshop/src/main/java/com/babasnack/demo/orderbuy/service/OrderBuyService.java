@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.orderbuy.dao.OrderBuyDao;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto.OrderBuyProduct;
@@ -49,6 +50,13 @@ public class OrderBuyService {
 	// 로그인한 회원의 주문번호+아이디 가져오기
 	public OrderBuyProduct findByUsernameAndOno(String username, Long ono) {
 		return orderBuyDao.findByUsernameAndOno(username, ono);
+	}
+
+	// 회원 정보 읽기(delivery 테이블)
+	public OrderBuyDto.DeliveryByOrderBuy readDelivery(String username) {
+		Delivery delivery = orderBuyDao.findUsernameFromDelivery(username);
+		return new OrderBuyDto.DeliveryByOrderBuy(delivery.getUsername(), delivery.getName(), delivery.getPnoTell(), delivery.getBaseDelivery());
+
 	}
 
 	// 주문후 상품 수량 감소

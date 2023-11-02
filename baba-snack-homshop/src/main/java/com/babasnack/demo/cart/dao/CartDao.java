@@ -21,6 +21,10 @@ public interface CartDao {
 	@Select("select * from cart where username=#{username}")
 	public List<Cart> findByUsername(String username);
 
+	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
+	@Select("select username from cart where username=#{username}")
+	public Cart findByUsernameFromCart(String username);
+	
 	// 장바구니 추가
 	@Insert("insert into cart values(#{username}, #{pno}, #{productCnt}, #{productPrice}, #{allPrice}, #{productName})")
 	public Integer addCart(Cart cart);

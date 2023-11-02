@@ -4,14 +4,19 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.http.HttpLogging;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.entity.OrderDetail;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto;
 import com.babasnack.demo.orderdetail.dto.OrderDetailDto.ReadOrderDetailAdmin;
@@ -23,23 +28,24 @@ public class OrderDetailController {
 	@Autowired
 	private OrderDetailService orderDetailService;
 
-	// 회원 주문자 정보 출력 테스트
-	@GetMapping("/cart/orderdetails")
-	public void orderDetailMemberTest() {
-	}
+	// 주문상세 페이지 정보 출력 테스트
+//	@GetMapping("/cart/orderdetails")
+//	public void orderDetailMemberTest() {
+//	}
 
 	// 회원 주문자 정보
-	@GetMapping("/cart/orderdetails/{username}")
-	public ModelAndView orderDetailMember(Principal principal, Long ono) {
-		OrderDetailDto.ReadOrderDetailMember dto = orderDetailService.orderDetailMember(principal.getName(), ono);
-		return new ModelAndView("redirect:/cart/orderdetails").addObject("dto", dto);
-	}
+//	@GetMapping("/cart/orderdetails/{username}")
+//	public ModelAndView orderDetailMember(Principal principal, Long ono) {
+//		OrderDetailDto.ReadOrderDetailMember dto = orderDetailService.orderDetailMember(principal.getName(), ono);
+//		return new ModelAndView("redirect:/cart/orderdetails").addObject("dto", dto);
+//	}
 
-	// 회원 주문목록
-	@GetMapping("/cart/member-list")
-	public ModelAndView orderDetailMemberProduct(Principal principal, Long ono) {
-		List<ReadOrderDetailAdmin> list = orderDetailService.orderDetailAdmin(principal.getName(), ono);
-		return new ModelAndView("redirect:/cart/orderdetails").addObject("list", list);
+	// 주문상세 페이지 정보 출력
+	@GetMapping("/cart/orderdetails")
+	public ModelAndView orderDetailProfile(Principal principal) {
+		// ODMemberDto : 회원 주문자 정보(member 테이블에서)
+		OrderDetailDto.ReadMemberProfile ODMemberDto = orderDetailService.readMemberProfile(principal.getName());
+		return new ModelAndView("cart/orderdetails").addObject("ODMemberDto", ODMemberDto);
 	}
 
 	// 주문상세 정보 저장

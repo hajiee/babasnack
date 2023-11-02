@@ -90,6 +90,17 @@ public class OrderBuyDto {
 		private Long ono;
 		private Long amount;
 	}
+	
+	// 배송지
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class DeliveryByOrderBuy {
+		private String username;
+		private String name;
+		private Long pnoTell;
+		private String baseDelivery;
+	}
 
 	// 06-3 상품 상세설명 페이지
 

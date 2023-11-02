@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto.ReadOrderDetailByOB;
 
@@ -21,6 +22,10 @@ public interface OrderBuyDao {
 	@Select("select * from order_buy where username=#{username} and ono=#{ono}")
 	public OrderBuyDto.OrderBuyProduct findOBByUsernameAndOno(String username, Long ono);
 
+	// 배송지의 회원 정보 불러오기(출력용)
+	@Select("select * from delivery where username=#{username}")
+	public Delivery findUsernameFromDelivery(String username);
+	
 	// 모든 상품가격을 적립금 10%로 저장(update문으로)
 	@Update("update product set reserve = product_price*0.1")
 	public void updateProductReserve();
