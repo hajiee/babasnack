@@ -108,6 +108,13 @@
 					<div class="mb-3 mt-3">
             			<button type="submit" class="btn btn-primary" id="login-btn" >로그인</button>
           			</div>
+          			<div class="mb-3 mt-3">
+   				  <div class="d-flex">
+       					<a href="/findbyid.jsp" class="btn btn-primary me-2">아이디 찾기</a>
+        				<a href="/findbypw.jsp" class="btn btn-primary">비밀번호 찾기</a>
+    				</div>
+						</div>
+          			
 		 			<!-- 네이버 로그인 버튼 -->
           			<div class="mb-3 mt-3 border p-2">
             			<button type="button" class="btn btn-primary" id="naver-login-button">네이버 로그인</button>

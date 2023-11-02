@@ -24,6 +24,13 @@ public interface MemberDao {
 
     @Select("SELECT * FROM member WHERE email = #{email} AND ROWNUM = 1")
     public Member findByEmail(String email);
+    
+    @Select("SELECT username FROM member WHERE email = #{email} AND ROWNUM = 1")
+    public String findUsernameByEmail(String email);
+    
+    @Select("SELECT * FROM member WHERE email = #{email} AND username = #{username} AND ROWNUM = 1")
+   	public Member findByEmailAndUsername(String email, String username);
+       
 
     @Update("UPDATE member SET ps_email = #{email} WHERE username = #{username}")
     public Integer psChangeEm(String email, String username);
@@ -33,4 +40,10 @@ public interface MemberDao {
 
     @Delete("DELETE FROM member WHERE username = #{username}")
     public Integer psWithdrawal(String username);
+    
+    @Update("UPDATE member SET password = #{password} WHERE username = #{username}")
+    public Integer update(Member member);
+   
+    
+    
 }

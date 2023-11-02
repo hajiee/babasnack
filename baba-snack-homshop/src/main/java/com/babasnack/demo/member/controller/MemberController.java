@@ -2,7 +2,7 @@ package com.babasnack.demo.member.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -14,17 +14,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.member.dto.MemberDto;
+import com.babasnack.demo.member.service.MemberResetService;
 import com.babasnack.demo.member.service.MemberService;
 
 @Controller
 public class MemberController {
     @Autowired
     private MemberService service;
+    @Autowired
+    private MemberResetService memberResetService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/join")
@@ -150,7 +155,6 @@ public class MemberController {
     }
 
 
-    // 회원 탈퇴 처리
     @PostMapping("/member/withdrawal")
     public ModelAndView psWithdrawal(HttpSession session) {
         // 로그인 상태 확인
@@ -171,7 +175,20 @@ public class MemberController {
 
         return new ModelAndView("redirect:/main");
     }
-
-    // 추가적인 메소드들...
-
+    @GetMapping("/member/findbypw")
+    public ModelAndView psFindByPw() {
+        return new ModelAndView("findbypw");
+    }
+    
+    @PostMapping("/member/findbypw")
+    public ModelAndView psPasswordReset(@RequestParam("email") String email,
+                                        @RequestParam("username") String username) {
+        
+    	if (email != null && username != null) {
+            memberResetService.resetPassword(email, username);
+            return new ModelAndView("password-reset-success");
+        } else {
+            return new ModelAndView("password-reset-failure");
+        }
+    }
 }
