@@ -40,6 +40,11 @@ public class ProductService {
     private int numberOfProductsPerPage;
     @Value("${sizeOfPagination}")
     private int sizeOfPagination;
+    
+    @Value("${numberOfBoardesPerPage}")
+    private int numberOfBoardesPerPage;
+    @Value("${sizeOfBoardPagination}")
+    private int sizeOfBoardPagination;
 
     // 상품 목록(카테고리) 조회 서비스 메서드
     public List<Product> getProductListByCategory(String category) {
@@ -75,7 +80,7 @@ public class ProductService {
     }
 
     // 상품, 이미지들, 리뷰들, 리뷰 개수, 리뷰 평점 평균을 읽어 출력
- // 특정 상품의 상세 정보 조회 서비스 메서드
+    // 특정 상품의 상세 정보 조회 서비스 메서드
     public ProductDto.ReadP getProductDetail(Long pno) {
         Product p = productDao.findByProduct(pno);
         if (p == null)
@@ -104,12 +109,12 @@ public class ProductService {
 
     // 상품 페이지 정보 조회 서비스 메서드
     public ProductPage page(Long pageno) {
-        Long count = productDao.count();
+    	Long count = productDao.count();
         Long numberOfPages = (count + numberOfProductsPerPage - 1) / numberOfProductsPerPage;
 
-        // 현재 페이지의 시작과 끝 인덱스 계산
-        Long startRownum = (pageno - 1) * numberOfProductsPerPage;
-        Long endRownum = Math.min(startRownum + numberOfProductsPerPage, count);
+     // 현재 페이지의 시작과 끝 인덱스 계산
+        Long startRownum = (pageno - 1) * numberOfProductsPerPage + 1;
+        Long endRownum = Math.min(startRownum + numberOfProductsPerPage - 1, count);
 
         List<Product> products = productDao.findProductsByPage(startRownum, endRownum);
 
@@ -125,13 +130,30 @@ public class ProductService {
         }
 
         // 페이지네이션 계산
-        Long start = Math.max(1, pageno - sizeOfPagination / 2);
-        Long end = Math.min(start + sizeOfPagination - 1, numberOfPages);
-
-        Long prev = (start > 1) ? start - 1 : null;
-        Long next = (end < numberOfPages) ? end + 1 : null;
+        Long start = 1L;
+        Long end = numberOfPages;
+        Long prev = (pageno > 1) ? pageno - 1 : null;
+        Long next = (pageno < numberOfPages) ? pageno + 1 : null;
 
         // ProductPage 객체를 생성하고 이미지 URL을 포함하여 반환
-        return new ProductPage(start, end, prev, next, pageno, products);
+        return new ProductPage(prev, start, end, next, pageno, products,count);
+    }
+    
+    // pageno, 개수 -> prev, start, end, next, pageno, 제품들을 출력한다
+    // 상품관리 등록된 상품 목록
+    public ProductPage adminList(Long pageno) {
+        Long count = productDao.count();
+        Long numberOfPage = (count - 1) / numberOfBoardesPerPage + 1;
+
+        Long startRownum = (pageno - 1) * numberOfBoardesPerPage + 1;
+        Long endRownum = pageno * numberOfBoardesPerPage;
+        List<Product> products = productDao.findProductsByPage(startRownum, endRownum);
+
+        Long start = (pageno - 1) / sizeOfBoardPagination * sizeOfBoardPagination + 1;
+        Long prev = (start - sizeOfBoardPagination > 0) ? start - sizeOfBoardPagination : null;
+        Long end = Math.min(start + sizeOfBoardPagination - 1, numberOfPage);
+        Long next = (end < numberOfPage) ? end + 1 : null;
+
+        return new ProductPage(prev, start, end, next, pageno, products,count);
     }
 }

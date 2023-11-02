@@ -67,7 +67,7 @@ $(document).ready(function() {
 				<table class="table table-hover" id="board-table">
 					<thead>
 						<tr>
-							<th class="board-nav">번호</th>
+							<th class="board-no">번호</th>
 							<th>제목</th>
 							<th>글쓴이</th>
 							<th>날짜</th>
@@ -77,7 +77,7 @@ $(document).ready(function() {
 					<tbody>
 						<c:forEach items="${page.list}" var="board">
 							<tr>
-								<td class="board-nav">${board.bno}</td>
+								<td>${board.bno}</td>
 								<td><a href="/read?bno=${board.bno}">${board.title}</a></td>
 								<td>${board.boardWriter}</td>
 								<td>${board.boardDate}</td>

@@ -16,4 +16,5 @@ public class ProductPage {
 	private Long next;
 	private Long pageno;
 	private List<Product> products;
+	private Long totalCount;
 }

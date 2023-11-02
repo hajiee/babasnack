@@ -1,5 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,14 +27,12 @@
 		alert(msg);
 </script>
 <script>
-$(document).ready(function() {
-    $("tbody tr").each(function() {
-      var productDay = $(this).find("td:eq(3)").text();
-      var date = new Date(productDay);
-      var formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-      $(this).find("td:eq(3)").text(formattedDate);
-    });
-  });
+	$(document).ready(function() {
+		$("tbody tr").each(function() {
+			var productDay = $(this).find("td:eq(3)").text();
+			$(this).find("td:eq(3)").text(productDay);
+		});
+	});
 </script>
 </head>
 <body>
@@ -53,58 +52,60 @@ $(document).ready(function() {
 				</a>
 			</aside>
 			<section>
+			<span>상품 수 : ${products.size()}개 / ${productPage.totalCount}개</span>
 				<table class="table table-hover" id="board-table">
 					<thead>
 						<tr>
-							<th class="board-nav">상품번호</th>
-							<th>상품명</th>
+							<th class="board-no">상품번호</th>
+							<th>상품명(분류)</th>
 							<th>재고</th>
 							<th>등록일자</th>
-							<td><td>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${page.list}" var="product">
+						<c:forEach items="${products}" var="product" varStatus="status">
 							<tr>
-								<td class="board-nav">${product.pno}</td>
-								<td><a href="/product-read?pno=${product.pno}">${product.productName}</a></td>
+								<td class="board-no">${product.pno}</td>
+								<td><a href="/product/product-read?pno=${product.pno}">${product.productName}(${product.category})</a></td>
 								<td>${product.productStock}</td>
 								<td>${product.productDay}</td>
-								<td>
-                  					<a href="/product-edit?pno=${product.pno}">
-                  						<button type="button" class="btn btn-outline-warning">수정</button>
-                  					</a> <!-- 수정 버튼 링크 추가 -->
-                				</td>
+								<td id="editBtn">
+									<a href="/product/product-edit?pno=${product.pno}">
+										<button type="button" class="btn btn-outline-warning">수정</button>
+									</a>
+								</td>
+								<td>${status.index + 1}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				<ul class="pagination">
-					<c:if test="${page.prev>0}">
+					<c:if test="${productPage.prev != null}">
 						<li class="page-item"><a class="page-link"
-							href="/admin-product?pageno=${page.prev}">이전</a></li>
+							href="/product/admin-product?pageno=${productPage.prev}">이전</a></li>
 					</c:if>
-					<c:forEach begin="${page.start}" end="${page.end}" var="i">
-						<c:if test="${page.pageno==i }">
+					<c:forEach begin="${productPage.start}" end="${productPage.end}"
+						var="i">
+						<c:if test="${productPage.pageno == i}">
 							<li class="page-item active"><a class="page-link"
-								href="/admin-product?pageno=${i}">${i}</a></li>
+								href="/product/admin-product?pageno=${i}">${i}</a></li>
 						</c:if>
-						<c:if test="${page.pageno!=i }">
+						<c:if test="${productPage.pageno != i}">
 							<li class="page-item"><a class="page-link"
-								href="/admin-product?pageno=${i}">${i}</a></li>
+								href="/product/admin-product?pageno=${i}">${i}</a></li>
 						</c:if>
 					</c:forEach>
-					<c:if test="${page.next>0}">
+					<c:if test="${productPage.next != null}">
 						<li class="page-item"><a class="page-link"
-							href="/admin-product?pageno=${page.next}">다음</a></li>
+							href="/product/admin-product?pageno=${productPage.next}">다음</a></li>
 					</c:if>
 				</ul>
 			</section>
-			<aside>
-			</aside>
+			<aside></aside>
 		</main>
-		<footer>
-		</footer>
+		<footer> </footer>
 	</div>
 </body>
 </html>

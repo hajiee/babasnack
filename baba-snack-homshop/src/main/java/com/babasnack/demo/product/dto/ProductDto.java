@@ -1,6 +1,7 @@
 package com.babasnack.demo.product.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.babasnack.demo.entity.Product;
@@ -32,6 +33,7 @@ public class ProductDto {
             product.setProductStock(this.productStock);
             product.setProductPrice(this.productPrice);
             product.setProductSize(this.productSize);
+            product.setCategory(this.category);
             product.setReserve(this.reserve);
             // 나머지 필드 초기화
             return product;
@@ -44,8 +46,10 @@ public class ProductDto {
     @NoArgsConstructor
     public static class AminP {
         private Long pno;
+        private String productName;
         private Long productStock;
         private Category category;
+        private LocalDate productDay;;
     }
     
     // 상품 목록

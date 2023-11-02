@@ -109,8 +109,8 @@ jQuery(document).ready(function($) {
 								<td>
 									<select name='category' id='FormControlInput-category' class='form-control'>
     									<option value='' selected disabled>카테고리선택</option>
-    									<option value='CAT'>강아지</option>
-    									<option value='DOG'>고양이</option>
+    									<option value='DOG'>강아지</option>
+    									<option value='CAT'>고양이</option>
 									</select>
 								</td>
 							</tr>
@@ -155,6 +155,9 @@ jQuery(document).ready(function($) {
 					</div>
 					<div class="text-right">
 						<button type='submit' class='btn btn-outline-info' id="submitBtn">등록</button>
+						<a href="/product/admin-product">
+							<button type='button' class='btn btn-outline-info'>취소</button>
+						</a>
 					</div>
 				</form>
 			</section>

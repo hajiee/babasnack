@@ -61,7 +61,7 @@
 				<table class="table table-hover" id="board-table">
 					<thead>
 						<tr>
-							<th class="board-nav">번호</th>
+							<th class="board-no">번호</th>
 							<th>제목</th>
 							<th>글쓴이</th>
 							<th>날짜</th>
@@ -70,7 +70,7 @@
 					<tbody>
 						<c:forEach items="${page.list}" var="board">
 							<tr>
-								<td class="board-nav">${board.bno}</td>
+								<td class="board-no">${board.bno}</td>
 								<td>
 									<a href="/board-read?bno=${board.bno}" onclick="showCodePopup(${board.bno})">${board.title}</a> <!-- 암호 확인 팝업 -->
 									<div id="CodePopup_${board.bno}" class="Code-popup"

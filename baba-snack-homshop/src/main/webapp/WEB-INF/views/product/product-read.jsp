@@ -22,78 +22,107 @@
 	if (msg !== '')
 		alert(msg);
 </script>
-<script type="text/javascript">
-	$(document).ready(
-			function() {
-				// 재고 표시
-				var products = $
-				{
-					productPage.products
+<script>
+$(document).ready(
+		function() {
+			// 재고 표시
+			var products = $
+			{
+				productPage.products
+			}
+			;
+			for (var i = 0; i < products.length; i++) {
+				var product = products[i];
+				var stockMessage;
+				if (product.productStock >= 0) {
+					stockMessage = product.productStock + "개 남음";
+				} else {
+					stockMessage = "재고 없음";
 				}
-				;
-				for (var i = 0; i < products.length; i++) {
-					var product = products[i];
-					var stockMessage;
-					if (product.productStock >= 0) {
-						stockMessage = product.productStock + "개 남음";
-					} else {
-						stockMessage = "재고 없음";
-					}
-					$(".prdlist_default .price_box:eq(" + i + ")").append(
-							"<span>" + stockMessage + "</span>");
-				}
-			});
+				$(".prdlist_default .price_box:eq(" + i + ")").append(
+						"<span>" + stockMessage + "</span>");
+			}
+		});
 </script>
 </head>
 <body>
-	<div id="page">
-		<header>
-			<!-- 공지, 로고 -->
-			<jsp:include page="/WEB-INF/views/include/header.jsp" />
-		</header>
-		<nav>
-			<!-- 메뉴 -->
-			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
-		</nav>
-		<main>
-			<aside>
-			</aside>
-			<section>
-				<!-- 상품리스트 -->
-				<div class="prdlist_default">
-					<c:if test="${empty productPage.products}">
-						<div class="product-item empty">
-							<!-- 비어있을 때 보여줄 내용 -->
+<div id="page">
+	<header>
+		<!-- 공지, 로고 -->
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	</header>
+	<nav>
+		<!-- 메뉴 -->
+		<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+	</nav>
+	<main>
+		<aside>
+		</aside>
+		<section>
+			<!-- 상품리스트 -->
+			<div class="prdlist_default">
+				<c:if test="${empty productPage.products}">
+					<div class="product-item empty">
+						<!-- 비어있을 때 보여줄 내용 -->
+					</div>
+				</c:if>
+				<c:forEach items="${productPage.products}" var="p">
+					<div class="product-item">
+						<!-- 상품 목록 항목 내용 -->
+						<div class="product-image">
+							<img src="${p.productPhoto[0]}" alt="${p.productName}">
 						</div>
-					</c:if>
-					<c:forEach items="${productPage.products}" var="p">
-						<div class="product-item">
-							<!-- 상품 목록 항목 내용 -->
-							<div class="product-image">
-								<img src="${p.imageUrls}" alt="${p.productName}">
+						<div class="product-details">
+							<h2>${p.productName}</h2>
+							<p class="product-description">${p.productNotice}</p>
+							<div class="product-price">
+								<span class="price-label">가격:</span> <span class="price-value">${p.productPrice}원</span>
 							</div>
-							<div class="product-details">
-								<h2>${p.productName}</h2>
-								<p class="product-description">${p.productDescription}</p>
-								<div class="product-price">
-									<span class="price-label">가격:</span> <span class="price-value">${p.productPrice}원</span>
-								</div>
-								<div class="product-stock">
-									<span class="stock-label">재고:</span> <span class="stock-value">${p.productStock}개
-										남음</span>
-								</div>
+							<div class="product-stock">
+								<span class="stock-label">재고:</span> <span class="stock-value">${p.productStock}개
+									남음</span>
 							</div>
+                            <div class="product-size">
+								<span class="size-label">용량:</span> <span class="size-value">${p.productSize}</span>
+							</div>
+                            <div class="review-count">
+								<span class="review-label">리뷰 수:</span> <span class="review-value">${p.reviewCount}</span>
+							</div>
+                            <div class="review-star">
+								<span class="star-label">평균 별점:</span> <span class="star-value">${p.reviewStar}</span>
+							</div>
+                            <div class="product-photos">
+                                <span class="photos-label">상품 사진:</span>
+                                <ul>
+                                    <c:forEach items="${p.productPhoto}" var="photo">
+                                        <li><img src="${photo}" alt="${p.productName} 사진"></li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            <div class="reviews">
+                                <span class="reviews-label">리뷰:</span>
+                                <ul>
+                                    <c:forEach items="${p.reviews}" var="review">
+                                        <li>
+                                            <p>리뷰 내용: ${review.reviewContent}</p>
+                                            <p>작성자: ${review.writer}</p>
+                                            <p>평점: ${review.rating}</p>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
 						</div>
-					</c:forEach>
-				</div>
-			</section>
-			<aside>
-			</aside>
-		</main>
-		<footer>
-			<!-- 홈피정보 -->
-			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-		</footer>
-	</div>
+					</div>
+				</c:forEach>
+			</div>
+		</section>
+		<aside>
+		</aside>
+	</main>
+	<footer>
+		<!-- 홈피정보 -->
+		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	</footer>
+</div>
 </body>
 </html>

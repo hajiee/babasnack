@@ -36,7 +36,6 @@ public interface ProductDao {
     @Select("SELECT * FROM (SELECT rownum as rnum,p.* FROM (SELECT /*+ index_desc(product_pk_pno)*/ * from 	product)p where rownum <=#{endRownum}) where rnum >=#{startRownum}") 
     public List<Product> findProductsByPage(@Param("startRownum") Long startRownum,@Param("endRownum") Long endRownum);
     
-    @Select("select count(*) from products")
+    @Select("select count(*) from product")
     public Long count();
-
 }
