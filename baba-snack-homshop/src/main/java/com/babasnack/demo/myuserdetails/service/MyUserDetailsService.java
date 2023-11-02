@@ -1,29 +1,35 @@
 package com.babasnack.demo.myuserdetails.service;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.password.*;
-import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.member.dao.MemberDao;
 
-
-
-@Component
+@Component("myUserDetailsServiceNew")
 public class MyUserDetailsService implements UserDetailsService {
+    //...
+
+    private final MemberDao memberDao;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private MemberDao memberDao;
-    
-    @Autowired
-    private PasswordEncoder encoder;
+    public MyUserDetailsService(MemberDao memberDao, PasswordEncoder passwordEncoder) {
+        this.memberDao = memberDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.equals("admin")) {
             return User.builder()
                     .username("admin")
-                    .password(encoder.encode("1234"))
+                    .password(passwordEncoder.encode("1234"))
                     .roles("ADMIN")
                     .build();
         }
@@ -40,5 +46,4 @@ public class MyUserDetailsService implements UserDetailsService {
                 .roles(member.getRole() != null ? member.getRole() : "")
                 .build();
     }
-
-	}
+}
