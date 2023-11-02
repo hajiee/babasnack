@@ -13,8 +13,7 @@ import com.babasnack.demo.member.dao.MemberDao;
 
 @Component("myUserDetailsServiceNew")
 public class MyUserDetailsService implements UserDetailsService {
-    //...
-
+    
     private final MemberDao memberDao;
     private final PasswordEncoder passwordEncoder;
 
