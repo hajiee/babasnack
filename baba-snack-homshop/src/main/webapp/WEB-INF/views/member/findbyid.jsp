@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <title>BABA-SNACK-FindById</title>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -48,8 +49,8 @@
 			<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		</header>
 		<main style="border: none">
-			<section id="find-id-form">
-				<form action="#" id="find-id-form" method="post">
+			<section id="find-id-section">
+				<form action="/member/findbyid" id="find-id-form" method="post">
 					<div class="mb-3">
 						<label for="name" class="form-label">이름:</label>
 						<input type="text" class="form-control" id="name" name="name" maxlength="10">
@@ -59,13 +60,13 @@
 						<input type="email" class="form-control" id="email" name="email">
 					</div>
 					<div class="mb-3">
-						<button type="button" class="btn btn-primary" id="find-id-btn">아이디 찾기</button>
+						<button type="submit" class="btn btn-primary" id="find-id-btn">아이디 찾기</button>
 					</div>
 				</form>
 			</section>
 		</main>
 		<footer>
-			<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+			<jsp:include page="/WEB-INF/views/include/footer.jsp"/>
 		</footer>
 	</div>
 </body>

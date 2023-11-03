@@ -125,8 +125,9 @@ $(document).ready(function() {
     </div>
 </div>
 
-<form action="/member/withdrawal" method="post"> <!-- POST 요청으로 변경 -->
-    <button type="submit">회원 탈퇴</button>
+<form action="/member/user-profile" method="post"> <!-- POST 요청으로 변경 -->
+     <input type="submit" value="회원 탈퇴">
+    <button id="withdrawal">회원 탈퇴</button>
 </form>
 
 </body>

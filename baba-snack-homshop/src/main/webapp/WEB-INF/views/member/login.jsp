@@ -110,8 +110,8 @@
           			</div>
           			<div class="mb-3 mt-3">
    				  <div class="d-flex">
-       					<a href="/findbyid.jsp" class="btn btn-primary me-2">아이디 찾기</a>
-        				<a href="/findbypw.jsp" class="btn btn-primary">비밀번호 찾기</a>
+       					<a href="/findbyid" class="btn btn-primary me-2">아이디 찾기</a>
+        				<a href="/findbypw" class="btn btn-primary">비밀번호 찾기</a>
     				</div>
 						</div>
           			

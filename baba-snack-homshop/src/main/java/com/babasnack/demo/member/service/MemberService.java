@@ -53,11 +53,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public String findById(String email) {
-        Member member = memberDao.findByEmail(email);
-        return member == null ? null : member.getUsername();
+    public Member findById(String email) {
+        return memberDao.findByEmail(email);
     }
-
     public boolean psChangeEm(String email, String username) {
         return (memberDao.psChangeEm(email, username) == 1);
     }
@@ -111,6 +109,8 @@ public class MemberService {
     public String findUsernameByEmail(String email) {
         return memberDao.findUsernameByEmail(email);
     }
+    
+    
 //    @Transactional
 //    public void resetPassword(String email, String username) {
 //        Member member = memberDao.findByEmailAndUsername(email, username);

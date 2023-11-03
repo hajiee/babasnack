@@ -2,7 +2,6 @@ package com.babasnack.demo.member.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
-
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,7 +84,7 @@ public class MemberController {
     public ModelAndView psMyPage(Principal principal, HttpSession session) {
         // 사용자 정보 조회 등의 로직 수행
         String username = principal.getName(); // Principal에서 사용자명 가져오기
-        MemberDto.PsMyPage dto = service.psMypage(username);
+        MemberDto.PsMyPage dto = psMypage(username);
 
         ModelAndView modelAndView = new ModelAndView("member/user-profile");
         modelAndView.addObject("dto", dto);
@@ -117,9 +115,7 @@ public class MemberController {
         return service.getMemberByUsername(username);
     }
 
-
-
-	@PostMapping("/member/change-email")
+    @PostMapping("/member/change-email")
     public ModelAndView psChangeEmail(@RequestParam("email") String newEmail,
                                       HttpSession session) {
         // 로그인 상태 확인
@@ -173,18 +169,40 @@ public class MemberController {
         // 스프링 시큐리티의 로그아웃
         SecurityContextHolder.clearContext();
 
+        // 회원 탈퇴 후 리다이렉트할 경로 설정
         return new ModelAndView("redirect:/main");
     }
+    
+    @GetMapping("/member/findbyid")
+    public ModelAndView psFindById(@RequestParam(value = "email", required = false) String email) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (email == null) {
+            modelAndView.setViewName("findbyid"); // email 파라미터가 없는 경우 findbyid.jsp를 반환
+        } else {
+            // 이메일을 통해 사용자 아이디 조회 로직 수행
+            String username = service.findUsernameByEmail(email);
+
+            if (username != null) {
+                modelAndView.setViewName("findbyid-result");
+                modelAndView.addObject("username", username);
+            } else {
+                modelAndView.setViewName("findbyid-failure");
+            }
+        }
+
+        return modelAndView;
+    }
+    
     @GetMapping("/member/findbypw")
     public ModelAndView psFindByPw() {
         return new ModelAndView("findbypw");
     }
-    
-    @PostMapping("/member/findbypw")
+
+    @PostMapping("/member/password-reset")
     public ModelAndView psPasswordReset(@RequestParam("email") String email,
                                         @RequestParam("username") String username) {
-        
-    	if (email != null && username != null) {
+        if (email != null && username != null) {
             memberResetService.resetPassword(email, username);
             return new ModelAndView("password-reset-success");
         } else {
