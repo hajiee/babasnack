@@ -12,6 +12,7 @@ public class ProductPhoto {
     private Long pno;
     private String productImg; // 원본 이미지파일명
     private String productSaveImg; // 저장된 파일명
+    private String productImgUrl; // 이미지 URL
     private Product product;
 
     public Product getProduct() {

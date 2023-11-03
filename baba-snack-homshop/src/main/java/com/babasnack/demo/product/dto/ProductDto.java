@@ -77,7 +77,7 @@ public class ProductDto {
         private Long productSize;
         private Long reviewCount;
         private Double reviewStar;
-        private List<String> productPhoto;
+        private List<ProductPhoto> productPhoto;
         private List<Review> reviews;
     }
     

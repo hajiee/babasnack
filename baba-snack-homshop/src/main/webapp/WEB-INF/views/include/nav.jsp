@@ -39,9 +39,9 @@
 </style>
 </head>
 <body>
-<form action="/member/logout" method="post">
+<!-- <form action="/member/logout" method="post">
 	<button>logout</button>
-</form>
+</form> -->
 	<div id="nav">
 		<!-- 인증(로그인)이 됐는지 아닌지 확인 -->
 		<table id="nav-notMamber">

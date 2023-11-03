@@ -22,11 +22,11 @@ public class Review {
 	
 	// Review 엔티티에 사진 목록을 저장할 컬렉션 필드 추가
 	// 해당 상품과 연관된 사진들을 저장하기 위한 컬렉션
-	private List<ReviewPhoto> photos;
+	private List<ReviewPhoto> reviewPhotos;
     public List<ReviewPhoto> getPhotos() {
-        return photos;
+        return reviewPhotos;
     }
     public void setPhotos(List<ReviewPhoto> photoData) {
-        this.photos = photoData;
+        this.reviewPhotos = photoData;
     }
 }

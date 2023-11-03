@@ -6,7 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
-<link rel="stylesheet" href="/css/product-css/product.css">
+<link rel="stylesheet" href="/css/board-css/board.css">
+<link rel="stylesheet" href="/css/product-css/product-read.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -23,26 +24,43 @@
 		alert(msg);
 </script>
 <script>
-$(document).ready(
-		function() {
-			// 재고 표시
-			var products = $
-			{
-				productPage.products
-			}
-			;
-			for (var i = 0; i < products.length; i++) {
-				var product = products[i];
-				var stockMessage;
-				if (product.productStock >= 0) {
-					stockMessage = product.productStock + "개 남음";
-				} else {
-					stockMessage = "재고 없음";
-				}
-				$(".prdlist_default .price_box:eq(" + i + ")").append(
-						"<span>" + stockMessage + "</span>");
-			}
-		});
+$(document).ready(function() {
+	// 재고 표시
+    var product = ${product};
+    var stockMessage;
+    if (product.productStock >= 0) {
+        var remainingStock = product.productStock - product.productCnt;
+        if (product.productCnt === 0 || product.productCnt === null) {
+            stockMessage = product.productStock + "개 남음";
+        } else {
+            stockMessage = remainingStock + "개 남음";
+        }
+    } else {
+        stockMessage = "재고 없음";
+    }
+    
+    // 재고 표시 업데이트 함수
+    function updateStockMessage() {
+        if (product.productStock >= 0) {
+            var remainingStock = product.productStock - $("#quantity").val();
+            if ($("#quantity").val() === "0" || $("#quantity").val() === null) {
+                stockMessage = product.productStock + "개 남음";
+            } else {
+                stockMessage = remainingStock + "개 남음";
+            }
+        } else {
+            stockMessage = "재고 없음";
+        }
+        $("#stock").text(stockMessage);
+    }
+    
+    updateStockMessage(); // 초기 재고 표시
+    
+    // 수량 선택
+    $("#quantity").on("change", function() {
+        updateStockMessage(); // 재고 표시 업데이트
+    });
+});
 </script>
 </head>
 <body>
@@ -55,66 +73,80 @@ $(document).ready(
 		<!-- 메뉴 -->
 		<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 	</nav>
-	<main>
+	<main id="board-main" >
 		<aside>
 		</aside>
 		<section>
-			<!-- 상품리스트 -->
-			<div class="prdlist_default">
-				<c:if test="${empty productPage.products}">
-					<div class="product-item empty">
-						<!-- 비어있을 때 보여줄 내용 -->
-					</div>
-				</c:if>
-				<c:forEach items="${productPage.products}" var="p">
-					<div class="product-item">
-						<!-- 상품 목록 항목 내용 -->
-						<div class="product-image">
-							<img src="${p.productPhoto[0]}" alt="${p.productName}">
+		<sec:authorize access="hasRole('ADMIN')">
+			<a href="/product/admin-product">
+				<button type='button' class='btn btn-outline-dark'>상품관리</button>
+			</a>
+		</sec:authorize>
+				<div id="get-productRead-full">
+					<table id="get-productRead">
+						<tr>
+							<th colspan='3'>
+								<h2 id="productTitle">${product.productName}</h2>
+							</th>
+						</tr>
+						<tr>
+							<td rowspan='6' id="get-productPhoto-page">
+								<img id="get-productPhoto" src="" alt="${product.productName} 사진">
+							</td>
+						</tr>
+						<tr>
+							<td>가격: ${product.productPrice}원</td>
+						</tr>
+						<tr>
+							<td id="get-productStock">재고:</td>
+						</tr>
+						<tr>
+							<td>용량: ${product.productSize}</td>
+						</tr>
+						<tr>
+							<td>리뷰: ${product.reviewCount} / 평균 별점:${product.reviewStar}</td>
+						</tr>
+						<tr>
+							<td>
+								<select id="quantity" name="productCnt">
+									<option value="0">구매수량선택</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</td>
+							<td>
+								<div class="btn-group">
+								<a href="/cart/orderdetails-list">
+  									<button type="button" class="btn btn-secondary">장바구니</button>
+  								</a>
+  									<button type="button" class="btn btn-dark">구매하기</button>
+  								</div>
+							</td>
+						</tr>
+					</table>
+					<hr>
+					<div id="get-productNotice-full">${product.productNotice}</div>
+					<hr>
+					<div id="reviewPage">
+						<form id="review-form" action="/product/${product.pno}/reviews" method="post" enctype="multipart/form-data">
+							<input type="text" name="writer" placeholder="작성자" required>
+							<input type="number" name="rating" placeholder="평점" required>
+							<!-- 파일 선택 시 미리보기할 이미지 영역 -->
+							<img id='review-preview' src='' alt=''	style='max-width: 200px; max-height: 100px; border: 1px dotted black;' />
+							<!-- 파일 선택 필드 -->
+							<input type="file" class="form-control-file" name="reviewPhotos" multiple="multiple"><br>
+							<textarea id="add-reviewNotice" name="reviewNotice" placeholder="리뷰 내용" required></textarea>
+							<button type="submit">리뷰 등록</button>
+						</form>
+						<div id="reviewPage-list">
+							<h3>----- 리뷰 ------------------------------------------------------------------------------------------------------------------------------</h3>
+							<ul id="review-list"></ul>
 						</div>
-						<div class="product-details">
-							<h2>${p.productName}</h2>
-							<p class="product-description">${p.productNotice}</p>
-							<div class="product-price">
-								<span class="price-label">가격:</span> <span class="price-value">${p.productPrice}원</span>
-							</div>
-							<div class="product-stock">
-								<span class="stock-label">재고:</span> <span class="stock-value">${p.productStock}개
-									남음</span>
-							</div>
-                            <div class="product-size">
-								<span class="size-label">용량:</span> <span class="size-value">${p.productSize}</span>
-							</div>
-                            <div class="review-count">
-								<span class="review-label">리뷰 수:</span> <span class="review-value">${p.reviewCount}</span>
-							</div>
-                            <div class="review-star">
-								<span class="star-label">평균 별점:</span> <span class="star-value">${p.reviewStar}</span>
-							</div>
-                            <div class="product-photos">
-                                <span class="photos-label">상품 사진:</span>
-                                <ul>
-                                    <c:forEach items="${p.productPhoto}" var="photo">
-                                        <li><img src="${photo}" alt="${p.productName} 사진"></li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                            <div class="reviews">
-                                <span class="reviews-label">리뷰:</span>
-                                <ul>
-                                    <c:forEach items="${p.reviews}" var="review">
-                                        <li>
-                                            <p>리뷰 내용: ${review.reviewContent}</p>
-                                            <p>작성자: ${review.writer}</p>
-                                            <p>평점: ${review.rating}</p>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-						</div>
 					</div>
-				</c:forEach>
-			</div>
+				</div>
 		</section>
 		<aside>
 		</aside>

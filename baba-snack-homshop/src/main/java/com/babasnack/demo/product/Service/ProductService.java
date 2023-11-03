@@ -82,30 +82,31 @@ public class ProductService {
     // 상품, 이미지들, 리뷰들, 리뷰 개수, 리뷰 평점 평균을 읽어 출력
     // 특정 상품의 상세 정보 조회 서비스 메서드
     public ProductDto.ReadP getProductDetail(Long pno) {
-        Product p = productDao.findByProduct(pno);
-        if (p == null)
-            return null;
+    	 Product p = productDao.findByProduct(pno);
+    	    if (p == null)
+    	        return null;
 
-        List<String> images = productAdminDao.findProductPhotos(pno);
-        if (images.isEmpty()) {
-            // 사진이 없다면 default.jpg를 출력
-            images = Arrays.asList(productImgUrl + "default.jpg");
-        } else {
-            // 실제 이미지 URL로 변환하여 저장
-            List<String> convertedImages = new ArrayList<>();
-            for (String image : images) {
-                convertedImages.add(productImgUrl + image);
-            }
-            images = convertedImages;
-        }
+    	    List<ProductPhoto> images = productAdminDao.findProductPhotos(pno);
+    	    if (images.isEmpty()) {
+    	        // 사진이 없다면 default.jpg를 출력
+    	        ProductPhoto defaultPhoto = new ProductPhoto();
+    	        defaultPhoto.setProductSaveImg("default.jpg");
+    	        images = Arrays.asList(defaultPhoto);
+    	    } else {
+    	        // 실제 이미지 URL로 변환하여 저장
+    	        for (ProductPhoto photo : images) {
+    	            String imageUrl = productImgUrl + photo.getProductSaveImg(); // 이미지 URL 생성
+    	            photo.setProductSaveImg(imageUrl);
+    	        }
+    	    }
 
-        List<Review> reviews = reviewDao.findByPno(pno);
-        Long countOfReview = reviewDao.countByPno(pno);
-        Double avgOfReview = reviewDao.avgByPno(pno);
+    	    List<Review> reviews = reviewDao.findByPno(pno);
+    	    Long countOfReview = reviewDao.countByPno(pno);
+    	    Double avgOfReview = reviewDao.avgByPno(pno);
 
-        return new ProductDto.ReadP(p.getPno(), p.getProductName(), p.getProductNotice(), p.getProductStock(),
-                p.getProductPrice(), p.getProductSize(), countOfReview, avgOfReview, images, reviews);
-    }
+    	    return new ProductDto.ReadP(p.getPno(), p.getProductName(), p.getProductNotice(), p.getProductStock(),
+    	            p.getProductPrice(), p.getProductSize(), countOfReview, avgOfReview, images, reviews);
+    	}
 
     // 상품 페이지 정보 조회 서비스 메서드
     public ProductPage page(Long pageno) {

@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+#get-productRead-full{
+	width: 1600px;
+	margin: 50px;
+}
+
+#get-productRead{
+	width: 1550px;
+}
+
+#productTitle{
+	border-bottom: 3px groove darkblue;
+	padding: 10px;
+}
+
+#get-productPhoto-page{
+	width: 900px;
+	height: 700px;
+	text-align: center;
+	padding: 30px;
+}
+
+#review-preview {
+  float: right;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#get-productRead td{
+	padding: 10px;
+}
+
+#get-productRead td, #get-productRead button{
+	font-size: 18px;
+}
+
+#quantity{
+	width: 180px;
+	height: 40px;
+	text-align: center;
+}
+
+
+#get-productNotice-full{
+	text-align: center;
+	min-height: 700px;
+	padding: 20px;
+	font-size: 30px;
+}
+
+#reviewPage{
+	min-height: 700px;
+}
+
+#add-reviewNotice{
+	width: 1000px;
+	height: 450px;
+	margin-top: 20px;
+}
+
+#review-form button{
+	margin-bottom: 50px;	
+}
+
+#review-list{
+	border: 0.5px solid gainsboro;
+	width: 1200px;
+	min-height: 300px;
+}

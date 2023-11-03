@@ -42,7 +42,7 @@ public interface ProductAdminDao {
 
 		// 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
 		@Select("SELECT * FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
-		public List<String> findProductPhotos(Long pno);
+		public List<ProductPhoto> findProductPhotos(Long pno);
 
 		// 상품 삭제
 		@Delete("DELETE FROM PRODUCT WHERE PNO=#{pno}")
