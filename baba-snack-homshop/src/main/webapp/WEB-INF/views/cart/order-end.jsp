@@ -1,5 +1,7 @@
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,10 +16,10 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-<title>BABA-SNACK - order-end(작성중)</title>
+<title>BABA-SNACK - 구매완료(작성중)</title>
 
 <style>
-#orderEndDetailsProduct-form>form {
+#orderEndDetailsProduct-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
@@ -51,13 +53,13 @@ tbody tr:nth-child(2n) {
 	height: 100px;
 }
 
-#orderMemberInfo-form>form {
+#orderMemberInfo-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
 }
 
-#orderDeliveryInfo-form>form {
+#orderDeliveryInfo-form {
 	border: 1px solid saddlebrown;
 	padding: 10px;
 	width: 1400px;
@@ -79,10 +81,10 @@ tbody tr:nth-child(2n) {
 		</nav>
 		<main style="border: none">
 			<section>
-				*구매완료 페이지
+				<form id="frm" name="frm">
+					*구매완료 페이지
 
-				<div id="orderEndDetailsProduct-form" class="mt-3">
-					<form>
+					<div id="orderEndDetailsProduct-form" class="mt-3">
 						<table class="orderEndDetailsBoard_list">
 							<colgroup>
 								<col width="20%">
@@ -134,40 +136,39 @@ tbody tr:nth-child(2n) {
 								[구매상품 총적립금 : <span>??</span>원]
 							</div>
 						</div>
-					</form>
-				</div>
+					</div>
 
-				<div id="paySelect" class="mt-3">
-					<h3>
-						<b>결제 방법</b>
-					</h3>
-				</div>
+					<div id="paySelect" class="mt-3">
+						<h3>
+							<b>결제 방법</b>
+						</h3>
+					</div>
 
-				<div id="orderMemberInfo-form" class="mt-3">
-					<form action="">
+					<div id="orderMemberInfo-form" class="mt-3">
 						<b>◎ 주문자 정보</b>
 
 						<div>아이디, 이름, 연락처, 이메일, 배송지</div>
-					</form>
 
-				</div>
+					</div>
 
-				<div id="orderDeliveryInfo-form">
-					<form action="">
+					<div id="orderDeliveryInfo-form">
 						<b>◎ 배송 정보</b>
 						<div>배송정보(관리자 수정에 의해 변경)</div>
-					</form>
-				</div>
+					</div>
 
-				<div class="mt-3" style="text-align: right">
-					<button type="button" class="btn btn-outline-secondary btn-lg" onclick="location.href=''">
-						<b>주문상세</b>
-					</button>
-					<button type="button" class="btn btn-outline-secondary btn-lg"
-						onclick="location.href='/'">
-						<b>확인</b>
-					</button>
-				</div>
+					<div class="mt-3" style="text-align: right">
+						<button type="button" class="btn btn-outline-secondary btn-lg"
+							onclick="location.href=''">
+							<b>주문상세</b>
+						</button>
+						<button type="button" class="btn btn-outline-secondary btn-lg"
+							onclick="location.href='/'">
+							<b>확인</b>
+						</button>
+					</div>
+				</form>
+
+				
 			</section>
 
 		</main>

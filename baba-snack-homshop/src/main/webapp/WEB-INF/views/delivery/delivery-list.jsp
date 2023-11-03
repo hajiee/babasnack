@@ -1,7 +1,7 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<title>BABA-SNACK - delivery(작성중)</title>
+<title>BABA-SNACK - 배송지</title>
 
 <style>
 #deliveryNameBox-form {
@@ -208,6 +208,21 @@
 	}
 </script>
 
+<script>
+$(document).ready(function() {
+	$('#logout').on("click", function() {
+		$('#frm')
+		.attr(
+				'action',
+				'/delivery/logout')
+		.attr(
+				'method',
+				'post')
+		.submit();
+	});
+
+})
+</script>
 
 </head>
 <body>
@@ -228,7 +243,6 @@
 					</div>
 
 					<div style="float: left;">
-
 						<div id="deliveryList1-form" class="mb-3 mt-3">
 							<div>
 								<h5>
@@ -238,8 +252,8 @@
 									onclick="sample5_execDaumPostcode1()">주소 검색</button>
 								<div class="mb-3 mt-3">
 									<input type="text" class="form-control" id="baseDelivery"
-										placeholder="주소1(기본주소)" name="baseDelivery">
-
+										placeholder="주소1(기본주소)" name="baseDelivery"
+										value="${deliveryReadDto.baseDelivery}">
 								</div>
 							</div>
 						</div>
@@ -252,7 +266,8 @@
 								onclick="sample5_execDaumPostcode2()">주소 검색</button>
 							<div class="mb-3 mt-3">
 								<input type="text" class="form-control" id="addDelivery"
-									placeholder="주소2" name="addDelivery">
+									placeholder="주소2" name="addDelivery"
+									value="${deliveryReadDto.addDelivery}">
 
 							</div>
 						</div>
@@ -263,10 +278,11 @@
 						<div id="deliveryNamePhone-form" class="mb-3 mt-3">
 							<label><b>이름 (1~4자 사이)</b></label> <input type="text"
 								class="form-control" id="name" name="name" placeholder="사용자 이름"
-								maxlength="4"> <label class="mt-3"><b>연락처 (
-									- 없이 입력)</b></label> <input type="text" class="form-control" id="pnoTell"
-								name="pnoTell" oninput="inputNumOnly(this)"
-								placeholder="사용자 연락처" maxlength="11">
+								maxlength="4" value="${deliveryReadDto.name}"> <label
+								class="mt-3"><b>연락처 ( - 없이 입력)</b></label> <input type="text"
+								class="form-control" id="pnoTell" name="pnoTell"
+								oninput="inputNumOnly(this)" placeholder="사용자 연락처"
+								maxlength="11" value="${deliveryReadDto.pnoTell}">
 
 
 							<div class="mb-3 mt-3">
@@ -284,8 +300,18 @@
 							placeholder="사용자 아이디" readonly="readonly"
 							value="<sec:authentication property="principal.username"/>">
 					</div>
+					
+					<div>
+					<button type="button" id="logout" class="btn btn-primary">로그아웃 테스트</button>
+					</div>
+
+
+
+
+
 
 				</form>
+
 
 			</section>
 

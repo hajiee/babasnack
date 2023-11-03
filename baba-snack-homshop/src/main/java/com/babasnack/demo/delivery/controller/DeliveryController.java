@@ -1,6 +1,9 @@
 package com.babasnack.demo.delivery.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,29 +27,26 @@ public class DeliveryController {
 
 	// 배송지 조회 테스트
 	@GetMapping("/delivery/delivery-list")
-	public void readTest() {
+	public ModelAndView read(Principal principal) {
+		DeliveryDto.DeliveryRead deliveryReadDto = deliveryService.read(principal.getName());
+		return new ModelAndView("delivery/delivery-list").addObject("deliveryReadDto", deliveryReadDto);
 	}
 
 	// 배송지 저장 후 메인 페이지로
 	@PostMapping("/delivery/add/{username}")
 	public ModelAndView add(DeliveryDto.DeliveryEntity deliveryEntity, DeliveryDto.MemberEntity memberEntity,
 			@PathVariable("username") String username) {
-
-		System.out.println("=================");
 		deliveryService.add(deliveryEntity);
 		deliveryService.changePnoTellByMember(memberEntity);
-		System.out.println(deliveryEntity);
-		System.out.println(memberEntity);
-		System.out.println("=================");
 		return new ModelAndView("redirect:/");
 	}
 
 	// 배송지 회원 아이디 중복확인용
 	@ResponseBody
 	@RequestMapping(value = "/delivery/usernameCheck", method = RequestMethod.POST)
-	public int postIdCheck(HttpServletRequest req) {
+	public int deliveryIdCheck(HttpServletRequest req) {
 		String username = req.getParameter("username");
-		Delivery deliveryIdCheck = deliveryService.findByUsername(username);
+		Delivery deliveryIdCheck = deliveryService.findByUsernameCheck(username);
 
 		int result = 0;
 
@@ -61,14 +61,22 @@ public class DeliveryController {
 	@PostMapping("/delivery/change/{username}")
 	public ModelAndView change(DeliveryDto.DeliveryEntity deliveryEntity, DeliveryDto.MemberEntity memberEntity,
 			@PathVariable("username") String username) {
-
-		System.out.println("=================");
 		deliveryService.change(deliveryEntity);
 		deliveryService.changePnoTellByMember(memberEntity);
-		System.out.println(deliveryEntity);
-		System.out.println(memberEntity);
-		System.out.println("=================");
-		return new ModelAndView("redirect:/");
-		// return new ModelAndView("redirect:/mypage");
+
+		return new ModelAndView("redirect:/delivery/delivery-list");
+	}
+	
+	// 로그아웃용 테스트
+	@PostMapping("/delivery/logout")
+	public String logoutv2(HttpServletRequest request) {
+		//세션을 삭제
+		HttpSession session = request.getSession(false); 
+        // session이 null이 아니라는건 기존에 세션이 존재했었다는 뜻이므로
+        // 세션이 null이 아니라면 session.invalidate()로 세션 삭제해주기.
+		if(session != null) {
+			session.invalidate();
+		}
+		return "redirect:/";
 	}
 }
