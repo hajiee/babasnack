@@ -92,7 +92,7 @@
 			<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		</header>
 		<nav>
-			
+			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main style="border: none">
 			<section id="login-form">

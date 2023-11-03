@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.babasnack.demo.cart.dao.CartDao;
 import com.babasnack.demo.cart.dto.CartDto;
 import com.babasnack.demo.entity.Cart;
-import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.entity.ProductPhoto;
 
 @Service
@@ -20,23 +19,17 @@ public class CartService {
 	// 장바구니 목록과 가격 합계를 CartDto.ReadCart에 담아 리턴
 	@Transactional(readOnly = true)
 	public CartDto.ReadCart read(String username) {
-		
-		List<Cart> carts = cartDao.findByUsername(username);
+		List<ProductPhoto> productPhoto = cartDao.findByUsernameWithPphoto(username);
+		List<Cart> cart = cartDao.findByUsername(username);
 		Long productCnt = cartDao.allProductCntByUsername(username);
 		Long allPrice = cartDao.sumProductByUsername(username);
-		List<ProductPhoto> productPhoto = cartDao.findByUsernameWithPphoto(username);
 
-		return new CartDto.ReadCart(carts, productCnt, allPrice, productPhoto);
+		return new CartDto.ReadCart(productPhoto, cart, productCnt, allPrice);
 	}
-
+	
 	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
 	public Cart findByUsernameFromCart(String username) {
 		return cartDao.findByUsernameFromCart(username);
-	}
-
-	// 특정 회원의 배송지 주소 비어있는지, 아닌지 확인용
-	public Delivery findByUsernameFromDelivery(String username) {
-		return cartDao.findByUsernameFromDelivery(username);
 	}
 
 	// 장바구니 추가(상품이미지 테이블 상품이미지 저장파일 + 상품 테이블 가격, 상품명)

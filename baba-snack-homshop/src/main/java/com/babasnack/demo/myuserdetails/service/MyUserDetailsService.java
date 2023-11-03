@@ -42,7 +42,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(username)
                 .password(member.getPassword())
-                .roles(member.getRole() != null ? member.getRole() : "")
+                .roles(member.getRole() != null ? member.getRole() : "USER")
                 .build();
     }
 }

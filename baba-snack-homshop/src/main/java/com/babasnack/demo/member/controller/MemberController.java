@@ -23,6 +23,7 @@ import com.babasnack.demo.member.service.MemberResetService;
 import com.babasnack.demo.member.service.MemberService;
 
 @Controller
+@RequestMapping("/member")
 public class MemberController {
     @Autowired
     private MemberService service;
@@ -30,19 +31,19 @@ public class MemberController {
     private MemberResetService memberResetService;
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/member/join")
+    @GetMapping("/join")
     public ModelAndView psJoin() {
         return new ModelAndView("member/join");
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/member/login")
+    @GetMapping("/login")
     public ModelAndView psLogin() {
         return new ModelAndView("member/login");
     }
 
     @PreAuthorize("isAnonymous()")
-    @PostMapping("/member/login")
+    @PostMapping("/login")
     public ModelAndView psLogin(@RequestParam("username") String username,
                                 @RequestParam("password") String password,
                                 HttpSession session) {
@@ -67,7 +68,7 @@ public class MemberController {
         return "admin".equals(username) && "password".equals(password);
     }
 
-    @GetMapping("/member/logout")
+    @GetMapping("/logout")
     public ModelAndView psLogout(HttpSession session) {
         // 세션에서 로그인 정보 제거
         session.removeAttribute("isLogged");
@@ -79,9 +80,9 @@ public class MemberController {
         return new ModelAndView("redirect:/main");
     }
 
-    @GetMapping("/member/user-profile")
+    @GetMapping("/user-profile")
     @PreAuthorize("isAuthenticated()") // 인증된 사용자만 접근 가능
-    public ModelAndView psMyPage(Principal principal, HttpSession session) {
+    public ModelAndView psMyProfile(Principal principal, HttpSession session) {
         // 사용자 정보 조회 등의 로직 수행
         String username = principal.getName(); // Principal에서 사용자명 가져오기
         MemberDto.PsMyPage dto = psMypage(username);
@@ -94,7 +95,7 @@ public class MemberController {
 
         return modelAndView;
     }
-    
+
     public MemberDto.PsMyPage psMypage(String username) {
         Member m = getMemberByUsername(username);
         if (m == null) {
@@ -115,7 +116,7 @@ public class MemberController {
         return service.getMemberByUsername(username);
     }
 
-    @PostMapping("/member/change-email")
+    @PostMapping("/change-email")
     public ModelAndView psChangeEmail(@RequestParam("email") String newEmail,
                                       HttpSession session) {
         // 로그인 상태 확인
@@ -134,7 +135,7 @@ public class MemberController {
     }
 
 
-    @PostMapping("/member/change-password")
+    @PostMapping("/change-password")
     public ModelAndView psChangePassword(@RequestParam("currentPassword") String currentPassword,
                                          @RequestParam("newPassword") String newPassword,
                                          HttpSession session) {
@@ -150,30 +151,43 @@ public class MemberController {
         return new ModelAndView("redirect:/member/user-profile");
     }
 
-
-    @PostMapping("/member/withdrawal")
-    public ModelAndView psWithdrawal(HttpSession session) {
+    @GetMapping("/withdrawal")
+    public ModelAndView withdrawalPage(HttpSession session) {
         // 로그인 상태 확인
         if (session.getAttribute("isLogged") == null) {
             return new ModelAndView("redirect:/member/login");
         }
 
+        ModelAndView modelAndView = new ModelAndView("member/user-profile");
+        modelAndView.addObject("withdrawalForm", true); // 회원 탈퇴 폼을 보여주기 위한 플래그 추가
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/withdrawal")
+    public ModelAndView psWithdrawal(Principal principal, HttpSession session) {
         // 회원 탈퇴 처리 로직 수행
-        String username = (String) session.getAttribute("username");
-        service.psWithdrawal(username);
-
-        // 세션에서 로그인 정보 제거
-        session.removeAttribute("isLogged");
-        session.removeAttribute("username");
-
+        String username = principal.getName();
+        Boolean withdrawalResult = service.psWithdrawal(username);
+        System.out.println("2222222222222222222222222222");
+        if (withdrawalResult) {
+            System.out.println("회원 탈퇴가 성공적으로 처리되었습니다.");
+        } else {
+            System.out.println("회원 탈퇴 처리가 실패하였습니다.");
+        }
+        System.out.println("33333333333333333333333333333333333333333333");
+        
+        session.invalidate();
+        System.out.println("444444444444444444444444444444444444444");
         // 스프링 시큐리티의 로그아웃
-        SecurityContextHolder.clearContext();
 
         // 회원 탈퇴 후 리다이렉트할 경로 설정
         return new ModelAndView("redirect:/main");
     }
-    
-    @GetMapping("/member/findbyid")
+
+
+    @GetMapping("/findbyid")
     public ModelAndView psFindById(@RequestParam(value = "email", required = false) String email) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -193,13 +207,13 @@ public class MemberController {
 
         return modelAndView;
     }
-    
-    @GetMapping("/member/findbypw")
+
+    @GetMapping("/findbypw")
     public ModelAndView psFindByPw() {
         return new ModelAndView("findbypw");
     }
 
-    @PostMapping("/member/password-reset")
+    @PostMapping("/password-reset")
     public ModelAndView psPasswordReset(@RequestParam("email") String email,
                                         @RequestParam("username") String username) {
         if (email != null && username != null) {

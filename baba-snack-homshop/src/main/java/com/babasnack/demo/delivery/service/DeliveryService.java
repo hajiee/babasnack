@@ -1,10 +1,7 @@
 package com.babasnack.demo.delivery.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.babasnack.demo.delivery.dao.DeliveryDao;
 import com.babasnack.demo.delivery.dto.DeliveryDto;
@@ -15,17 +12,6 @@ import com.babasnack.demo.entity.Member;
 public class DeliveryService {
 	@Autowired
 	private DeliveryDao deliveryDao;
-
-	// 회원 배송지 주소 목록 자겨오기
-	@Transactional(readOnly = true)
-	public DeliveryDto.DeliveryRead read(String username){
-		List<Delivery> deliveries = deliveryDao.findByUsername(username);
-		String name = deliveryDao.findByName(username);
-		Long pnoTell = deliveryDao.findByPnoTell(username);
-		String baseDelivery = deliveryDao.findByBaseDelivery(username);
-		String addDelivery = deliveryDao.findByAddDelivery(username);
-		return new DeliveryDto.DeliveryRead(deliveries, name, pnoTell, baseDelivery, addDelivery);
-	}
 
 	// 회원 주소 저장
 	public Boolean add(DeliveryDto.DeliveryEntity deliveryEntity) {
@@ -47,8 +33,8 @@ public class DeliveryService {
 	}
 
 	// 배송지 회원 아이디 중복확인용
-	public Delivery findByUsernameCheck(String username) {
-		return deliveryDao.findByUsernameCheck(username);
+	public Delivery findByUsername(String username) {
+		return deliveryDao.findByUsername(username);
 	}
 
 	// 회원의 전화번호 변경(업데이트)
@@ -69,6 +55,7 @@ public class DeliveryService {
 	public Boolean change(DeliveryDto.DeliveryEntity deliveryEntity) {
 		if (deliveryEntity.getDno() != null) {
 			return false;
+
 		} else {
 			Delivery changeDelivery = new Delivery();
 			changeDelivery.setName(deliveryEntity.getName());

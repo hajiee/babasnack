@@ -1,5 +1,10 @@
 package com.babasnack.demo.orderdetail.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import com.babasnack.demo.entity.Member;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -79,9 +84,9 @@ public class OrderDetailDto {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class ReadMemberProfile {
-		private String username;
-		private Long pnoTell;
-		private String email;
+	    private String username;
+	    private Long pnoTell;
+	    private String email;
 	}
-
+	
 }

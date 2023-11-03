@@ -16,11 +16,11 @@ public class CartDto {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class ReadCart {		
+	public static class ReadCart {
+		private List<ProductPhoto> productPhoto;
 		private List<Cart> cart;
 		private Long productPrice;
 		private Long allPrice;
-		private List<ProductPhoto> productPhoto;
 	}
 
 	// 장바구니 상품 전체삭제
