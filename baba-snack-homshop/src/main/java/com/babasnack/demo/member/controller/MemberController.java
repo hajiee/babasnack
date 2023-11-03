@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,11 +30,26 @@ public class MemberController {
     private MemberService service;
     @Autowired
     private MemberResetService memberResetService;
-
-    @PreAuthorize("isAnonymous()")
+    
+    @PreAuthorize("permitAll()")
     @GetMapping("/join")
     public ModelAndView psJoin() {
         return new ModelAndView("member/join");
+    }
+    
+    @PostMapping("/join")
+    public ModelAndView join(@ModelAttribute("dto") MemberDto.Join dto) {
+        boolean joinResult = service.join(dto);
+
+        if (joinResult) {
+            // 회원가입 성공 시 로그인 페이지로 이동
+            return new ModelAndView("redirect:/member/login");
+        } else {
+            // 회원가입 실패 시 회원가입 페이지로 이동하며 실패 메시지 전달
+            ModelAndView modelAndView = new ModelAndView("member/join");
+            modelAndView.addObject("error", "회원가입에 실패했습니다. 다시 시도해주세요.");
+            return modelAndView;
+        }
     }
 
     @PreAuthorize("isAnonymous()")

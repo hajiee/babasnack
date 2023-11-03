@@ -64,7 +64,7 @@
 						${principal.username}님
 					</th>
 					<td><a href="/member/logout">로그아웃</a></td>
-					<td><a href="/mypage">마이페이지</a></td>
+					<td><a href="/member/user-profile">마이페이지</a></td>
 					<td><a href="/product?category=dog">강아지</a></td>
 					<td><a href="/product?category=cat">고양이</a></td>
 					<td><a href="/board/board-list">게시판</a></td>
