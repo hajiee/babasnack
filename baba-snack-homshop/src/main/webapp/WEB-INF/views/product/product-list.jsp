@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,6 @@
 	const msg = '${msg}';
 	if (msg !== '')
 		alert(msg);
-</script>
-<script>
-
 </script>
 </head>
 <body>
@@ -46,27 +44,24 @@
 				<h3 class="blind">검색결과</h3>
 				<!-- 상품추출 -->
 				<div class="mproduct_area">
-					<ul>
-						<c:forEach items="${productPage.products}" var="p">
-							<li><a href="/product/product-read/${p.pno}" class="box">
-									<div class="img">
-										<img class="MS_prod_img_m" src="${p.imageUrls}" alt="">
+					<ul class="product-grid">
+						<c:forEach items="${products}" var="product">
+							<li>
+								<div class="product">
+									<div class="product-image">
+										<a href="/product/product-read?pno=${product.pno}">
+											<img class="get-product-img" data-img-src="${product.photos[0].productSaveImg}" alt="${product.productName}">
+										</a>
 									</div>
-									<dl>
-										<dt>${p.productName}</dt>
-										<dd class="txt">${p.productSize}</dd>
-										<dd class="price_box">
-											<p>
-												<span class="price">${p.productPrice}</span>
-											</p>
-										</dd>
-									</dl>
-							</a></li>
+									<div class="product-info">
+										<p class="product-name">${product.productName}</p>
+										<p class="product-price">${product.productPrice}원</p>
+									</div>
+								</div>
+							</li>
 						</c:forEach>
-
-						<!-- 일치하는 상품이 없을 경우 -->
-						<c:if test="${empty productPage.products}">
-							<li style="padding-left:500px; padding-bottom:50px;">일치하는 상품이 없습니다.</li>
+						<c:if test="${empty products}">
+							<li style="padding-left: 500px; padding-bottom: 50px;">일치하는 상품이 없습니다.</li>
 						</c:if>
 					</ul>
 				</div>

@@ -29,59 +29,9 @@ $(document).ready(function() {
             return;
         }
         
-         $.ajax({
-             url: "/product/product-list",
-             method: "GET",
-             data: {category: category},
-             dataType: "json", 
-             success: function(response) {
-                 try{
-                     if(response === null){
-                         $("#product-list").append("<li>일치하는 상품이 없습니다.</li>");
-                         return;
-                     }
-
-                     var products = response.products;
-
-                     if(Array.isArray(products) && products.length > 0){
-                         for(var i=0; i<products.length; i++){
-                             var product = products[i];
-                             var listItem = $("<li>").text(product.productName);
-                             $("#product-list").append(listItem);
-                         }
-                     } else{
-                         $("#product-list").append("<li>일치하는 상품이 없습니다.</li>");
-                     }
-
-                 } catch(e){
-                     console.error("JSON 파싱 에러:", e);
-                 }
-                 
-                 // 페이지 이동 처리
-                 window.location.href = "/product/product-list"; // 원하는 경로로 수정
-              },
-              error:function(xhr,status,error){
-                  console.log("AJAX 요청 실패");
-                  console.log("Status Code:", xhr.status);
-                  console.log("Error:", error);
-              }
-          });
-         
-         $.ajax({
-             url: "/product",
-             method: "GET",
-             data: {keyword: searchInput},
-             dataType: "html", 
-             success: function(response) {
-                 $("#product-list").html(response);
-              },
-              error:function(xhr,status,error){
-                  console.log("AJAX 요청 실패");
-                  console.log("Status Code:", xhr.status);
-                  console.log("Error:", error);
-              }
-          });
-      });
+        // 검색어를 포함하여 상품 목록 페이지로 이동
+        location.href = "/product/product-list?search=" + searchInput;
+    });
 });
 </script>
 <style>
@@ -125,9 +75,9 @@ $(document).ready(function() {
 	<div id="logo" class="col s12">
 		<a href="/"><img src="/images/00로고.png" style="height:245px" alt="멍냥이 간식쇼핑몰"></a>
 	</div>
-	<form id="search" class="d-flex" method="GET" action="/product">
+	<form id="search" class="d-flex" action="/product/product-list">
 		<span class="material-symbols-outlined"> search </span>
-		<input class="form-control me-2" type="text" name="search" placeholder="상품검색창">
+		<input id="search-input" class="form-control me-2" type="text" name="search" placeholder="상품검색창">
 		<button id="search-btn" class="btn btn-primary" type="button">찾기</button>
 	</form>
 </body>

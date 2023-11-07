@@ -1,6 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,65 +25,17 @@
 </script>
 <script>
 $(document).ready(function() {
-    // 상품 정보 변수 설정
-    const productName = "<c:out value='${writeP.productName}' />";
-    const productStock = "<c:out value='${writeP.productStock}' />";
-    const productPrice = "<c:out value='${writeP.productPrice}' />";
-    const productSize = "<c:out value='${writeP.productSize}' />";
+    // 각 상품의 이미지 URL을 설정하는 함수
+    function setProductImage() {
+        $('.get-product-img img').each(function() {
+            var imgElement = $(this);
+            var imgSrc = imgElement.data('img-src');
+            imgElement.attr('src', imgSrc);
+        });
+    }
 
-    // ProductDto.WriteP 객체 생성 및 값 설정
-    const writeP = {
-        productName: productName,
-        productStock: productStock,
-        productPrice: productPrice,
-        productSize: productSize,
-        category: "cat" // 원하는 카테고리 값을 할당합니다.
-    };
-    
-    // 재고 표시 등의 작업 수행
-    $.ajax({
-        url: "/product?category=cat",
-        method: "GET",
-        type: "json",
-        data: {
-            writePJsonStringified : JSON.stringify(writeP) // writeP 객체를 JSON 문자열로 변환하여 전달합니다.
-        },
-        success:function(data){
-            try {
-                var products=data.products;
-                if (Array.isArray(products) && products.length > 0) {  // products 배열이 유효하면서 비어있지 않은 경우에만 처리
-                    for(var i=0;i<products.length;i++){
-                        var product=products[i];
-                        var stockMessage;
-                        if(product.productStock>=0){
-                            stockMessage=product.productStock+"개 남음";
-                        }else{
-                            stockMessage="재고 없음";
-                        }
-                        $(".prdlist_default .price_box:eq("+i+")").append("<span>"+stockMessage+"</span>");
-                    }
-                } else {
-                    console.error("유효하지 않은 또는 빈 products 데이터:", products);
-                    $(".prdlist_default .price_box").append("<span>재고 정보 없음</span>");  // 대체 텍스트 출력
-                }
-            } catch (e) {
-                console.error("JSON 파싱 에러:", e);
-            }
-         },
-         error:function(xhr,status,error){
-             // AJAX 요청이 실패한 경우의 처리 로직
-             var errorMessage=xhr.status+': '+xhr.statusText;
-             
-             // 에러 메시지를 콘솔에 출력합니다.
-             console.error(errorMessage);
-             
-             // 화면 상단 또는 원하는 위치에 에러 메시지를 표시합니다.
-             $('#error-message').text('AJAX 요청 실패 - '+errorMessage);
-             
-             // 또는 경고창(alert) 등으로 에러 메시지를 표시할 수도 있습니다.
-             alert('AJAX 요청 실패 - '+errorMessage);
-         }
-     });
+    // 페이지 로드 시 상품 이미지 설정
+    setProductImage();
 });
 </script>
 </head>
@@ -109,49 +62,60 @@ $(document).ready(function() {
 						In this category are <strong>CAT</strong> products.
 					</p>
 				</div>
-				<!-- .total-sort -->
+				<!-- 상품리스트 -->
+				<div class="productList_default">
+					<!-- 상품추출 -->
+					
+					<c:forEach items="${products}" var="product">
+    					<!-- 상품 정보 출력 -->
+    					${product.productName}
+    					${product.productPrice}
+   					<!-- 추가적인 출력 내용 작성 -->
+					</c:forEach>
 
-				<!-- 상품추출 -->
-				<div class="mproduct_area">
-					<ul>
-						<c:forEach items="${productPage.products}" var="p"><!-- 상세 페이지로 이동하는 링크 -->
-							<li><a href="/product/product-read/${p.pno}" class="box">
-									<div class="img">
-										<img class="MS_prod_img_m" src="${p.imageUrls}" alt="">
+					<div class="mproduct_area">
+						<ul class="product-grid">
+							<c:forEach items="${products}" var="product">
+								<li>
+									<div class="product">
+										<div class="product-image">
+											<a href="/product/product-read?pno=${product.pno}">
+												<img class="get-product-img" data-img-src="${product.photos[0].productSaveImg}" alt="${product.productName}">
+											</a>
+										</div>
+										<div class="product-info">
+											<p class="product-name">${product.productName}</p>
+											<p class="product-price">${product.productPrice}원</p>
+										</div>
 									</div>
-									<dl>
-										<dt>${p.productName}</dt>
-										<dd class="txt">${p.productSize}</dd>
-										<dd class="price_box">
-											<p>
-												<span class="price">${p.productPrice}</span>
-											</p>
-											<span class="rev">${p.productStock}개 남음</span>
-										</dd>
-									</dl>
-							</a></li>
-						</c:forEach>
-					</ul>
+								</li>
+							</c:forEach>
+						</ul>
+					</div>
 				</div>
-				<div id=pagination style="display: flex; justify-content: center;">
+				<div id="pagination" style="display: flex; justify-content: center;">
 					<ul class="pagination">
-						<c:if test="${page.prev>0}">
-							<li class="page-item"><a class="page-link"
-								href="/product?category=cat?pageno=${page.prev}">이전으로</a></li>
+						<c:if test="${productPage.prev > 0}">
+							<li class="page-item">
+								<a class="page-link" href="/product/product-cat?pageno=${productPage.prev}">이전으로</a>
+							</li>
 						</c:if>
-						<c:forEach begin="${page.start}" end="${page.end}" var="i">
-							<c:if test="${i==page.pageno}">
-								<li class="page-item active"><a class="page-link"
-									href="/product?category=cat?pageno=${i}">${i}</a></li>
+						<c:forEach begin="${productPage.start}" end="${productPage.end}" var="i">
+							<c:if test="${i == productPage.pageno}">
+								<li class="page-item active">
+									<a class="page-link" href="/product/product-cat?pageno=${i}">${i}</a>
+								</li>
 							</c:if>
-							<c:if test="${i!=page.pageno}">
-								<li class="page-item"><a class="page-link"
-									href="/product?category=cat?pageno=${i}">${i}</a></li>
+							<c:if test="${i != productPage.pageno}">
+								<li class="page-item">
+									<a class="page-link" href="/product/product-cat?pageno=${i}">${i}</a>
+								</li>
 							</c:if>
 						</c:forEach>
-						<c:if test="${page.next>0}">
-							<li class="page-item"><a class="page-link"
-								href="/product?category=cat?pageno=${page.next}">다음으로</a></li>
+						<c:if test="${productPage.next > 0}">
+							<li class="page-item">
+								<a class="page-link" href="/product/product-cat?pageno=${productPage.next}">다음으로</a>
+							</li>
 						</c:if>
 					</ul>
 				</div>

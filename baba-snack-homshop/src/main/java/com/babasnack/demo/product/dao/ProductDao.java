@@ -29,7 +29,7 @@ public interface ProductDao {
     public List<Product> findByCategory(String category);
 
     // 상품명으로 부분 일치 검색
-    @Select("SELECT * FROM product WHERE product_name LIKE CONCAT('%', #{keyword}, '%')")
+    @Select("SELECT * FROM product WHERE product_name LIKE '%' || #{keyword} || '%'")
     public List<Product> findByKeyword(String keyword);
     
     // 한 페이지당 상품 수

@@ -35,21 +35,29 @@ public class ProductController {
 	    return "/main";
 	}
 	
-	@GetMapping("/product/product-dog" )
+	@GetMapping("/product/product-dog")
 	public String showDogProductList(Model model) {
-	     List<Product> dogProducts = productService.getProductListByCategory("dog"); // 개 카테고리 상품 목록을 가져옵니다.
-	     model.addAttribute("products", dogProducts);
-	     return "product/product-dog";
+	    List<Product> dogProducts = productService.getProductListByCategory("dog");
+	    model.addAttribute("products", dogProducts);
+	    return "product/product-dog";
 	}
 
-	@GetMapping("/product/product-cat" )
+	@GetMapping("/product/product-cat")
 	public String showCatProductList(Model model) {
-	     List<Product> catProducts = productService.getProductListByCategory("cat"); // 고양이 카테고리 상품 목록을 가져옵니다.
-	     model.addAttribute("products", catProducts);
-	     return "product/product-cat";
+	    List<Product> catProducts = productService.getProductListByCategory("cat");
+	    model.addAttribute("products", catProducts);
+	    return "product/product-cat";
 	}
+	
+	@GetMapping("/product/product-list")
+    public String getProductList(@RequestParam("search") String searchKeyword, Model model) {
+        // 검색어를 기반으로 상품 목록을 조회하는 로직을 구현합니다.
+        List<Product> searchResult = productService.getProductListByKeyword(searchKeyword);
+        
+        model.addAttribute("products", searchResult);
+        return "product/product-list";
+    }
 
-	// 상품 목록 조회 API 엔드 포인트(GET /products)
 	@GetMapping("/product")
 	public String getProductList(@RequestParam(value = "category", required = false, defaultValue = "") String category,
 	                             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -58,6 +66,7 @@ public class ProductController {
 
 	    if (!category.isEmpty() && ("dog".equals(category) || "cat".equals(category))) {
 	        productList = productService.getProductListByCategory(category);
+	        model.addAttribute("category", category); // 카테고리 정보도 함께 전달
 	        if ("dog".equals(category)) {
 	            return "product/product-dog";
 	        } else if ("cat".equals(category)) {
@@ -65,16 +74,16 @@ public class ProductController {
 	        }
 	    } else if (!keyword.isEmpty()) {
 	        productList = productService.getProductListByKeyword(keyword);
+	        model.addAttribute("keyword", keyword); // 검색 키워드 정보도 함께 전달
 	    } else {
 	        productList = productAdminService.getAllProducts();
 	        category = ""; // 기본값으로 카테고리를 빈 문자열로 설정
 	    }
 
 	    model.addAttribute("products", productList);
-	    model.addAttribute("category", category); // 카테고리 정보도 함께 전달
 
 	    return "product/product-list";
-    }
+	}
 	
 	// 상품명으로 상품 조회 API 엔드 포인트(GET /products/{productName})
 	@GetMapping("/product/name/{productName}")

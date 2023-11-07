@@ -1,0 +1,10 @@
+@charset "EUC-KR";
+
+
+/* 비어 있는 상태에 대한 스타일 */
+.product-item.empty {
+    text-align: center;
+    font-weight: bold;
+    color: #888;
+    padding: 20px;
+}
