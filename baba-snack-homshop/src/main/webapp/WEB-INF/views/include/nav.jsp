@@ -9,10 +9,10 @@
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <style>
 #nav {
-	width: 580px;
+	width: 650px;
 	height: 30px;
 	position: relative;
-	left: 830px;
+	left: 800px;
 	bottom: 380px;
 }
 
