@@ -8,3 +8,53 @@
     color: #888;
     padding: 20px;
 }
+
+.mproduct_area{
+	width: 1650px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  padding: 10px;
+  margin-right: 40px;
+  margin-left: 0px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.product {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 380px;
+  height: 350px;
+}
+
+.product-image {
+  text-align: center;
+}
+
+.product-info {
+  margin-top: 10px; /* 요소들을 위로 이동 */
+  text-align: right;
+}
+
+.product-name {
+  font-weight: bold;
+}
+
+.product-price {
+  color: #f00;
+}
+
+.product-stock {
+  font-style: italic;
+}
+
+.get-product-img {
+  width: 280px; /* 사진 크기 조정 */
+  height: 180px;
+  border: 1px solid #ccc; /* border 추가 */
+}
+

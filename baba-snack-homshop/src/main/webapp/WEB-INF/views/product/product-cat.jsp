@@ -49,7 +49,7 @@ $(document).ready(function() {
 			<!-- 메뉴 -->
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
-		<main>
+		<main id="product-main">
 			<aside id="best">
 				<!-- 베스트상품 -->
 				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
@@ -120,10 +120,8 @@ $(document).ready(function() {
 					</ul>
 				</div>
 			</section>
-			<div id="ad">
+			<div>
 				<aside>
-					<!-- 광고 -->
-					<jsp:include page="/WEB-INF/views/include/aside.jsp" />
 				</aside>
 			</div>
 		</main>

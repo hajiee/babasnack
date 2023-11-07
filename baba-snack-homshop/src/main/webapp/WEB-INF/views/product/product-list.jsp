@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/product-css/product.css">
+<link rel="stylesheet" href="/css/product-css/product-list.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -34,7 +35,7 @@
 			<!-- 메뉴 -->
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
-		<main>
+		<main id="product-main">
 			<aside id="best">
 				<!-- 베스트상품 -->
 				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
@@ -54,8 +55,9 @@
 										</a>
 									</div>
 									<div class="product-info">
-										<p class="product-name">${product.productName}</p>
+										<p class="product-name">${product.productName}(${product.productSize}g)</p>
 										<p class="product-price">${product.productPrice}원</p>
+										<p class="product-Stock">재고:${product.productStock}</p>
 									</div>
 								</div>
 							</li>
@@ -88,10 +90,8 @@
 					</ul>
 				</div>
 			</section>
-			<div id="ad">
+			<div>
 				<aside>
-					<!-- 광고 -->
-					<jsp:include page="/WEB-INF/views/include/aside.jsp" />
 				</aside>
 			</div>
 		</main>

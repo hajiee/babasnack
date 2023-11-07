@@ -1,12 +1,15 @@
 @charset "UTF-8";
 
-main {
+#product-main{
 	display: flex;
+	width: 1700px;
+	height: 1550px;
 }
 
 section {
-	width: 1350px;
-	margin: 0 50px;
+	width: 1550px;
+	margin: 50px;
+	
 }
 
 #ad {
