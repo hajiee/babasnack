@@ -21,7 +21,7 @@ public class PetService {
         pet.setPetType(petProfile.getPetType());
         pet.setPetAge(petProfile.getPetAge());
 
-        // boolean 값을 설정
+        // 문자열 값을 설정
         pet.setPetSex(petProfile.getPetSex());
 
         return petDao.save(pet);
@@ -31,8 +31,31 @@ public class PetService {
         return petDao.getPetByName(username);
     }
 
-    
+    public String[] getPetTypes() {
+        return petDao.getPetTypes();
+    }
 
+    public String[] getPetSexes() {
+        return petDao.getPetSex();
+    }
 
-   // 추가적인 메서드에 대한 Service 코드를 작성해주세요
+    public boolean setPetSex(String petName, String sex) {
+        Pet pet = petDao.findByPetName(petName);
+        if (pet != null) {
+            // 문자열 값을 Boolean으로 변환하여 설정
+            Boolean petSex = Boolean.valueOf(sex);
+            pet.setPetSex(petSex);
+            petDao.save(pet);
+            return true;
+        }
+        return false;
+    }
+
+    public Integer changePetAge(Long petAge, String petName) {
+        return petDao.ChangePetAge(petAge, petName);
+    }
+
+    public Integer changePetType(String petType, String petName) {
+        return petDao.ChangePetType(petType, petName);
+    }
 }

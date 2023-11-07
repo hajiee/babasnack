@@ -1,30 +1,48 @@
 package com.babasnack.demo.petphoto.controller;
 
-
-
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.petphoto.service.PetPhotoService;
 
-
-@Controller
+@RestController
 public class PetPhotoController {
-    @Autowired
-    private PetPhotoService petphotoService;
-
-    // 펫프로필 사진 업로드
-    @PostMapping("/uploadPetImg")
-    public ResponseEntity<String> uploadProfile(@RequestParam("file") MultipartFile file, @RequestParam("petpno") Long petpno) {
+    
+    private final PetPhotoService petphotoService;
+    
+    public PetPhotoController(PetPhotoService petphotoService) {
+        this.petphotoService = petphotoService;
+    }
+    
+    @GetMapping("/getPetImg")
+    public ResponseEntity<byte[]> getProfile(@RequestParam("petprono") Long petprono) {
+        byte[] photo = petphotoService.getPetPhoto(petprono);
+        if (photo != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf("image/jpeg"));
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .headers(headers)
+                    .contentLength(photo.length)
+                    .body(photo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @PostMapping("/member/uploadPetPhoto")
+    public ResponseEntity<String> uploadProfile(@RequestParam("file") MultipartFile file, @RequestParam("petprono") Long petprono) {
         try {
-            petphotoService.savePetPhoto(file, petpno);
+            petphotoService.savePetPhoto(file, petprono);
             return ResponseEntity.ok("Pet photo uploaded successfully!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,9 +51,9 @@ public class PetPhotoController {
     }
 
     @PostMapping("/changePetImg")
-    public ResponseEntity<String> changeProfile(@RequestParam("file") MultipartFile file, @RequestParam("petpno") Long petpno) {
+    public ResponseEntity<String> changeProfile(@RequestParam("file") MultipartFile file, @RequestParam("petprono") Long petprono) {
         try {
-            petphotoService.savePetPhoto(file, petpno);
+            petphotoService.savePetPhoto(file, petprono);
             return ResponseEntity.ok("Profile changed successfully!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,10 +61,3 @@ public class PetPhotoController {
         }
     }
 }
-
-
-
-
-
-
-   
