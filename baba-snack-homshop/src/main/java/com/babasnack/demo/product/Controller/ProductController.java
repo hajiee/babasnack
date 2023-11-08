@@ -35,18 +35,20 @@ public class ProductController {
 	    return "/main";
 	}
 	
-	@GetMapping("/product/product-dog")
-	public String showDogProductList(Model model) {
-	    List<Product> dogProducts = productService.getProductListByCategory("dog");
-	    model.addAttribute("products", dogProducts);
-	    return "product/product-dog";
-	}
-
-	@GetMapping("/product/product-cat")
-	public String showCatProductList(Model model) {
-	    List<Product> catProducts = productService.getProductListByCategory("cat");
-	    model.addAttribute("products", catProducts);
-	    return "product/product-cat";
+	@GetMapping("/product/category={category}")
+	public String showProductListByCategory(@RequestParam String category, Model model) {
+	    if ("DOG".equals(category)) {
+	        List<Product> dogProducts = productService.getProductListByCategory("DOG");
+	        model.addAttribute("products", dogProducts);
+	        return "product/product-DOG";
+	    } else if ("CAT".equals(category)) {
+	        List<Product> catProducts = productService.getProductListByCategory("CAT");
+	        model.addAttribute("products", catProducts);
+	        return "product/product-CAT";
+	    } else {
+	        // 유효하지 않은 카테고리인 경우 예외 처리 또는 기본 동작을 설정합니다.
+	        return "error-page";
+	    }
 	}
 	
 	@GetMapping("/product/product-list")
@@ -57,21 +59,17 @@ public class ProductController {
         model.addAttribute("products", searchResult);
         return "product/product-list";
     }
-
+	
 	@GetMapping("/product")
 	public String getProductList(@RequestParam(value = "category", required = false, defaultValue = "") String category,
 	                             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
 	                             Model model) {
 	    List<Product> productList;
 
-	    if (!category.isEmpty() && ("dog".equals(category) || "cat".equals(category))) {
+	    if (!category.isEmpty() && ("DOG".equals(category) || "CAT".equals(category))) {
 	        productList = productService.getProductListByCategory(category);
-	        model.addAttribute("category", category); // 카테고리 정보도 함께 전달
-	        if ("dog".equals(category)) {
-	            return "product/product-dog";
-	        } else if ("cat".equals(category)) {
-	            return "product/product-cat";
-	        }
+	        model.addAttribute("products", productList);
+	        return "product/product-" + category; // 카테고리별 JSP 파일명을 동적으로 설정합니다.
 	    } else if (!keyword.isEmpty()) {
 	        productList = productService.getProductListByKeyword(keyword);
 	        model.addAttribute("keyword", keyword); // 검색 키워드 정보도 함께 전달

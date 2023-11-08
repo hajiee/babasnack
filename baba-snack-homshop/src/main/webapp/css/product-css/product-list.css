@@ -45,7 +45,7 @@
 }
 
 .product-price {
-  color: #f00;
+  color: darkblue;
 }
 
 .product-stock {
@@ -56,5 +56,11 @@
   width: 280px; /* 사진 크기 조정 */
   height: 180px;
   border: 1px solid #ccc; /* border 추가 */
+}
+
+#not-resert{
+	background-color: lemonchiffon;
+	color: darkred;
+	font-size: 20px;
 }
 

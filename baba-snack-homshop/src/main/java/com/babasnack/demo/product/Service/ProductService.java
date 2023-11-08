@@ -48,7 +48,7 @@ public class ProductService {
 
     // 상품 목록(카테고리) 조회 서비스 메서드
     public List<Product> getProductListByCategory(String category) {
-        if (category != null && ("dog".equals(category) || "cat".equals(category))) {
+        if (category != null && ("DOG".equals(category) || "CAT".equals(category))) {
             return productDao.findByCategory(category);
         } else {
             return productDao.findAllProducts();

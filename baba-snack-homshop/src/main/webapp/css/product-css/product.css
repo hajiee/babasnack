@@ -3,7 +3,7 @@
 #product-main{
 	display: flex;
 	width: 1700px;
-	height: 1550px;
+	min-height: 1550px;
 }
 
 section {
