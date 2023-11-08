@@ -209,19 +209,16 @@
 </script>
 
 <script>
-$(document).ready(function() {
-	$('#logout').on("click", function() {
-		$('#frm')
-		.attr(
-				'action',
-				'/delivery/logout')
-		.attr(
-				'method',
-				'post')
-		.submit();
-	});
+	$(document).ready(
+			function() {
+				$('#logout').on(
+						"click",
+						function() {
+							$('#frm').attr('action', '/delivery/logout').attr(
+									'method', 'post').submit();
+						});
 
-})
+			})
 </script>
 
 </head>
@@ -241,6 +238,8 @@ $(document).ready(function() {
 					<div id="deliveryNameBox-form" class="mt-3">
 						<b>배송지 주소</b>
 					</div>
+
+
 
 					<div style="float: left;">
 						<div id="deliveryList1-form" class="mb-3 mt-3">
@@ -293,22 +292,13 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</div>
-
-					<div style="float: left;">
-						<label>로그인 아이디(테스트 확인용) : </label> <input type="text"
-							class="form-control" id="username" name="username"
-							placeholder="사용자 아이디" readonly="readonly"
+					
+					<!-- 로그인 아이디 script 작동용 -->
+					<div style="float: left;">						
+						<input type="hidden" class="form-control" id="username"
+							name="username" placeholder="사용자 아이디" readonly="readonly"
 							value="<sec:authentication property="principal.username"/>">
 					</div>
-					
-					<div>
-					<button type="button" id="logout" class="btn btn-primary">로그아웃 테스트</button>
-					</div>
-
-
-
-
-
 
 				</form>
 

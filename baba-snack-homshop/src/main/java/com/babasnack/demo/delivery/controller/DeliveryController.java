@@ -1,5 +1,7 @@
 package com.babasnack.demo.delivery.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,11 @@ public class DeliveryController {
 	@Autowired
 	DeliveryService deliveryService;
 
-	// 배송지 조회 테스트
+	// 로그인 회원의 배송지 조회
 	@GetMapping("/delivery/delivery-list")
-	public void readTest() {
+	public ModelAndView read(Principal principal) {
+		DeliveryDto.DeliveryRead deliveryReadDto = deliveryService.read(principal.getName());
+		return new ModelAndView("delivery/delivery-list").addObject("deliveryReadDto", deliveryReadDto);
 	}
 
 	// 배송지 저장 후 메인 페이지로
@@ -32,12 +36,9 @@ public class DeliveryController {
 	public ModelAndView add(DeliveryDto.DeliveryEntity deliveryEntity, DeliveryDto.MemberEntity memberEntity,
 			@PathVariable("username") String username) {
 
-		System.out.println("=================");
 		deliveryService.add(deliveryEntity);
 		deliveryService.changePnoTellByMember(memberEntity);
-		System.out.println(deliveryEntity);
-		System.out.println(memberEntity);
-		System.out.println("=================");
+
 		return new ModelAndView("redirect:/");
 	}
 
@@ -62,12 +63,9 @@ public class DeliveryController {
 	public ModelAndView change(DeliveryDto.DeliveryEntity deliveryEntity, DeliveryDto.MemberEntity memberEntity,
 			@PathVariable("username") String username) {
 
-		System.out.println("=================");
 		deliveryService.change(deliveryEntity);
 		deliveryService.changePnoTellByMember(memberEntity);
-		System.out.println(deliveryEntity);
-		System.out.println(memberEntity);
-		System.out.println("=================");
+
 		return new ModelAndView("redirect:/");
 		// return new ModelAndView("redirect:/mypage");
 	}

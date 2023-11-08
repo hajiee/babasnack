@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/main.css">
@@ -168,7 +168,10 @@ tbody tr:nth-child(2n) {
 							<tbody>
 								<c:forEach items="${cartDto.cart}" var="cart">
 									<tr>
-										<td><img src="" width="60px">${cart.pno}</td>
+										<td>												
+													<img  src="/productImg/${cart.productSaveImg}" alt="상품이미지"
+														width="100px"><br>
+											 확인용 pno : ${cart.pno}</td>
 										<td>${cart.productName}</td>
 										<td>${cart.productPrice}</td>
 										<td>${cart.productCnt}</td>
@@ -193,8 +196,8 @@ tbody tr:nth-child(2n) {
 				</form>
 
 				<div>
-					<label>*회원 로그인 아이디 확인용 : </label> <input type="text" id="username"
-						name="username" readonly="readonly"
+					<label>*회원 로그인 아이디 script 적용 : </label> <input type="text"
+						id="username" name="username" readonly="readonly"
 						value="<sec:authentication property="principal.username"/>">
 				</div>
 			</section>

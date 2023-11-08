@@ -1,7 +1,10 @@
 package com.babasnack.demo.delivery.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.babasnack.demo.delivery.dao.DeliveryDao;
 import com.babasnack.demo.delivery.dto.DeliveryDto;
@@ -11,8 +14,21 @@ import com.babasnack.demo.entity.Member;
 @Service
 public class DeliveryService {
 	@Autowired
-	private DeliveryDao deliveryDao;
+	private DeliveryDao deliveryDao;	
 
+	
+	// 회원 배송지 주소 목록 가져오기
+	@Transactional(readOnly = true)
+	public DeliveryDto.DeliveryRead read(String username){
+		List<Delivery> deliveries = deliveryDao.findByUsername(username);
+		String name = deliveryDao.findByName(username);
+		Long pnoTell = deliveryDao.findByPnoTell(username);
+		String baseDelivery = deliveryDao.findByBaseDelivery(username);
+		String addDelivery = deliveryDao.findByAddDelivery(username);
+		return new DeliveryDto.DeliveryRead(deliveries, name, pnoTell, baseDelivery, addDelivery);
+	}
+	
+	
 	// 회원 주소 저장
 	public Boolean add(DeliveryDto.DeliveryEntity deliveryEntity) {
 		// 배송지 번호가 있으면, false로 리턴
@@ -34,7 +50,7 @@ public class DeliveryService {
 
 	// 배송지 회원 아이디 중복확인용
 	public Delivery findByUsername(String username) {
-		return deliveryDao.findByUsername(username);
+		return deliveryDao.findByUsernameCheck(username);
 	}
 
 	// 회원의 전화번호 변경(업데이트)

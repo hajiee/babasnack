@@ -1,14 +1,12 @@
 package com.babasnack.demo.cart.dto;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import com.babasnack.demo.entity.Cart;
-import com.babasnack.demo.entity.ProductPhoto;
-import com.babasnack.demo.product.dto.Category;
 
 import lombok.*;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartDto {
 
@@ -17,8 +15,7 @@ public class CartDto {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class ReadCart {
-		private List<ProductPhoto> productPhoto;
-		private List<Cart> cart;
+		private List<CartWithPhoto> cart;
 		private Long productPrice;
 		private Long allPrice;
 	}
@@ -42,21 +39,5 @@ public class CartDto {
 		private String productSaveImg;
 	}
 
-	// 상품
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class ProductDto {
-		private Long pno;
-		private String productName;
-		private String productNotice;
-		private Long productStock;
-		private Long productPrice;
-		private Long productSize;
-		private Long reserve;
-		private Long productCnt;
-		private Category category;
-		private LocalDateTime productDay;
-	}
 
 }
