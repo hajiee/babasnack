@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -131,16 +132,25 @@ $(document).ready(function() {
 					<div id="get-productNotice-full">${product.productNotice}</div>
 					<hr>
 					<div id="reviewPage">
+					  <sec:authorize access="hasRole('ROLE_BUYER')">
 						<form id="review-form" action="/product/${product.pno}/reviews" method="post" enctype="multipart/form-data">
-							<input type="text" name="writer" placeholder="작성자" required>
+							<input type="text" name="writer" placeholder="작성자" value="${username}"disabled>
 							<input type="number" name="rating" placeholder="평점" required>
 							<!-- 파일 선택 시 미리보기할 이미지 영역 -->
 							<img id='review-preview' src='' alt=''	style='max-width: 200px; max-height: 100px; border: 1px dotted black;' />
 							<!-- 파일 선택 필드 -->
 							<input type="file" class="form-control-file" name="reviewPhotos" multiple="multiple"><br>
 							<textarea id="add-reviewNotice" name="reviewNotice" placeholder="리뷰 내용" required></textarea>
-							<button type="submit">리뷰 등록</button>
+							<button type="submit" class="btn btn-outline-warning">리뷰 등록</button>
 						</form>
+						</sec:authorize>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<form id="review-form" action="/product/${product.pno}/reviews" method="post" enctype="multipart/form-data">
+							<input type="text" name="writer" value="관리자" disabled>
+        					<textarea id="add-reviewNotice" name="reviewNotice" placeholder="댓댓글 내용" required></textarea>
+        					<button type="submit"  class="btn btn-outline-dark">관리자리뷰 작성</button>
+						</form>
+						</sec:authorize>
 						<div id="reviewPage-list">
 							<h3>----- 리뷰 ------------------------------------------------------------------------------------------------------------------------------</h3>
 							<ul id="review-list"></ul>

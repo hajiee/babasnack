@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.product.Service.ProductAdminService;
 import com.babasnack.demo.product.Service.ProductService;
 import com.babasnack.demo.product.dto.ProductDto.ReadP;
-import com.babasnack.demo.product.dto.ProductPage;
 
 @Controller
 public class ProductController {
@@ -29,10 +29,18 @@ public class ProductController {
 
 	// Main으로 이동
 	@GetMapping({ "/", "/main" })
-	public String showAllProducts(Model model) {
+	public String showMainPage(Model model) {
 	    List<Product> products = productAdminService.getAllProducts();
 	    model.addAttribute("products", products);
 	    return "/main";
+	}
+	
+	@GetMapping("/admin-product")
+	@Secured("ROLE_ADMIN")
+	public String showAllProductAdmins(Model model) {
+	    List<Product> products = productAdminService.getAllProducts();
+	    model.addAttribute("products", products);
+	    return "product/admin-product"; // 관리자용 상품 목록 페이지의 경로
 	}
 	
 	@GetMapping("/product/category={category}")
@@ -141,31 +149,4 @@ public class ProductController {
     	return ResponseEntity.ok(productList);
 	}
 
-	// 상품 page
-	@GetMapping("/products/page/{pageno}")
-	   public String getProductPage(@PathVariable Long pageno, Model model){
-			ProductPage productPage = productService.page(pageno);
-			model.addAttribute("start", 1L);
-			model.addAttribute("end", productPage.getEnd() - productPage.getStart() + 1);
-			model.addAttribute("prev", productPage.getPrev());
-			model.addAttribute("next", productPage.getNext());
-			model.addAttribute("pageno", pageno);
-			model.addAttribute("products", productPage.getProducts());
-
-			return "product/product-list"; 
-	}
-	
-	// 관리자 상품 page
-	@GetMapping("/product/admin-product/page/{pageno}")
-	public String getProductAdminPage(@PathVariable Long pageno, Model model){
-	    ProductPage productPage = productService.adminList(pageno); // adminList() 메서드 호출
-	    model.addAttribute("start", productPage.getStart());
-	    model.addAttribute("end", productPage.getEnd());
-	    model.addAttribute("prev", productPage.getPrev());
-	    model.addAttribute("next", productPage.getNext());
-	    model.addAttribute("pageno", pageno);
-	    model.addAttribute("products", productPage.getProducts());
-
-	    return "product/admin-product/page";
-	}
 }

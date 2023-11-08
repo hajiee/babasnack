@@ -39,7 +39,7 @@ public interface ProductAdminDao {
 	    // 상품번호로 조회
 	    @Select("SELECT * FROM product WHERE pno=#{pno}")
 	    public Product findByProduct(Long pno);
-
+	    
 		// 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
 		@Select("SELECT * FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
 		public List<ProductPhoto> findProductPhotos(Long pno);

@@ -1,6 +1,5 @@
 package com.babasnack.demo.product.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import com.babasnack.demo.product.dao.ProductDao;
 import com.babasnack.demo.product.dao.ProductPhotoDao;
 import com.babasnack.demo.product.dao.ReviewDao;
 import com.babasnack.demo.product.dto.ProductDto;
-import com.babasnack.demo.product.dto.ProductPage;
 
 @Service
 public class ProductService {
@@ -107,54 +105,4 @@ public class ProductService {
     	    return new ProductDto.ReadP(p.getPno(), p.getProductName(), p.getProductNotice(), p.getProductStock(),
     	            p.getProductPrice(), p.getProductSize(), countOfReview, avgOfReview, images, reviews);
     	}
-
-    // 상품 페이지 정보 조회 서비스 메서드
-    public ProductPage page(Long pageno) {
-    	Long count = productDao.count();
-        Long numberOfPages = (count + numberOfProductsPerPage - 1) / numberOfProductsPerPage;
-
-     // 현재 페이지의 시작과 끝 인덱스 계산
-        Long startRownum = (pageno - 1) * numberOfProductsPerPage + 1;
-        Long endRownum = Math.min(startRownum + numberOfProductsPerPage - 1, count);
-
-        List<Product> products = productDao.findProductsByPage(startRownum, endRownum);
-
-        // 각 상품에 이미지 URL을 추가
-        for (Product product : products) {
-            List<ProductPhoto> photos = productPhotoDao.findByPno(product.getPno());
-            List<String> imageUrls = new ArrayList<>();
-            for (ProductPhoto photo : photos) {
-                String imageUrl = productImgUrl + photo.getProductSaveImg(); // 이미지 URL 생성
-                imageUrls.add(imageUrl);
-            }
-            product.setPhotos(photos); // 이미지 리스트 설정
-        }
-
-        // 페이지네이션 계산
-        Long start = 1L;
-        Long end = numberOfPages;
-        Long prev = (pageno > 1) ? pageno - 1 : null;
-        Long next = (pageno < numberOfPages) ? pageno + 1 : null;
-
-        // ProductPage 객체를 생성하고 이미지 URL을 포함하여 반환
-        return new ProductPage(prev, start, end, next, pageno, products,count);
-    }
-    
-    // pageno, 개수 -> prev, start, end, next, pageno, 제품들을 출력한다
-    // 상품관리 등록된 상품 목록
-    public ProductPage adminList(Long pageno) {
-        Long count = productDao.count();
-        Long numberOfPage = (count - 1) / numberOfBoardesPerPage + 1;
-
-        Long startRownum = (pageno - 1) * numberOfBoardesPerPage + 1;
-        Long endRownum = pageno * numberOfBoardesPerPage;
-        List<Product> products = productDao.findProductsByPage(startRownum, endRownum);
-
-        Long start = (pageno - 1) / sizeOfBoardPagination * sizeOfBoardPagination + 1;
-        Long prev = (start - sizeOfBoardPagination > 0) ? start - sizeOfBoardPagination : null;
-        Long end = Math.min(start + sizeOfBoardPagination - 1, numberOfPage);
-        Long next = (end < numberOfPage) ? end + 1 : null;
-
-        return new ProductPage(prev, start, end, next, pageno, products,count);
-    }
 }
