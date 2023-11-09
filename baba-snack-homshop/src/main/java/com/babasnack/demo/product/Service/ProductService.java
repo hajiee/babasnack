@@ -98,7 +98,7 @@ public class ProductService {
     	        }
     	    }
 
-    	    List<Review> reviews = reviewDao.findByPno(pno);
+    	    List<Review> reviews = reviewDao.findByPnoWithPhotos(pno);
     	    Long countOfReview = reviewDao.countByPno(pno);
     	    Double avgOfReview = reviewDao.avgByPno(pno);
 

@@ -17,8 +17,9 @@ public class ReviewDto {
 	@Data
 	public static class WritePR{
 		private String reviewNotice;
-		private Boolean star;
+		private Double star;
 		private Long pno;
+		private String reviewWrite;
 		private List<MultipartFile> reviewPhoto;
 	}
 	

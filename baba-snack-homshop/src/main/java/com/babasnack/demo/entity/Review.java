@@ -1,6 +1,6 @@
 package com.babasnack.demo.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Review {
 	private Long rno;
-	private LocalDateTime reviewDate = LocalDateTime.now();
+	private LocalDate reviewDate = LocalDate.now();
 	private String reviewNotice;
-	private Boolean star;
+	private Double star;
 	private Long pno;
 	private String reviewWrite;
 	

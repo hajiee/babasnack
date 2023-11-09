@@ -25,6 +25,9 @@
   float: right;
   margin-left: 10px;
   margin-right: 10px;
+  width: 400px;
+  height: 350px;
+  border: 1px dotted lightgray;
 }
 
 #get-productRead td{
@@ -68,3 +71,25 @@
 	width: 1200px;
 	min-height: 300px;
 }
+
+
+.star {
+	font-size: 24px;
+  	color: #ccc;
+  	cursor: pointer;
+}
+
+.filled {
+  	color: gold;
+}
+
+#rating-stars {
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto 20px;
+}
+
+
+
+
+
