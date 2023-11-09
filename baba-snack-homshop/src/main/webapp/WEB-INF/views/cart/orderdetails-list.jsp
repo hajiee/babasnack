@@ -118,12 +118,51 @@ tbody tr:nth-child(2n) {
 				$('#PsCartDelete').on(
 						"click",
 						function() {
-							$('#frm').attr('action',
-									'/cart/orderdetails-list/delete').attr(
-									'method', 'post').submit();
-							alert("장바구니의 상품들을 전부 비우겠습니다");
+							const username = $('#username').val();
+							var query = {username : $('#username').val()};
+							
+							$.ajax({
+								url : "/cart/usernameCheck",
+								type : "post",
+								data : query,
+								async : false,
+								success : function(
+										data) {
+									if (data == 0) { // data == 0 : 장바구니가 비어있는 상태
+										alert("["
+												+ username
+												+ "]님의 장바구니는 비어있습니다.");
+										return false;
+									} else { // data == 1 : 장바구니에 상품이 있는 상태
+										$('#frm').attr('action',
+										'/cart/orderdetails-list/delete').attr(
+										'method', 'post').submit();
+								alert("장바구니의 상품들을 전부 비우겠습니다");
+									}
+								}
+							}); // ajax 끝					
+							
 						});
 			});
+</script>
+
+<!-- 장바구니에 상품 구매, 추가 -->
+<script>
+
+// 상품 장바구니 추가
+$(document).ready(function() {
+	$('#add-cart').on("click", function() {
+		const form = `
+			<form action='/cart/orderdetails-list/add' method='post'>
+				<input type='hidden' name='pno' value='${product.pno}'>
+			</form>
+		`;
+		
+		$(form).appendTo($('body')).submit();
+		//alert("장바구니로 이동합니다.");
+	});
+});
+
 </script>
 
 </head>
@@ -168,10 +207,9 @@ tbody tr:nth-child(2n) {
 							<tbody>
 								<c:forEach items="${cartDto.cart}" var="cart">
 									<tr>
-										<td>												
-													<img  src="/productImg/${cart.productSaveImg}" alt="상품이미지"
-														width="100px"><br>
-											 확인용 pno : ${cart.pno}</td>
+										<td><img src="/productImg/${cart.productSaveImg}"
+											alt="상품이미지" width="100px"><br> 확인용 pno :
+											${cart.pno}</td>
 										<td>${cart.productName}</td>
 										<td>${cart.productPrice}</td>
 										<td>${cart.productCnt}</td>
@@ -199,6 +237,28 @@ tbody tr:nth-child(2n) {
 					<label>*회원 로그인 아이디 script 적용 : </label> <input type="text"
 						id="username" name="username" readonly="readonly"
 						value="<sec:authentication property="principal.username"/>">
+				</div>
+
+				<!-- 장바구니 주문 테스트 -->
+				<div id="cartBenefit-form" class="mt-3">
+					<p>*장바구니 주문 테스트</p>		
+					
+					<div>
+						상품이름 : ${product.productName}<br>
+						상품가격 : ${product.productPrice}<br>
+						상품재고 : ${product.productStock}<br>
+					</div>
+					<select id="quantity" name="productCnt">
+						<option value="0">구매수량선택</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					
+					<button type="button" class="btn btn-secondary" id="add-cart">장바구니</button>
+					<button type="button" class="btn btn-dark" id="add-cart">구매하기</button>
 				</div>
 			</section>
 

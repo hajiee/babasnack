@@ -9,10 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,14 +29,18 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 
-	// 로그인한 회원의 장바구니 출력
+	// 로그인한 회원의 장바구니 출력 = 완료
 	@GetMapping("/cart/orderdetails-list")
-	public ModelAndView read(Principal principal) {
-		CartDto.ReadCart cartDto = cartService.read2(principal.getName());
-		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto);
+	public ModelAndView read(Principal principal, @RequestParam(value="pno", defaultValue = "7") Long pno) {
+		CartDto.ReadCart cartDto = cartService.read(principal.getName());
+		
+		// 상품 dto 테스트용
+		CartDto.testProductDto product = cartService.readTestProduct(pno);
+		
+		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto).addObject("product", product);
 	}
 
-	// 장바구니 상품이미지 보여주기 위한 설정
+	// 장바구니 상품이미지 보여주기 위한 설정 = 완료
 	@GetMapping("/productImg/{productSaveImg}")
 	public ResponseEntity<byte[]> viewProductSaveImg(@PathVariable String productSaveImg) {
 		File file = new File("c:/upload/productImg", productSaveImg);
@@ -49,7 +55,7 @@ public class CartController {
 		return null;
 	}
 
-	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
+	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용 = 완료
 	@ResponseBody
 	@RequestMapping(value = "/cart/usernameCheck", method = RequestMethod.POST)
 	public int cartIdCheck(Principal principal) {
@@ -64,7 +70,7 @@ public class CartController {
 		return result;
 	}
 
-	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
+	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용 = 완료
 	@ResponseBody
 	@RequestMapping(value = "/cart/usernameDeliveryCheck", method = RequestMethod.POST)
 	public int deliveryIdCheck(Principal principal) {
@@ -79,12 +85,12 @@ public class CartController {
 		return result;
 	}
 
-	// 로그인 아이디와 상품 번호로 장바구니에 상품 추가
-//	@PostMapping("/cart/orderdetails-list/add")
-//	public ModelAndView add(Long pno, Principal principal) {
-//		cartService.add(pno, principal.getName());
-//		return new ModelAndView("redirect:/cart/orderdetails-list");
-//	}
+	// 로그인 아이디와 상품 번호로 장바구니에 상품 버튼
+	@PostMapping("/cart/orderdetails-list/add")
+	public ModelAndView add(@RequestParam("productCnt") Long productCnt, Long pno, Principal principal) {
+		cartService.add(productCnt, pno, principal.getName());
+		return new ModelAndView("redirect:/cart/orderdetails-list");
+	}
 
 	// 장바구니 상품 전체삭제
 	@PostMapping("/cart/orderdetails-list/delete")

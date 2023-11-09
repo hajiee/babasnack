@@ -2,7 +2,6 @@ package com.babasnack.demo.cart.dto;
 
 import java.util.*;
 
-import com.babasnack.demo.entity.Cart;
 
 import lombok.*;
 
@@ -27,17 +26,21 @@ public class CartDto {
 	public static class DeleteAllCart {
 		private String username;
 	}
-
-	// 상품 사진
+	
+	// 상품 dto 테스트용
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class ProductPhotoDto {
-		private Long pno;
-		private Long productImgNo;
-		private String productImg; // 원본 이미지파일명
-		private String productSaveImg;
+	public static class testProductDto {
+	    private Long pno;
+        private String productName;
+        private String productNotice;
+        private Long productStock;
+        private Long productPrice;
+        private Long productSize;
 	}
+
+	
 
 
 }

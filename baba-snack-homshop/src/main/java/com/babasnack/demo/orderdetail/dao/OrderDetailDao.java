@@ -29,4 +29,9 @@ public interface OrderDetailDao {
 	// 주문한 회원정보 상세 내역리스트(관리자 전용)
 	@Select("select od.username, od.pno, od.buy_cnt, ob.dno from order_buy ob inner join order_detail od on ob.ono=od.ono where od.username=#{username} and ob.ono=#{ono}")
 	public List<OrderDetailDto.ReadOrderDetailAdmin> orderDetailAdmin(String username, Long ono);
+	
+	
+	// 해당 사용자가 주문한 상품인지 확인
+    @Select("SELECT COUNT(*) FROM order_detail WHERE username = #{username} AND pno = #{pno}")
+    public boolean isBuyer(String username, Long pno);
 }
