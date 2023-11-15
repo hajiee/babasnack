@@ -1,8 +1,6 @@
 package com.babasnack.demo.product.Service;
 
-import java.io.File;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +58,7 @@ public class ProductAdminService {
     @Transactional
     public Long updateProduct(Long pno, ProductDto.WriteP productDto, List<MultipartFile> uploadedPhotos) {
         // 기존 상품 정보 조회
-        Product existingProduct = productAdminDao.findByProduct(pno);
+        Product existingProduct = productDao.findByProduct(pno);
         if (existingProduct == null) {
             throw new RuntimeException(pno + "번 상품 정보를 읽어오지 못했습니다.");
         }
@@ -108,64 +106,44 @@ public class ProductAdminService {
     }
 
     private void deleteAllPhotosByPno(Long pno) {
+        // 상품에 연관된 모든 사진 가져오기
         List<ProductPhoto> photos = productPhotoDao.getProductPhotosByPNo(pno);
+        
+        // 각 사진에 대해 삭제 수행
         for (ProductPhoto photo : photos) {
             String savedFilename = photo.getProductSaveImg();
             String filePath = productSaveImg + "/" + savedFilename;
+            
             try {
                 productPhotoService.deleteFile(filePath);
             } catch (Exception e) {
                 throw new RuntimeException("파일 시스템에서 사진을 삭제하는 데 실패했습니다.", e);
             }
-            Long deletedCount = productPhotoDao.deleteProductPhoto(photo.getProductImgNo());
-            if (deletedCount == 0) {
-                throw new RuntimeException("데이터베이스에서 사진을 삭제하는 데 실패했습니다.");
-            }
         }
-    }
-
-    private void deleteFile(String filePath) {
-        File fileToDelete = new File(filePath);
-
-        if (fileToDelete.exists()) {
-            boolean isDeleted = fileToDelete.delete();
-
-            if (!isDeleted) {
-                throw new RuntimeException("Failed to delete the file: " + filePath);
-            }
-        } else {
-            throw new IllegalArgumentException("The file does not exist: " + filePath);
+        
+        // 상품에 연관된 모든 사진 삭제
+        Long deletedCount = productAdminDao.deleteAllPhotosByPNo(pno);
+        if (deletedCount == 0) {
+            throw new RuntimeException("데이터베이스에서 사진을 삭제하는 데 실패했습니다.");
         }
-    }
-
-    private List<ProductPhoto> getProductPhotosByPNo(Long pno) {
-        return productPhotoDao.getProductPhotosByPNo(pno);
     }
 
     public String getSavedFilename(String productSaveImg) {
         return productSaveImg;
     }
-
-    private String getFilePath(String filename) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-
-        String filePath = "/path/to/files/" + year + "/" + month + "/" + filename;
-        return filePath;
-    }
-
-    private Long deleteFromDatabase(Long photoImgNo) {
-        return this.productPhotoDao.deleteProductPhoto(photoImgNo);
-    }
-
+    
     // 모든 상품 조회
     public List<Product> getAllProducts() {
         return productDao.findAllProducts();
     }
+    
+    // 상품목록 최신등록 순
+    public List<Product> getAllProductsSortedByDate() {
+        return productDao.findAllProductsOrderByRegistrationDate();
+    }
 
     // 특정 상품 조회
     public Product getProductById(Long pno) {
-        return productAdminDao.findByProduct(pno);
+        return productDao.findByProduct(pno);
     }
 }

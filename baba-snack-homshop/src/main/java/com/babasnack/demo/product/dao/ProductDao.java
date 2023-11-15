@@ -13,8 +13,8 @@ import com.babasnack.demo.entity.Product;
 @Mapper
 public interface ProductDao {
     // 상품목록
-    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno")
-    public List<Product> findAllProducts();
+	@Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno")
+	public List<Product> findAllProducts();
 
     // 상품번호로 조회
     @Select("SELECT * FROM product WHERE pno = #{pno}")
@@ -38,4 +38,9 @@ public interface ProductDao {
     
     @Select("select count(*) from product")
     public Long count();
+    
+    // 최신등록순 상품목록
+    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno ORDER BY product.productDay DESC")
+    public List<Product> findAllProductsOrderByRegistrationDate();
+
 }

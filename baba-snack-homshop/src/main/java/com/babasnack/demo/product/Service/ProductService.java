@@ -84,7 +84,7 @@ public class ProductService {
     	    if (p == null)
     	        return null;
 
-    	    List<ProductPhoto> images = productAdminDao.findProductPhotos(pno);
+    	    List<ProductPhoto> images = productPhotoDao.getProductPhotosByPNo(pno);
     	    if (images.isEmpty()) {
     	        // 사진이 없다면 default.jpg를 출력
     	        ProductPhoto defaultPhoto = new ProductPhoto();

@@ -33,9 +33,11 @@ $(document).ready(function() {
 		$(this).find("td:eq(3)").text(productDay);
 	});
 
-	var page = 2; // 초기 로딩 시에는 page 값을 2로 설정하여 추가적인 상품을 가져올 수 있도록 함
+	var displayedProductDays = [];
+    var page = 1; // 초기 로딩 시에는 page 값을 1로 설정하여 처음부터 상품을 가져올 수 있도록 함
     var size = 10; // 한 번에 보여줄 상품 수
-    var count = 10; // 초기 로딩 시 상품의 개수를 10으로 설정
+    var count = 0; // 초기 로딩 시 상품의 개수를 0으로 설정
+    var isFirstLoad = true; // 처음 로딩 여부를 확인하는 변수
 
     function loadMore() {
         $.ajax({
@@ -44,6 +46,12 @@ $(document).ready(function() {
             success: function(response) {
                 var products = response;
                 if (products.length > 0) {
+                    if (isFirstLoad) {
+                        $("tbody").empty(); // 처음 로딩 시에만 기존의 상품 내용을 모두 지우고 다시 출력
+                        displayedProductDays = []; // displayedProductDays 배열도 초기화
+                        isFirstLoad = false; // isFirstLoad 값을 false로 설정
+                    }
+
                     for (var i = 0; i < products.length; i++) {
                         var product = products[i];
                         var row = "<tr>" +
@@ -55,9 +63,10 @@ $(document).ready(function() {
                             "<td>" + (count + i + 1) + "</td>" +
                             "</tr>";
                         $("tbody").append(row);
+                        displayedProductDays.push(new Date(product.productDay)); // 등록일자를 날짜 형식으로 저장
                     }
+                    count = products.length; // count 값을 상품의 개수로 설정
                     page++; // page 값을 증가시킴
-                    count += products.length;
                 } else {
                     $("#loadMoreBtn").hide();
                     $("tbody").append("<tr style='height: 200px;'><td colspan='6'><a href='/product/admin-product' style='text-decoration: none; color:darkgray;'>더 이상 등록된 상품이 없습니다.</a></td></tr>");
@@ -72,9 +81,8 @@ $(document).ready(function() {
     $("#loadMoreBtn").click(function() {
         loadMore();
     });
-    
- 	// 초기 로딩 시에 오른쪽 상단에 있는 표를 삭제
-    $("#aside-board-list").empty();
+
+    loadMore(); // 페이지 로딩 시 초기 상품 로드
 });
 </script>
 <style>

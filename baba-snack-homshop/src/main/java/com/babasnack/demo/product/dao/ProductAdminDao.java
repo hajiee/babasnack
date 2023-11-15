@@ -1,12 +1,8 @@
 package com.babasnack.demo.product.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
@@ -36,19 +32,11 @@ public interface ProductAdminDao {
 		        "category = #{category, jdbcType=VARCHAR} WHERE pno = #{pno}")
 		public Long updateProduct(Product product);
 
-	    // 상품번호로 조회
-	    @Select("SELECT * FROM product WHERE pno=#{pno}")
-	    public Product findByProduct(Long pno);
-	    
-		// 주어진 상품 번호(pno)에 해당하는 모든 사진들을 조회
-		@Select("SELECT * FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
-		public List<ProductPhoto> findProductPhotos(Long pno);
-
 		// 상품 삭제
 		@Delete("DELETE FROM PRODUCT WHERE PNO=#{pno}")
 		public Integer deleteProduct(Long pno);
 
 		// 상품에 연관된 사진 삭제
 		@Delete("DELETE FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
-		public boolean deleteAllPhotosByPNo(Long pno);
+		public Long deleteAllPhotosByPNo(Long pno);
 }

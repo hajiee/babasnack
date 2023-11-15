@@ -21,10 +21,6 @@ public interface ProductPhotoDao {
     @Update("UPDATE PRODUCT_PHOTO SET PRODUCT_IMG = #{productImg} WHERE PRODUCT_IMGNO = #{productImgNo} AND PNO = #{pno}")
     public void updateProductPhoto(Long productImgNo, Long pno, String productImg);
 
-    // 사진 삭제
-    @Delete("DELETE FROM PRODUCT_PHOTO WHERE PRODUCT_IMGNO = #{productImgNo}")
-    public Long deleteProductPhoto(Long photoImgNo);
-
     // 사진 삭제 by ImgNo and PNo (복합 키)
     @Delete("DELETE FROM PRODUCT_PHOTO WHERE PRODUCT_IMGNO = #{productImgNo} AND PNO = #{pno}")
     public Long deleteProductPhotoByImageAndPNo(Long productImgNo, Long pno);

@@ -41,7 +41,7 @@ public class ProductAdminController {
 
 	// 상품 등록 처리
 	@PostMapping("/add")
-	public ModelAndView addProduct(@ModelAttribute("productDto") ProductDto.WriteP productDto,
+	public ModelAndView addProducts(@ModelAttribute("productDto") ProductDto.WriteP productDto,
 	        @RequestParam("photos") List<MultipartFile> uploadedPhotos) {
 	    List<ProductPhoto> productPhotos = convertToProductPhotos(uploadedPhotos);
 	    productDto.setProductPhotos(productPhotos);
@@ -78,7 +78,7 @@ public class ProductAdminController {
 	}
 	
 
-	@GetMapping("/product-write/{pno}")
+	@GetMapping("/{pno}/product-edit")
 	public String showEditProductForm(@PathVariable("pno") Long pno, Model model) {
 	    Product product = productAdminService.getProductById(pno);
 	    if (product == null) {
@@ -88,11 +88,11 @@ public class ProductAdminController {
 	    
 	    model.addAttribute("product", product);
 	    model.addAttribute("categories", Category.values());
-	    return "product/product-write";
+	    return "product/product-edit";
 	}
 
 	// 상품 수정 처리
-	@PostMapping("/{pno}/product-edit")
+	@PostMapping("/{pno}/save")
 	public ModelAndView editProduct(@PathVariable("pno") Long pno,
 	                                @ModelAttribute("productDto") ProductDto.WriteP productDto,
 	                                @RequestParam("photos") List<MultipartFile> uploadedPhotos) {

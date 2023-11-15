@@ -38,7 +38,7 @@ public class ProductController {
 	@GetMapping("/admin-product")
 	@Secured("ROLE_ADMIN")
 	public String showAllProductAdmins(Model model) {
-	    List<Product> products = productAdminService.getAllProducts();
+	    List<Product> products = productAdminService.getAllProductsSortedByDate(); // 최근 등록 순으로 정렬된 상품 리스트를 가져옴
 	    model.addAttribute("products", products);
 	    return "product/admin-product"; // 관리자용 상품 목록 페이지의 경로
 	}
