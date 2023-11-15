@@ -19,8 +19,8 @@ public interface ReviewDao {
 	public void save(Review review);
 
 	// 특정 상품의 리뷰들을 출력
-	@Select("SELECT r.*, p.* FROM review r INNER JOIN review_photo p ON r.rno = p.rno WHERE r.pno = #{pno} ORDER BY r.rno DESC")
-	public List<Review> findByPnoWithPhotos(Long pno);
+	@Select("SELECT r.*,rp.review_imgno,rp.review_saveimg FROM review r INNER JOIN review_photo rp ON r.rno = rp.rno WHERE r.pno = #{pno} ORDER BY r.rno DESC")
+    public List<Review> findByPnoWithPhotos(Long pno);
 
 	// 상품을 삭제할 때 상품의 리뷰들을 모두 삭제
 	@Delete("delete from review where pno=#{pno}")

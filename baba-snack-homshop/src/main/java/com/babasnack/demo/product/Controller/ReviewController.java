@@ -36,34 +36,35 @@ public class ReviewController {
 	        return "product/product-read";
 	    }
 
-	 @PostMapping("/product-read/{pno}/save-review")
-	 public String saveReview(@PathVariable Long pno, @ModelAttribute("review") Review review, Principal principal,
-	         @RequestParam("reviewPhoto") List<MultipartFile> photo, Model model) {
-	     // 현재 로그인한 사용자 정보 가져오기
-	     String username = principal.getName();
+	 @PostMapping("/save-review/{pno}")
+	 public String saveReview(@PathVariable("pno") Long pno, @ModelAttribute("review") Review review, Principal principal,
+	         @RequestParam("reviewPhoto") List<MultipartFile> revphoto, Model model) {
+		// 현재 로그인한 사용자 정보 가져오기
+		    String username = principal.getName();
 
-	     // 상품 구매자인 경우에만 리뷰 작성 가능
-	     if (review.getReviewWrite().equals(username)) {
-	         // ReviewDto.WritePR 객체 생성 및 값 설정
-	         ReviewDto.WritePR reviewDto = new ReviewDto.WritePR();
-	         reviewDto.setReviewNotice(review.getReviewNotice());
-	         reviewDto.setStar(review.getStar());
-	         reviewDto.setPno(review.getPno());
-	         reviewDto.setReviewWrite(review.getReviewWrite());
+		    // 상품 구매자인 경우에만 리뷰 작성 가능
+		    if (review.getReviewWrite().equals(username)) {
+		        // ReviewDto.WritePR 객체 생성 및 값 설정
+		        ReviewDto.WritePR reviewDto = new ReviewDto.WritePR();
+		        reviewDto.setReviewNotice(review.getReviewNotice());
+		        reviewDto.setStar(review.getStar());
+		        reviewDto.setPno(review.getPno());
+		        reviewDto.setReviewWrite(review.getReviewWrite());
 
-	         // 구매자의 리뷰 및 사진 저장 로직 추가
-	         try {
-	             reviewService.saveReview(reviewDto, photo);
-	         } catch (IOException e) {
-	             e.printStackTrace();
-	         }
-	     } else {
-	         throw new IllegalArgumentException("Only buyers can write reviews.");
-	     }
+		        // 구매자의 리뷰 및 사진 저장 로직 추가
+		        try {
+		            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		            reviewService.saveReview(reviewDto, revphoto, authentication);
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		    } else {
+		        throw new IllegalArgumentException("Only buyers can write reviews.");
+		    }
 
-	     // 리뷰가 추가된 `product-read` 페이지에 리뷰 목록을 포함하여 반환
-	     List<Review> reviews = reviewService.getReviewsByProduct(pno);
-	     model.addAttribute("reviews", reviews);
+		    // 리뷰가 추가된 `product-read` 페이지에 리뷰 목록을 포함하여 반환
+		    List<Review> reviews = reviewService.getReviewsByProduct(pno);
+		    model.addAttribute("reviews", reviews);
 	     return "redirect:/product/product-read/" + pno;
 	 }
 

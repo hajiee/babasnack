@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReviewPhotoDto {
 	@Data
-	@AllArgsConstructor
-	public static class saveReviewPhoto{
-		private Long reviewImgNo;
-		private String reviewImg;
-		private String reviewSaveImg;
-		private String reviewImgUrl;
-		
-		public String getSavedFilename() {
-			return reviewSaveImg;
-		}
+    @AllArgsConstructor
+    public static class SaveReviewPhoto {
+        private Long reviewImgNo;
+        private String reviewImg;
+        private String reviewSaveImg;
+        private String reviewImgUrl;
+        
+        public String getSavedFilename() {
+            return reviewSaveImg;
+        }
 
-		public void setSavedFilename(String savedFilename) {
-			this.reviewSaveImg = savedFilename;
-		}
-	}
+        public void setSavedFilename(String savedFilename) {
+            this.reviewSaveImg = savedFilename;
+        }
+    }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,45 +30,49 @@ public class ReviewService {
 	@Autowired
 	private OrderDetailDao orderDetailDao;
 
-	public void saveReview(ReviewDto.WritePR dto, List<MultipartFile> reviewUploadPhoto) throws IOException {
-        // 현재 로그인한 사용자의 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+	public void saveReview(ReviewDto.WritePR dto, List<MultipartFile> reviewUploadPhoto, Authentication authentication) throws IOException {
+		if (isBuyer(authentication.getName(), dto.getPno())) {
+			String reviewWrite = authentication != null ? authentication.getName() : null;
 
-        // ReviewDto에서 필요한 정보를 가져와서 Review 엔티티 생성
-        Review review = Review.builder()
-                .reviewDate(LocalDate.now())
-                .reviewNotice(dto.getReviewNotice())
-                .star(dto.getStar())
-                .pno(dto.getPno())
-                .reviewWrite(username)
-                .build();
+	        // ReviewDto에서 필요한 정보를 가져와서 Review 엔티티 생성
+	        Review review = Review.builder()
+	                .reviewDate(LocalDate.now())
+	                .reviewNotice(dto.getReviewNotice())
+	                .star(dto.getStar())
+	                .pno(dto.getPno())
+	                .reviewWrite(reviewWrite)
+	                .build();
 
-        // Review 엔티티 저장
-        reviewDao.save(review);
+	        // Review 엔티티 저장
+	        reviewDao.save(review);
 
-        // 리뷰 사진 저장 로직
-        List<ReviewPhoto> reviewPhotos = new ArrayList<>();
-        for (MultipartFile photo : reviewUploadPhoto) {
-            byte[] photoData = photo.getBytes();
-            String originalFilename = photo.getOriginalFilename();
+	        // 리뷰 사진 저장 로직
+	        List<ReviewPhoto> reviewPhotos = new ArrayList<>();
+	        for (MultipartFile revPhoto : reviewUploadPhoto) {
+	            if (revPhoto != null) { // photo가 null이 아닌 경우에만 처리
+	                byte[] photoData = revPhoto.getBytes();
+	                String originalFilename = revPhoto.getOriginalFilename();
 
-            String savedFilename = saveFile(photoData, originalFilename);
+	                String savedFilename = saveFile(photoData, originalFilename);
 
-            ReviewPhoto reviewPhoto = ReviewPhoto.builder()
-                    .reviewImg(originalFilename)
-                    .reviewSaveImg(savedFilename)
-                    .build();
+	                ReviewPhoto reviewPhoto = ReviewPhoto.builder()
+	                        .reviewImg(originalFilename)
+	                        .reviewSaveImg(savedFilename)
+	                        .build();
 
-            reviewPhotos.add(reviewPhoto);
-        }
+	                reviewPhotos.add(reviewPhoto);
+	            }
+	        }
 
-        // 리뷰 사진 엔티티 저장
-        for (ReviewPhoto reviewPhoto : reviewPhotos) {
-            reviewPhoto.setRno(review.getRno());
-            reviewPhotoDao.saveReviewPhoto(reviewPhoto);
-        }
-    }
+	        // 리뷰 사진 엔티티 저장
+	        for (ReviewPhoto reviewPhoto : reviewPhotos) {
+	            reviewPhoto.setRno(review.getRno());
+	            reviewPhotoDao.saveReviewPhoto(reviewPhoto);
+	        }
+	    } else {
+	        throw new IllegalArgumentException("상품을 구매한 회원만 리뷰를 작성할 수 있습니다.");
+	    }
+	}
 
 	public List<Review> getReviewsByProduct(Long pno) {
         return reviewDao.findByPnoWithPhotos(pno);
@@ -75,8 +80,8 @@ public class ReviewService {
 	
 	public boolean isBuyer(String username, Long pno) {
 	    // 해당 사용자의 주문 내역 확인
-	    boolean isBuyer = orderDetailDao.isBuyer(username, pno);
-	    return isBuyer;
+	    Long count = orderDetailDao.isBuyer(username, pno);
+	    return count > 0;
 	}
 
 	public boolean isAdminUser() {
@@ -86,13 +91,15 @@ public class ReviewService {
 	}
 
 
-    private String saveFile(byte[] fileData, String originalFilename) throws IOException {
+	private String saveFile(byte[] fileData, String originalFilename) throws IOException {
         String savedFilename = generateUniqueFileName(originalFilename); // 중복되지 않는 고유한 파일명 생성
 
         FileOutputStream outputStream = null;
 
         try {
-            outputStream = new FileOutputStream(savedFilename);
+            String filePath = "/path/to/save/" + savedFilename; // 파일을 저장할 경로 지정
+
+            outputStream = new FileOutputStream(filePath);
             outputStream.write(fileData);
 
             // 필요한 경우 추가적인 작업 수행 가능
@@ -109,17 +116,9 @@ public class ReviewService {
         }
     }
 
-    private String generateUniqueFileName(String originalFilename) {
-        String extension = extractFileExtension(originalFilename);
-        String uniqueFileName = UUID.randomUUID().toString() + extension;
-        return uniqueFileName;
-    }
-
-    private String extractFileExtension(String filename) {
-        int dotIndex = filename.lastIndexOf(".");
-        if (dotIndex >= 0 && dotIndex < filename.length() - 1) {
-            return filename.substring(dotIndex + 1);
-        }
-        return ""; // 파일명에 확장자가 없는 경우를 처리하기 위한 부분
-    }
+	private String generateUniqueFileName(String originalFilename) {
+	    String extension = FilenameUtils.getExtension(originalFilename);
+	    String uniqueFileName = UUID.randomUUID().toString() + (extension != null ? "." + extension : "");
+	    return uniqueFileName;
+	}
 }

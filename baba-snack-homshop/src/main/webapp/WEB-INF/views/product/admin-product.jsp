@@ -77,6 +77,16 @@ $(document).ready(function() {
     $("#aside-board-list").empty();
 });
 </script>
+<style>
+.btn-outline-warning{
+	margin-top: 20px;
+}
+
+#product-writeBtn{
+	margin: 0px;
+	margin-left:1500px;
+}
+</style>
 </head>
 <body>
 <div id="page">
@@ -89,11 +99,9 @@ $(document).ready(function() {
         <jsp:include page="/WEB-INF/views/include/nav.jsp" />
     </nav>
     <main id="board-main">
-        <aside id="aside-board-list">
-            <a href="/product/product-write">
-                <button type="button" class="btn btn-outline-warning">상품등록</button>
-            </a>
-        </aside>
+        <aside id="product-writeBtn">
+			<button type="button" class="btn btn-outline-warning" onclick="location.href='/product/product-write'">상품 등록</button>
+		</aside>
         <section>
             <table class="table table-hover" id="board-table">
                 <thead>

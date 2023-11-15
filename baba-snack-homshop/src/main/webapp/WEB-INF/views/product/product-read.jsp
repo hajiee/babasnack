@@ -28,47 +28,46 @@
 </script>
 <script>
 //리뷰 등록 버튼 클릭 이벤트 핸들러
-//리뷰 등록 버튼 클릭 이벤트 핸들러
 function submitReview(role) {
-  var formData;
-  var formId;
+    var formData;
+    var formId;
 
-  if (role === 'buyer') {
-    formData = new FormData($('#review-form-buyer')[0]);
-    formId = '#review-form-buyer';
-  } else if (role === 'admin') {
-    formData = new FormData($('#review-form-admin')[0]);
-    formId = '#review-form-admin';
-  }
-
-  $.ajax({
-    url: '/product/product-read?pno=${product.pno}',
-    type: 'POST', // 요청 메소드를 POST로 변경
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function(response) {
-      var newReview = "<li>새로운 리뷰 내용</li>";
-      $("#review-list").prepend(newReview); // 새로운 리뷰를 목록 상단에 추가
-
-      // 폼 초기화
-      $(formId)[0].reset();
-      $(formId).find('.star').removeClass('filled');
-      $(formId).find('#rating').val(0);
-      $(formId).find('#rating-value').text(0);
-      $(formId).find('#review-preview').attr('src', '');
-    },
-    error: function(xhr, status, error) {
-      console.error(error); // 에러 발생 시의 동작 정의
-      alert('리뷰 등록 중 에러가 발생했습니다. 다시 작성해주세요.');
-    },
-    statusCode: {
-      405: function() {
-        console.error('Method Not Allowed'); // 405 에러 처리
-        alert('서버에서 해당 요청 방법을 허용하지 않습니다.');
-      }
+    if (role === 'buyer') {
+        formData = new FormData($('#review-form-buyer')[0]);
+        formId = '#review-form-buyer';
+    } else if (role === 'admin') {
+        formData = new FormData($('#review-form-admin')[0]);
+        formId = '#review-form-admin';
     }
-  });
+
+    $.ajax({
+        url: '/product-read/{pno}/save-review',  // 리뷰 저장 URL
+        type: 'POST',  // POST 요청
+        data: formData,  // 리뷰 데이터 전송
+        processData: false,  // FormData 처리 비활성화
+        contentType: false,  // 컨텐츠 타입 비활성화
+        success: function(response) {
+            var newReview = "<li>새로운 리뷰 내용</li>";
+            $("#review-list").prepend(newReview);  // 새로운 리뷰를 목록 상단에 추가
+
+            // 폼 초기화
+            $(formId)[0].reset();
+            $(formId).find('.star').removeClass('filled');
+            $(formId).find('#rating').val(0);
+            $(formId).find('#rating-value').text(0);
+            $(formId).find('#review-preview').attr('src', '');
+        },
+        error: function(xhr, status, error) {
+            console.error(error);  // 에러 발생 시 동작 정의
+            alert('리뷰 등록 중 에러가 발생했습니다. 다시 작성해주세요.');
+        },
+        statusCode: {
+            405: function() {
+                console.error('Method Not Allowed');  // 405 에러 처리
+                alert('서버에서 해당 요청 방법을 허용하지 않습니다.');
+            }
+        }
+    });
 }
 
 $(document).ready(function() {

@@ -2,6 +2,7 @@
 
 #board-main{
 	width: 1700px;
+	min-height: 700px;
 }
 
 #board-main section {
@@ -79,5 +80,6 @@ ul.pagination li {
 #aside-board-list{
 	margin-top: 20px;
 	margin-right: 80px;
-	
+	position: relative; /* 위치를 상대적으로 설정 */
+	z-index: 1; /* 다른 요소보다 위에 표시되도록 설정 */
 }
