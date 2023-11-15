@@ -79,9 +79,8 @@ public class ReviewService {
     }
 	
 	public boolean isBuyer(String username, Long pno) {
-	    // 해당 사용자의 주문 내역 확인
-	    Long count = orderDetailDao.isBuyer(username, pno);
-	    return count > 0;
+	 // 해당 사용자의 주문 내역 확인
+	    return orderDetailDao.isBuyer(username, pno);
 	}
 
 	public boolean isAdminUser() {

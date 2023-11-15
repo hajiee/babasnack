@@ -36,7 +36,7 @@ public class ReviewController {
 	        return "product/product-read";
 	    }
 
-	 @PostMapping("/save-review/{pno}")
+	 @PostMapping("/product-read/{pno}/add-review")
 	 public String saveReview(@PathVariable("pno") Long pno, @ModelAttribute("review") Review review, Principal principal,
 	         @RequestParam("reviewPhoto") List<MultipartFile> revphoto, Model model) {
 		// 현재 로그인한 사용자 정보 가져오기
