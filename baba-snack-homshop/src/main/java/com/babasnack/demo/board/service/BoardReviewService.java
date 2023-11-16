@@ -11,7 +11,7 @@ public class BoardReviewService {
 	@Autowired
 	private BoardReviewDao boardReviewDao;
 
-	public void addReview(BoardReviewDto.WriteBR writeBR) {
-	        boardReviewDao.addReview(writeBR);
+	public void addBoardReviews(BoardReviewDto.WriteBR writeBR) {
+	        boardReviewDao.addBoardReview(writeBR);
 	    }
 }

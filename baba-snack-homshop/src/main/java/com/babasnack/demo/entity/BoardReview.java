@@ -1,5 +1,6 @@
 package com.babasnack.demo.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,6 @@ public class BoardReview {
 	private Long brno;
 	private Long bno;
 	private String adminNotice;
-	private LocalDateTime adminDate;
+	private LocalDate adminDate;
 	private String admin;
 }

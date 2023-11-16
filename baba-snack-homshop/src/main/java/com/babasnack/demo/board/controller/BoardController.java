@@ -5,8 +5,6 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +23,7 @@ import com.babasnack.demo.board.service.BoardAdminService;
 import com.babasnack.demo.board.service.BoardService;
 import com.babasnack.demo.entity.Board;
 
+@RequestMapping("/board")
 @Controller
 public class BoardController {
 	@Autowired
@@ -31,15 +31,15 @@ public class BoardController {
 	@Autowired
 	private BoardAdminService boardAdminService;
 	
-	 @GetMapping("/board/board-list")
+	 @GetMapping("/board-list")
 	    public ModelAndView boardList(@RequestParam(defaultValue = "1") Long pageno) {
-	        BoardPage boardPage = boardService.page(pageno);
+	        BoardPage boardPage = boardService.boardPage(pageno);
 	        return new ModelAndView("board/board-list").addObject("boardPage", boardPage);
 	    }
 
-	    @GetMapping("/board/board-read/{bno}")
+	    @GetMapping("/board-read/{bno}")
 	    public String boardDetail(Model model, @PathVariable Long bno, @RequestParam(value = "boardCode", required = false) int code) {
-	        Board board = boardAdminService.findbybNoForAdmin(bno);
+	        Board board = boardAdminService.findByBnoForAdmin(bno);
 
 	        // 게시글 상세 정보를 모델에 추가
 	        model.addAttribute("board", board);
@@ -53,14 +53,14 @@ public class BoardController {
 	    }
 
 	    // 글 작성 폼
-	    @GetMapping("/board/board-write")
+	    @GetMapping("/board-write")
 	    public String boardWriteForm(Model model) {
 	        model.addAttribute("writeB", new BoardDto.WriteB());
 	        return "board/board-write";
 	    }
 
 	    // 글 작성 처리
-	    @PostMapping("/board/boardInsert")
+	    @PostMapping("/add-board")
 	    public String boardWrite(@ModelAttribute("writeB") @Validated BoardDto.WriteB writeB, BindingResult bindingResult, Principal principal) {
 	        if (bindingResult.hasErrors()) {
 	            // 유효성 검사 에러가 있는 경우 처리
@@ -87,9 +87,9 @@ public class BoardController {
 	    }
 
 
-	    @GetMapping("/board/{bno}/board-edit")
+	    @GetMapping("/{bno}/board-edit")
 	    public String editBoardForm(Model model, @PathVariable Long bno) {
-	        Board board = boardAdminService.findbybNoForAdmin(bno);
+	        Board board = boardAdminService.findByBnoForAdmin(bno);
 
 	        // 수정할 게시글 정보를 모델에 추가
 	        model.addAttribute("board", board);
@@ -97,7 +97,7 @@ public class BoardController {
 	        return "board/board-edit"; // 수정 화면으로 이동
 	    }
 
-	    @PostMapping("/board/{bno}/board-edit")
+	    @PostMapping("/{bno}/board-edit")
 	    public String editBoard(@ModelAttribute("board") @Validated Board updatedBoard, BindingResult bindingResult, @PathVariable Long bno, HttpServletRequest request) {
 	        if (bindingResult.hasErrors()) {
 	            // 유효성 검사 에러가 있는 경우 처리
@@ -116,8 +116,8 @@ public class BoardController {
 	        }
 	    }
 
-	    @PostMapping("/board/{bno}/delete")
-	    public String deleteBoard(@PathVariable Long bno, @RequestParam("boardCode") int code, HttpServletRequest request) {
+	    @PostMapping("/{bno}/delete")
+	    public String deleteBoards(@PathVariable Long bno, @RequestParam("boardCode") int code, HttpServletRequest request) {
 	        // 입력한 비밀번호와 게시글의 비밀번호를 비교하여 일치하면 삭제 가능
 	        if (boardService.checkBoardCode(bno, code)) {
 	            boardService.deleteBoard(bno);

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.babasnack.demo.board.dao.BoardDao;
 import com.babasnack.demo.board.dto.BoardDto;
-import com.babasnack.demo.board.dto.BoardDto.WriteB;
 import com.babasnack.demo.board.dto.BoardPage;
 import com.babasnack.demo.entity.Board;
 
@@ -44,12 +43,12 @@ public class BoardService {
 
    // 글 목록 조회 (페이징)
    public List<Board> getBoards(Long startRownum, Long endRownum) {
-       return boardDao.findAll(startRownum, endRownum);
+       return boardDao.boardPageOne(startRownum, endRownum);
    }
 
    // 공지글이면 위로 정렬하는 글 목록 조회
-   public List<Board> getNoticeBoards() {
-       return boardDao.getFindAll();
+   public List<Board> getIsSortedBoards() {
+       return boardDao.isSortedByBoard();
    }
 
    // 제목으로 게시글 조회
@@ -59,24 +58,24 @@ public class BoardService {
    
 	// 게시글 비밀번호 설정
 	public Long setboardCode(BoardDto.WriteB writeB) {
-	    return boardDao.setboardCode(writeB);
+	    return boardDao.setBoardCode(writeB);
 	}
 
 	// 설정된 비밀번호 확인
 	public boolean checkBoardCode(Long bno, int code) {
-	    return boardDao.checkboardCode(bno, code);
+	    return boardDao.checkBoardCode(bno, code);
 	}
 	
 	// 게시판 page
-    public BoardPage page(Long pageno) {
-        Long count = boardDao.count();
+    public BoardPage boardPage(Long pageno) {
+        Long count = boardDao.boardAllCount();
         Long numberOfPage = (count - 1) / numberOfBoardesPerPage + 1;
 
         // 현재 페이지의 시작과 끝 인덱스 계산
         Long startRownum = (pageno - 1) * numberOfBoardesPerPage + 1;
         Long endRownum = pageno * numberOfBoardesPerPage;
 
-        List<Board> boards = boardDao.findAll(startRownum, endRownum);
+        List<Board> boards = boardDao.boardPageOne(startRownum, endRownum);
 
         // 페이지네이션 계산
         Long start = (pageno - 1) / sizeOfBoardPagination * sizeOfBoardPagination + 1;

@@ -14,7 +14,7 @@ public class BoardAdminService {
     private BoardAdminDao boardAdminDao;
 	
 	// 번호로 게시글 조회
-    public Board findbybNoForAdmin(Long bno){
+    public Board findByBnoForAdmin(Long bno){
        	return boardAdminDao.findByBoard(bno);
 
      }

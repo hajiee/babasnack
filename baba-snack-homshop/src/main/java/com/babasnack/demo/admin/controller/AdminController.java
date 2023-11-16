@@ -33,7 +33,7 @@ public class AdminController {
         return "admin"; // 관리자 페이지 뷰 이름 반환
     }
     
-    @GetMapping("/admin/member")
+    @GetMapping("/member/admin-member")
     public String adminMemberList(Model model) {
         // 회원 관리 페이지로 이동하는 로직
     	List<Member> members = memberAdminService.getAllMember();
