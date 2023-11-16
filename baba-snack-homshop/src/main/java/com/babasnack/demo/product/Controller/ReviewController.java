@@ -28,6 +28,7 @@ public class ReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	
+	// 해당 상품 상세페이지
 	 @GetMapping("/product-read/{pno}")
 	    public String getProductReadPage(@PathVariable Long pno, Model model) {
 	        // 리뷰가 추가된 `product-read` 페이지에 리뷰 목록을 포함하여 반환
@@ -37,7 +38,7 @@ public class ReviewController {
 	    }
 
 	 @PostMapping("/product-read/{pno}/add-review")
-	 public String saveReview(@PathVariable("pno") Long pno, @ModelAttribute("review") Review review, Principal principal,
+	 public String addReviews(@PathVariable("pno") Long pno, @ModelAttribute("review") Review review, Principal principal,
 	         @RequestParam("reviewPhoto") List<MultipartFile> revphoto, Model model) {
 		// 현재 로그인한 사용자 정보 가져오기
 		    String username = principal.getName();
@@ -54,7 +55,7 @@ public class ReviewController {
 		        // 구매자의 리뷰 및 사진 저장 로직 추가
 		        try {
 		            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		            reviewService.saveReview(reviewDto, revphoto, authentication);
+		            reviewService.addProductReview(reviewDto, revphoto, authentication);
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }
@@ -70,7 +71,7 @@ public class ReviewController {
 
 	    @Secured("ROLE_ADMIN") // 관리자에 대해서만 접근 허용
 	    @GetMapping("/reviews-user")
-	    public boolean isAdminUser() {
+	    public boolean isAdminUserAccess() {
 	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	        return authentication.getAuthorities().stream()
 	                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));

@@ -99,8 +99,8 @@ public class ProductService {
     	    }
 
     	    List<Review> reviews = reviewDao.findByPnoWithPhotos(pno);
-    	    Long countOfReview = reviewDao.countByPno(pno);
-    	    Double avgOfReview = reviewDao.avgByPno(pno);
+    	    Long countOfReview = reviewDao.countByReview(pno);
+    	    Double avgOfReview = reviewDao.avgByPnoStar(pno);
 
     	    return new ProductDto.ReadP(p.getPno(), p.getProductName(), p.getProductNotice(), p.getProductStock(),
     	            p.getProductPrice(), p.getProductSize(), countOfReview, avgOfReview, images, reviews);

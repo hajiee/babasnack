@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.babasnack.demo.entity.ReviewPhoto;
 import com.babasnack.demo.error.Exception.FileSaveException;
-import com.babasnack.demo.product.dao.ReviewDao;
 import com.babasnack.demo.product.dao.ReviewPhotoDao;
 
 import lombok.extern.log4j.Log4j2;
@@ -25,8 +24,6 @@ import lombok.extern.log4j.Log4j2;
 public class ReviewPhotoService {
 	@Autowired
 	private ReviewPhotoDao reviewPhotoDao;
-	@Autowired
-	private ReviewDao reviewDao;
 	
 	@Value("${defaultreviewSaveImg}")
 	private String defaultreviewSaveImg;
@@ -37,14 +34,14 @@ public class ReviewPhotoService {
 
 	public void saveReviewPhoto(Long rno, MultipartFile revPhoto) {
         if (!revPhoto.isEmpty()) {
-            String savedFilename = saveFile(revPhoto);
+            String savedFilename = saveReviewFile(revPhoto);
 
             ReviewPhoto reviewPhoto = new ReviewPhoto();
             reviewPhoto.setRno(rno);
             reviewPhoto.setReviewSaveImg(savedFilename);
 
             // 고유한 번호(reviewImgNo) 생성 및 할당
-            Long reviewImgNo = generateUniqueNumber();
+            Long reviewImgNo = reviewGenerateUniqueNumber();
             reviewPhoto.setReviewImgNo(reviewImgNo);
 
             // 사진 정보를 DB에 저장합니다.
@@ -52,14 +49,14 @@ public class ReviewPhotoService {
         }
     }
 	
-	public String saveFile(MultipartFile file) {
+	public String saveReviewFile(MultipartFile file) {
         try {
             Path uploadPath = Paths.get(reviewSaveImg);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+            String uniqueFileName = reviewGenerateUniqueFileName(file.getOriginalFilename());
             Path filePath = Paths.get(reviewSaveImg, uniqueFileName);
             Files.copy(file.getInputStream(), filePath);
 
@@ -68,15 +65,15 @@ public class ReviewPhotoService {
             throw new FileSaveException("Failed to save file", e);
         }
     }
-
-	private String generateUniqueFileName(String originalFilename) {
+	
+	private String reviewGenerateUniqueFileName(String originalFilename) {
         String extension = FilenameUtils.getExtension(originalFilename); // 파일 확장자 추출
         String uniqueId = UUID.randomUUID().toString(); // 고유한 식별자 생성
 
         return uniqueId + "." + extension; // 고유한 식별자와 확장자를 조합하여 새로운 파일명 생성
     }
 
-    private Long generateUniqueNumber() {
+    private Long reviewGenerateUniqueNumber() {
         // UUID를 사용하여 임의의 8자리 숫자를 생성하는 예시입니다.
         String uniqueId = UUID.randomUUID().toString().replaceAll("-", "");
         long uniqueNumber = Long.parseLong(uniqueId.substring(0, 8), 16);
@@ -84,7 +81,7 @@ public class ReviewPhotoService {
         return uniqueNumber;
     }
 
-    public void deleteFile(String filePath) throws Exception {
+    public void deleteReviewFile(String filePath) throws Exception {
         Path fileToDelete = Paths.get(reviewSaveImg, filePath);
         try {
             Files.deleteIfExists(fileToDelete);
@@ -95,12 +92,12 @@ public class ReviewPhotoService {
         }
     }
 
-    public String getFilePath(String filename) {
+    public String getReviewFilePath(String filename) {
         return Paths.get(reviewSaveImg, filename).toString();
     }
     
 	public List<ReviewPhoto> findReviewPhotosByRno(Long rno) {
 		// 특정 리뷰에 연관된 사진들 조회 로직
-		return reviewDao.findReviewPhotosByRno(rno);
+		return reviewPhotoDao.findReviewPhotosByRno(rno);
 	}
 }

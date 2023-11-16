@@ -39,4 +39,11 @@ public interface ProductAdminDao {
 		// 상품에 연관된 사진 삭제
 		@Delete("DELETE FROM PRODUCT_PHOTO WHERE PNO=#{pno}")
 		public Long deleteAllPhotosByPNo(Long pno);
+		
+		// 상품을 삭제할 때 상품의 리뷰들을 모두 삭제
+		@Delete("delete from review where pno=#{pno}")
+		public Integer deleteAllReviewByPNo(Long pno);
+		
+		@Delete("DELETE FROM review_photo WHERE rno IN (SELECT rno FROM review WHERE pno = #{pno})")
+		public Integer deleteAllReviewPhoto(Long pno);
 }

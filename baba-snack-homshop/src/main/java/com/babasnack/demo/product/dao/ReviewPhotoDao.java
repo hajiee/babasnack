@@ -15,6 +15,6 @@ public interface ReviewPhotoDao {
 	@SelectKey(statement = "SELECT review_photo_seq.nextval FROM dual", keyProperty = "reviewImgNo", before = true, resultType = Long.class)
 	public Integer saveReviewPhoto(ReviewPhoto reviewPhoto);
 
-	@Select("SELECT * FROM review_photo WHERE rno = #{rno}")
+	@Select("SELECT * FROM review_photo WHERE rno = #{rno} AND review_imgno = #{reviewImgNo}")
 	public List<ReviewPhoto> findReviewPhotosByRno(Long rno);
 }
