@@ -2,9 +2,12 @@ package com.babasnack.demo.orderbuy.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale.Category;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.babasnack.demo.cart.dto.CartWithPhoto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -90,7 +93,7 @@ public class OrderBuyDto {
 		private Long ono;
 		private Long amount;
 	}
-	
+
 	// 배송지
 	@Data
 	@AllArgsConstructor
@@ -100,6 +103,16 @@ public class OrderBuyDto {
 		private String name;
 		private Long pnoTell;
 		private String baseDelivery;
+	}
+
+	// 주문 장바구니 상품 목록
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ReadCartOB {
+		private List<CartWithPhoto> cart;
+		private Long productCnt;
+		private Long allPrice;
 	}
 
 	// 06-3 상품 상세설명 페이지

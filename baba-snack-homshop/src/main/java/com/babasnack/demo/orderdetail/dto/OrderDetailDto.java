@@ -1,9 +1,8 @@
 package com.babasnack.demo.orderdetail.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import com.babasnack.demo.entity.Member;
+import com.babasnack.demo.cart.dto.CartWithPhoto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,17 +29,14 @@ public class OrderDetailDto {
 		private Long pno;
 	}
 
-	// 주문상세 장바구니 상품
+	// 주문상세 장바구니 상품 목록
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class OrderDetailCart {
-		private String username;
+	public static class ReadCartOD {
+		private List<CartWithPhoto> cart;
 		private Long productCnt;
 		private Long allPrice;
-		private Long productPrice;
-		private String productName;
-		private Long pno;
 	}
 
 	// 09 구매완료 페이지(배송 정보)
@@ -84,9 +80,9 @@ public class OrderDetailDto {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class ReadMemberProfile {
-	    private String username;
-	    private Long pnoTell;
-	    private String email;
+		private String username;
+		private Long pnoTell;
+		private String email;
 	}
-	
+
 }

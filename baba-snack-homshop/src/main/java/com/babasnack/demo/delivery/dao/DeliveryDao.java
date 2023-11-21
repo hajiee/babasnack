@@ -17,7 +17,9 @@ public interface DeliveryDao {
 	public List<Delivery> findByUsername(String username);
 	
 	// 회원 배송지 저장
-	@Insert("insert into delivery(dno, username, name, pno_tell, base_delivery, add_delivery) values(delivery_seq.nextval, #{username}, #{name}, #{pnoTell}, #{baseDelivery}, #{addDelivery})")
+	@Insert("insert into delivery(dno, username, name, pno_tell, base_delivery,"
+			+ "add_delivery) values(delivery_seq.nextval, #{username}, #{name}, "
+			+ "#{pnoTell}, #{baseDelivery}, #{addDelivery})")
 	public Integer addDelivery(Delivery delivery);
 
 	// 배송지 저장시 중복 회원아이디 확인용
@@ -29,7 +31,8 @@ public interface DeliveryDao {
 	public Integer changePnoTellByMember(Member member);
 
 	// 배송지 정보 변경
-	@Update("update delivery set name=#{name}, pno_tell=#{pnoTell}, base_delivery=#{baseDelivery}, add_delivery=#{addDelivery} where username=#{username}")
+	@Update("update delivery set name=#{name}, pno_tell=#{pnoTell}, base_delivery=#{baseDelivery}, "
+			+ "add_delivery=#{addDelivery} where username=#{username}")
 	public Integer change(Delivery delivery);
 	
 	

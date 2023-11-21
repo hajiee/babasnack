@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +28,16 @@ public class CartController {
 	@Autowired
 	private CartService cartService;
 
-	// 로그인한 회원의 장바구니 출력 = 완료
+	// 로그인한 회원의 장바구니 출력
 	@GetMapping("/cart/orderdetails-list")
-	public ModelAndView read(Principal principal, @RequestParam(value="pno", defaultValue = "7") Long pno) {
+	public ModelAndView read(Principal principal) {
 		CartDto.ReadCart cartDto = cartService.read(principal.getName());
-		
-				
+
 		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto);
 	}
 
-	// 장바구니 상품이미지 보여주기 위한 설정 = 완료
-	@GetMapping("/productImg/{productSaveImg}")
+	// 장바구니 상품이미지 보여주기 위한 설정
+	@GetMapping("/productCartImg/{productSaveImg}")
 	public ResponseEntity<byte[]> viewProductSaveImg(@PathVariable String productSaveImg) {
 		File file = new File("c:/upload/productImg", productSaveImg);
 		try {
@@ -53,7 +51,7 @@ public class CartController {
 		return null;
 	}
 
-	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용 = 완료
+	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
 	@ResponseBody
 	@RequestMapping(value = "/cart/usernameCheck", method = RequestMethod.POST)
 	public int cartIdCheck(Principal principal) {
@@ -68,7 +66,7 @@ public class CartController {
 		return result;
 	}
 
-	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용 = 완료
+	// 주문하기 전 특정 회원의 배송지 비어있는지, 아닌지 확인용
 	@ResponseBody
 	@RequestMapping(value = "/cart/usernameDeliveryCheck", method = RequestMethod.POST)
 	public int deliveryIdCheck(Principal principal) {
@@ -83,9 +81,11 @@ public class CartController {
 		return result;
 	}
 
-	// 로그인 아이디와 상품 번호로 장바구니에 상품 버튼
+	// 로그인 아이디와 상품 번호, 장바구니의 상품개수로 주문, 장바구니에 담기 버튼 구현
 	@PostMapping("/cart/orderdetails-list/add")
-	public ModelAndView add(@RequestParam("productCnt") Long productCnt, Long pno, Principal principal) {
+	public ModelAndView add(@RequestParam("productCnt") Long productCnt, @RequestParam("pno") Long pno,
+			Principal principal) {
+
 		cartService.add(productCnt, pno, principal.getName());
 		return new ModelAndView("redirect:/cart/orderdetails-list");
 	}

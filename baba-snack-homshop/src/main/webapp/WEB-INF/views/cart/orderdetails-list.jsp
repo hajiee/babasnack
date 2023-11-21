@@ -16,7 +16,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-<title>BABA-SNACK - 장바구니(작성중)</title>
+<title>BABA-SNACK - 장바구니</title>
 
 <style>
 #cartBenefit-form {
@@ -46,6 +46,15 @@ th {
 
 tbody tr:nth-child(2n) {
 	background-color: #e3f2fd;
+}
+
+#caution-box {
+	position: relative;
+	border: 1px dotted saddlebrown;
+	padding: 10px;
+	left: 515px;
+	width: 352px;
+	bottom: 70px;
 }
 </style>
 
@@ -113,56 +122,47 @@ tbody tr:nth-child(2n) {
 					});
 
 	// 상품 전체삭제	
-	$(document).ready(
-			function() {
-				$('#PsCartDelete').on(
-						"click",
-						function() {
-							const username = $('#username').val();
-							var query = {username : $('#username').val()};
-							
-							$.ajax({
-								url : "/cart/usernameCheck",
-								type : "post",
-								data : query,
-								async : false,
-								success : function(
-										data) {
-									if (data == 0) { // data == 0 : 장바구니가 비어있는 상태
-										alert("["
-												+ username
-												+ "]님의 장바구니는 비어있습니다.");
-										return false;
-									} else { // data == 1 : 장바구니에 상품이 있는 상태
-										$('#frm').attr('action',
-										'/cart/orderdetails-list/delete').attr(
-										'method', 'post').submit();
-								alert("장바구니의 상품들을 전부 비우겠습니다");
-									}
-								}
-							}); // ajax 끝					
-							
-						});
-			});
-</script>
+	$(document)
+			.ready(
+					function() {
+						$('#PsCartDelete')
+								.on(
+										"click",
+										function() {
+											const username = $('#username')
+													.val();
+											var query = {
+												username : $('#username').val()
+											};
 
-<!-- 장바구니에 상품 구매, 추가 -->
-<script>
+											$
+													.ajax({
+														url : "/cart/usernameCheck",
+														type : "post",
+														data : query,
+														async : false,
+														success : function(data) {
+															if (data == 0) { // data == 0 : 장바구니가 비어있는 상태
+																alert("["
+																		+ username
+																		+ "]님의 장바구니는 비어있습니다.");
+																return false;
+															} else { // data == 1 : 장바구니에 상품이 있는 상태
+																$('#frm')
+																		.attr(
+																				'action',
+																				'/cart/orderdetails-list/delete')
+																		.attr(
+																				'method',
+																				'post')
+																		.submit();
+																alert("장바구니의 상품들을 전부 비우겠습니다");
+															}
+														}
+													}); // ajax 끝					
 
-// 상품 장바구니 추가
-$(document).ready(function() {
-	$('#add-cart').on("click", function() {
-		const form = `
-			<form action='/cart/orderdetails-list/add' method='post'>
-				<input type='hidden' name='pno' value='${product.pno}'>
-			</form>
-		`;
-		
-		$(form).appendTo($('body')).submit();
-		//alert("장바구니로 이동합니다.");
-	});
-});
-
+										});
+					});
 </script>
 
 </head>
@@ -207,9 +207,8 @@ $(document).ready(function() {
 							<tbody>
 								<c:forEach items="${cartDto.cart}" var="cart">
 									<tr>
-										<td><img src="/productImg/${cart.productSaveImg}"
-											alt="상품이미지" width="100px"><br> 확인용 pno :
-											${cart.pno}</td>
+										<td><img src="/productCartImg/${cart.productSaveImg}"
+											alt="상품이미지" width="150px"></td>
 										<td>${cart.productName}</td>
 										<td>${cart.productPrice}</td>
 										<td>${cart.productCnt}</td>
@@ -219,8 +218,9 @@ $(document).ready(function() {
 						</table>
 
 						<div style="text-align: right;">
-							[장바구니 상품 총가격 : <span>${cartDto.allPrice}</span>원]
+							[장바구니 상품 총개수 : <span>${cartDto.productCnt}</span>개, 총가격 : <span>${cartDto.allPrice}</span>원]<br>
 						</div>
+
 					</div>
 
 					<div style="text-align: center;" class="mt-3">
@@ -230,36 +230,28 @@ $(document).ready(function() {
 							id="PsOrderDetails">주문하기</button>
 						<button type="button" class="btn btn-success btn-lg"
 							id="PsCartDelete">전체삭제(취소)</button>
+
+
 					</div>
+
+
 				</form>
 
+				<div id="caution-box" style="text-align: left;" class="mt-3">
+					<div>
+						<b>*상품이 더 담기지 않을 경우</b><br>장바구니에 담을 상품재고가 한도에 달하거나, <br>한도
+						이상으로는 담을 수 없는 경우입니다.
+					</div>
+				</div>
+
 				<div>
-					<label>*회원 로그인 아이디 script 적용 : </label> <input type="text"
-						id="username" name="username" readonly="readonly"
+					<!-- *회원 로그인 아이디 확인용 -->
+					<input type="hidden" id="username" name="username"
+						readonly="readonly"
 						value="<sec:authentication property="principal.username"/>">
 				</div>
 
-				<!-- 장바구니 주문 테스트 -->
-				<div id="cartBenefit-form" class="mt-3">
-					<p>*장바구니 주문 테스트</p>		
-					
-					<div>
-						상품이름 : ${product.productName}<br>
-						상품가격 : ${product.productPrice}<br>
-						상품재고 : ${product.productStock}<br>
-					</div>
-					<select id="quantity" name="productCnt">
-						<option value="0">구매수량선택</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
-					
-					<button type="button" class="btn btn-secondary" id="add-cart">장바구니</button>
-					<button type="button" class="btn btn-dark" id="add-cart">구매하기</button>
-				</div>
+
 			</section>
 
 		</main>

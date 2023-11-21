@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.babasnack.demo.cart.dto.CartWithPhoto;
 import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.orderbuy.dao.OrderBuyDao;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
@@ -15,6 +17,16 @@ import com.babasnack.demo.orderbuy.dto.OrderBuyDto.ReadOrderDetailByOB;
 public class OrderBuyService {
 	@Autowired
 	private OrderBuyDao orderBuyDao;
+
+	// 장바구니 목록과 가격 합계를 CartDto.ReadCart에 담아 리턴(주문용)
+	@Transactional(readOnly = true)
+	public OrderBuyDto.ReadCartOB readCart(String username) {
+		List<CartWithPhoto> cart = orderBuyDao.findByUsernameFromCartOB(username);
+		Long productCnt = orderBuyDao.allProductCntByUsernameFromCartOB(username);
+		Long allPrice = orderBuyDao.sumProductByUsernameFromCartOB(username);
+
+		return new OrderBuyDto.ReadCartOB(cart, productCnt, allPrice);
+	}
 
 	// 주문 정보 저장
 	public Boolean add(OrderBuyDto.OrderBuyProduct orderBuyProduct, String username) {
@@ -55,7 +67,8 @@ public class OrderBuyService {
 	// 회원 정보 읽기(delivery 테이블)
 	public OrderBuyDto.DeliveryByOrderBuy readDelivery(String username) {
 		Delivery delivery = orderBuyDao.findUsernameFromDelivery(username);
-		return new OrderBuyDto.DeliveryByOrderBuy(delivery.getUsername(), delivery.getName(), delivery.getPnoTell(), delivery.getBaseDelivery());
+		return new OrderBuyDto.DeliveryByOrderBuy(delivery.getUsername(), delivery.getName(), delivery.getPnoTell(),
+				delivery.getBaseDelivery());
 
 	}
 

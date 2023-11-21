@@ -102,7 +102,6 @@ tbody tr:nth-child(2n) {
 			alert("임시 테스트\n결제 완료 페이지로 이동");
 			location.href = '/cart/order-end';
 
-			$("#frm").appendTo($('body')).submit();
 		});
 	})
 
@@ -129,7 +128,6 @@ tbody tr:nth-child(2n) {
 			alert("임시 테스트\n네이버Pay 결제 완료 페이지로 이동");
 			location.href = '/cart/order-end';
 
-			$("#frm").appendTo($('body')).submit();
 		});
 	})
 
@@ -175,30 +173,19 @@ tbody tr:nth-child(2n) {
 									</tr>
 								</thead>
 								<tbody>
-
-									<tr>
-										<td><img src=""> 상품이미지test</td>
-										<td>상품명test</td>
-										<td>가격test</td>
-										<td>개수test</td>
-									</tr>
-
-									<tr>
-										<td><img src=""> 상품이미지test</td>
-										<td>상품명test</td>
-										<td>가격test</td>
-										<td>개수test</td>
-									</tr>
-
+									<c:forEach items="${OBcartDto.cart}" var="cart">
+										<tr>
+											<td><img src="/productCartImg/${cart.productSaveImg}"
+												alt="상품이미지" width="150px"></td>
+											<td>${cart.productName}</td>
+											<td>${cart.productPrice}</td>
+											<td>${cart.productCnt}</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 							<div style="text-align: right;">
-								<div>
-									[주문상품 총가격 : <span>??</span>원]
-								</div>
-								<div>
-									[주문상품 총적립금 : <span>??</span>원]
-								</div>
+								[장바구니 상품 총개수 : <span>${OBcartDto.productCnt}</span>개, 총가격 : <span>${OBcartDto.allPrice}</span>원]<br>
 							</div>
 
 						</div>
@@ -244,10 +231,11 @@ tbody tr:nth-child(2n) {
 
 					</div>
 				</form>
-				
+
 				<div>
-					<label>*회원 로그인 아이디 확인용 : </label> <input type="text" id="username"
-						name="username" readonly="readonly"
+					<!-- *회원 로그인 아이디 확인용 -->
+					<input type="hidden" id="username" name="username"
+						readonly="readonly"
 						value="<sec:authentication property="principal.username"/>">
 				</div>
 			</section>

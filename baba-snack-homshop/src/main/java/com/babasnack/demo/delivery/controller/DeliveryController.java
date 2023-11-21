@@ -67,6 +67,5 @@ public class DeliveryController {
 		deliveryService.changePnoTellByMember(memberEntity);
 
 		return new ModelAndView("redirect:/");
-		// return new ModelAndView("redirect:/mypage");
 	}
 }

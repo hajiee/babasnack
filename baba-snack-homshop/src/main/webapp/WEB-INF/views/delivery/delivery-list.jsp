@@ -292,9 +292,9 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- 로그인 아이디 script 작동용 -->
-					<div style="float: left;">						
+					<div style="float: left;">
 						<input type="hidden" class="form-control" id="username"
 							name="username" placeholder="사용자 아이디" readonly="readonly"
 							value="<sec:authentication property="principal.username"/>">

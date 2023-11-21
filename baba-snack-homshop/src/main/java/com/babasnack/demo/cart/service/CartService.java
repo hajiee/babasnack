@@ -12,14 +12,13 @@ import com.babasnack.demo.cart.dto.CartWithPhoto;
 import com.babasnack.demo.entity.Cart;
 import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.entity.ProductPhoto;
 
 @Service
 public class CartService {
 	@Autowired
 	private CartDao cartDao;
 
-	// 장바구니 목록과 가격 합계를 CartDto.ReadCart2에 담아 리턴
+	// 장바구니 목록과 가격 합계를 CartDto.ReadCart에 담아 리턴
 	@Transactional(readOnly = true)
 	public CartDto.ReadCart read(String username) {
 		List<CartWithPhoto> cart = cartDao.findByUsername(username);
@@ -39,28 +38,30 @@ public class CartService {
 		return cartDao.findByUsernameFromDelivery(username);
 	}
 
-	// 장바구니 구매 버튼(장바구니에 있는 상품이면 개수 증가, 없는 상품이면 담는다)
+	// 장바구니(구매) 버튼 - 장바구니에 있는 상품이면 개수 증가, 없는 상품이면 담는다
 	public Boolean add(Long productCnt, Long pno, String username) {
 		Cart cart = cartDao.findByUsernameAndPno(username, pno);
 
-		if (cart != null) {
-			// 장바구니에 상품이 있으면, 그 상품 개수 증가
+		if (cart != null) { // 장바구니에 상품이 있으면, 그 상품 개수 증가
 			Long stock = cartDao.findProducStockById(pno);
-			if (cart.getProductCnt() >= stock)
+			// 장바구니 현재개수 + 장바구니 추가 개수가 상품재고보다 많을 경우 false로 리턴
+			if ((cart.getProductCnt() + productCnt) > (stock + 1))
 				return false;
 			return cartDao.increase(productCnt, pno, username) == 1;
-		} else {
-			// 주문할 때 상품이 없으면 상품 추가
+		} else { // 장바구니 담을 때 상품이 없으면 상품 추가
 			Product product = cartDao.findByIdFromProduct(pno);
-			Cart newCart = new Cart(pno, username, productCnt, product.getProductPrice(), product.getProductPrice(),
-					product.getProductName());
+			// 장바구니 추가 개수가 상품재고보다 많을 경우 false로 리턴
+			Long stock = cartDao.findProducStockById(pno);
+			if (productCnt > (stock + 1))
+				return false;
+			Cart newCart = new Cart(pno, username, productCnt, product.getProductPrice(),
+					product.getProductPrice() * productCnt, product.getProductName());
 			return cartDao.addCart(newCart) == 1;
 		}
 	}
 
-	// 장바구니 전체삭제 = 완료
+	// 장바구니 전체삭제
 	public void deleteAll(String username) {
 		cartDao.deleteByUsername(username);
 	}
-
 }

@@ -8,24 +8,24 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.babasnack.demo.cart.dto.CartDto;
 import com.babasnack.demo.cart.dto.CartWithPhoto;
 import com.babasnack.demo.entity.Cart;
 import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.entity.Product;
-import com.babasnack.demo.entity.ProductPhoto;
 
 @Mapper
 public interface CartDao {
-	// 특정 회원의 장바구니+상품이미지 목록 가져오기(list) = 완료
-	@Select("select c.username, c.pno, c.product_cnt, c.product_price, c.all_price, c.product_name, pp.product_img, pp.product_imgno, pp.product_saveimg from product_photo pp inner join cart c on pp.pno = c.pno where username=#{username}")
+	// 특정 회원의 장바구니+상품이미지 목록 가져오기(list)
+	@Select("select c.username, c.pno, c.product_cnt, c.product_price, c.all_price, c.product_name,"
+			+ " pp.product_img, pp.product_imgno, pp.product_saveimg from product_photo pp"
+			+ " inner join cart c on pp.pno = c.pno where username=#{username}")
 	public List<CartWithPhoto> findByUsername(String username);
 
-	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용 = 완료
+	// 특정 회원의 장바구니 비어있는지, 아닌지 확인용
 	@Select("select * from cart where username=#{username} and rownum=1")
 	public Cart findByUsernameFromCart(String username);
 
-	// 특정 회원의 배송지 주소 비어있는지, 아닌지 확인용 = 완료
+	// 특정 회원의 배송지 주소 비어있는지, 아닌지 확인용
 	@Select("select * from delivery where username=#{username}")
 	public Delivery findByUsernameFromDelivery(String username);
 
@@ -39,7 +39,8 @@ public interface CartDao {
 	public Integer addCart(Cart cart);
 
 	// 장바구니의 상품 개수 증가
-	@Update("update cart set product_cnt= product_cnt + #{productCnt}, all_price=all_price+product_price where pno=#{pno} and username=#{username}")
+	@Update("update cart set product_cnt= product_cnt + #{productCnt}, all_price= all_price + (product_price * #{productCnt})"
+			+ " where pno=#{pno} and username=#{username}")
 	public Integer increase(Long productCnt, Long pno, String username);
 
 	// 상품 pno로 찾아서 장바구니에 상품 추가할 용도
@@ -59,11 +60,7 @@ public interface CartDao {
 	@Select("select sum(all_price) from cart where username=#{username}")
 	public Long sumProductByUsername(String username);
 
-	// 장바구니 전체 삭제 = 완료
+	// 장바구니 전체 삭제
 	@Delete("delete from cart where username=#{username}")
 	public void deleteByUsername(String username);
-
-	// 상품 dto 테스트용
-	@Select("select * from product where pno=#{pno}")
-	public Product findByPnoProduct(Long pno);
 }

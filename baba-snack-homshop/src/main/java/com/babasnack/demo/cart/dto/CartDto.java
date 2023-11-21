@@ -15,7 +15,7 @@ public class CartDto {
 	@NoArgsConstructor
 	public static class ReadCart {
 		private List<CartWithPhoto> cart;
-		private Long productPrice;
+		private Long productCnt;
 		private Long allPrice;
 	}
 
@@ -26,21 +26,4 @@ public class CartDto {
 	public static class DeleteAllCart {
 		private String username;
 	}
-	
-	// 상품 dto 테스트용
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class testProductDto {
-	    private Long pno;
-        private String productName;
-        private String productNotice;
-        private Long productStock;
-        private Long productPrice;
-        private Long productSize;
-	}
-
-	
-
-
 }

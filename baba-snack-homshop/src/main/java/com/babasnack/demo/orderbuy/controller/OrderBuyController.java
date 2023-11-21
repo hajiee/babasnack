@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,21 +18,24 @@ import com.babasnack.demo.orderbuy.service.OrderBuyService;
 public class OrderBuyController {
 	@Autowired
 	private OrderBuyService orderBuyService;
-	
+
 	@GetMapping("/cart/order-end")
 	public void readOrderEndPageTest() {
 	}
-	
+
 //	@GetMapping("/cart/pay")
 //	public void readOrderBuyTest() {
 //	}
-	
+
 	@GetMapping("/cart/pay")
 	public ModelAndView readPay(Principal principal) {
 		// 수령인 정보 출력
 		OrderBuyDto.DeliveryByOrderBuy DBOrderBuyDto = orderBuyService.readDelivery(principal.getName());
-		
-		return new ModelAndView("cart/pay").addObject("DBOrderBuyDto", DBOrderBuyDto);
+
+		// 주문 로그인한 회원의 장바구니 출력
+		OrderBuyDto.ReadCartOB OBcartDto = orderBuyService.readCart(principal.getName());
+
+		return new ModelAndView("cart/pay").addObject("DBOrderBuyDto", DBOrderBuyDto).addObject("OBcartDto", OBcartDto);
 	}
 
 	// 주문정보 저장(회원 id)

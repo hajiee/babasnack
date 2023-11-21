@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.babasnack.demo.cart.dto.CartWithPhoto;
 import com.babasnack.demo.entity.Delivery;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto;
 import com.babasnack.demo.orderbuy.dto.OrderBuyDto.ReadOrderDetailByOB;
@@ -91,4 +92,20 @@ public interface OrderBuyDao {
 	// 주문상품 발송여부(관리자 전용)
 	@Update("update order_buy set delivery_state=#{deliveryState} where username=#{username} and ono=#{ono}")
 	public Integer updateDeliveryState(String deliveryState, String username, Long ono);
+	
+	// ==== 장바구니 목록 출력(주문용) ========================
+	// 특정 회원의 장바구니+상품이미지 list로 목록 가져오기(주문용)
+	@Select("select c.username, c.pno, c.product_cnt, c.product_price, c.all_price, c.product_name,"
+			+ " pp.product_img, pp.product_imgno, pp.product_saveimg from product_photo pp"
+			+ " inner join cart c on pp.pno = c.pno where username=#{username}")
+	public List<CartWithPhoto> findByUsernameFromCartOB(String username);
+
+	// 장바구니 상품개수 합계(주문용)
+	@Select("select sum(product_cnt) from cart where username=#{username}")
+	public Long allProductCntByUsernameFromCartOB(String username);
+
+	// 장바구니 상품가격 합계(주문용)
+	@Select("select sum(all_price) from cart where username=#{username}")
+	public Long sumProductByUsernameFromCartOB(String username);
+	// ====================================================
 }

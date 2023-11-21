@@ -34,7 +34,6 @@ public class DeliveryDto {
 		private String addDelivery;
 	}
 
-
 	// 회원 dto entity
 	@Data
 	@AllArgsConstructor
@@ -43,8 +42,4 @@ public class DeliveryDto {
 		private String username;
 		private Long pnoTell;
 	}
-
-	// 04-2 배송지 구상
-
-	// 08-1 결제 페이지 구상
 }

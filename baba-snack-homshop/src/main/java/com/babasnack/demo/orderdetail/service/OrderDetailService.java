@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.babasnack.demo.cart.dto.CartWithPhoto;
 import com.babasnack.demo.entity.Member;
 import com.babasnack.demo.entity.OrderDetail;
 import com.babasnack.demo.orderdetail.dao.OrderDetailDao;
@@ -26,7 +27,17 @@ public class OrderDetailService {
 		Member member = orderDetailDao.findUsernameFromMember(username);
 		return new OrderDetailDto.ReadMemberProfile(member.getUsername(), member.getPnoTell(), member.getEmail());		
 	}
+	
+	// 장바구니 목록과 가격 합계를 CartDto.ReadCart에 담아 리턴(주문상세용)
+	@Transactional(readOnly = true)
+	public OrderDetailDto.ReadCartOD readCart(String username) {
+		List<CartWithPhoto> cart = orderDetailDao.findByUsernameFromCartOD(username);
+		Long productCnt = orderDetailDao.allProductCntByUsernameFromCartOD(username);
+		Long allPrice = orderDetailDao.sumProductByUsernameFromCartOD(username);
 
+		return new OrderDetailDto.ReadCartOD(cart, productCnt, allPrice);
+	}
+	
 
 	// 회원 주문자 정보(관리자)
 	public OrderDetailDto.ReadOrderDetailMember orderDetailMember(String username, Long odno) {
