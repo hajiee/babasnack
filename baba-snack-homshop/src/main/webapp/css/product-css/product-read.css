@@ -15,10 +15,15 @@
 }
 
 #get-productPhoto-page{
-	width: 900px;
+	width: 1000px;
 	height: 700px;
 	text-align: center;
 	padding: 30px;
+}
+
+#get-productPhoto{
+	width: 900px;
+	height: 670px;
 }
 
 #review-preview {

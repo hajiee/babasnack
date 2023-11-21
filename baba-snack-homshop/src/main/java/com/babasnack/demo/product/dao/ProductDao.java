@@ -42,5 +42,16 @@ public interface ProductDao {
     // 최신등록순 상품목록
     @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno ORDER BY product.productDay DESC")
     public List<Product> findAllProductsOrderByRegistrationDate();
-
+      
+    // 베스트 상품목록
+    @Select("SELECT * FROM ("
+    		+ "    SELECT p.*, AVG(r.star) AS avg_star"
+    		+ "    FROM product p"
+    		+ "    LEFT JOIN review r ON p.pno = r.pno"
+    		+ "    GROUP BY p.pno\r\n"
+    		+ "    HAVING AVG(r.star) >= 4"
+    		+ "    ORDER BY p.productDay DESC"
+    		+ ")"
+    		+ "WHERE ROWNUM <= 4")
+    public List<Product> findBestProducts();
 }

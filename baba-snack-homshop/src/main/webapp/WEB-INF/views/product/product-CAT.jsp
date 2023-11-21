@@ -22,6 +22,9 @@
 	const msg = '${msg}';
 	if (msg !== '')
 		alert(msg);
+	
+	const c = '${products}';
+	console.log(c);
 </script>
 </head>
 <body>
@@ -35,7 +38,7 @@
 			<jsp:include page="/WEB-INF/views/include/nav.jsp" />
 		</nav>
 		<main id="product-main">
-			<aside id="best">
+			<aside id="best" style="margin-left:150px;">
 				<!-- 베스트상품 -->
 				<jsp:include page="/WEB-INF/views/include/aside-best.jsp" />
 			</aside>
