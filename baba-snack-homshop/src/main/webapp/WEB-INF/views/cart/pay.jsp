@@ -175,7 +175,7 @@ tbody tr:nth-child(2n) {
 								<tbody>
 									<c:forEach items="${OBcartDto.cart}" var="cart">
 										<tr>
-											<td><img src="/productCartImg/${cart.productSaveImg}"
+											<td><img src="/productImg/${cart.productSaveImg}"
 												alt="상품이미지" width="150px"></td>
 											<td>${cart.productName}</td>
 											<td>${cart.productPrice}</td>
