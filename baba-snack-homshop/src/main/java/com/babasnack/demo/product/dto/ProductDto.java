@@ -57,10 +57,12 @@ public class ProductDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ListP {
+    	private Long pno;
         private String productName;
         private Long productStock;
         private Long productPrice;
         private Long productSize;
+        private Category category;
         private List<ProductPhoto> productPhoto;
     }
     

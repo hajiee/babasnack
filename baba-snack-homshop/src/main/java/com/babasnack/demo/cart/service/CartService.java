@@ -63,11 +63,4 @@ public class CartService {
 		cartDao.deleteByUsername(username);
 	}
 
-	// 상품 dto 테스트용
-	@Transactional(readOnly = true)
-	public CartDto.testProductDto readTestProduct(Long pno) {
-		Product p = cartDao.findByPnoProduct(pno);
-		return new CartDto.testProductDto(p.getPno(), p.getProductName(), p.getProductNotice(), p.getProductStock(),
-				p.getProductPrice(), p.getProductSize());
-	}
 }

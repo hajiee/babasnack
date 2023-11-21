@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.babasnack.demo.entity.Product;
 import com.babasnack.demo.product.Service.ProductAdminService;
 import com.babasnack.demo.product.Service.ProductService;
+import com.babasnack.demo.product.dto.ProductDto;
 import com.babasnack.demo.product.dto.ProductDto.ReadP;
 
 @Controller
@@ -46,11 +47,11 @@ public class ProductController {
 	@GetMapping("/product/category={category}")
 	public String showProductListByCategory(@RequestParam String category, Model model) {
 	    if ("DOG".equals(category)) {
-	        List<Product> dogProducts = productService.getProductListByCategory("DOG");
+	    	List<ProductDto.ListP> dogProducts = productService.getProductListByCategory("DOG");
 	        model.addAttribute("products", dogProducts);
 	        return "product/product-DOG";
 	    } else if ("CAT".equals(category)) {
-	        List<Product> catProducts = productService.getProductListByCategory("CAT");
+	    	List<ProductDto.ListP> catProducts = productService.getProductListByCategory("CAT");
 	        model.addAttribute("products", catProducts);
 	        return "product/product-CAT";
 	    } else {
@@ -62,28 +63,25 @@ public class ProductController {
 	@GetMapping("/product/product-list")
     public String getProductList(@RequestParam("search") String searchKeyword, Model model) {
         // 검색어를 기반으로 상품 목록을 조회하는 로직을 구현합니다.
-        List<Product> searchResult = productService.getProductListByKeyword(searchKeyword);
+		  List<ProductDto.ListP> searchResult = productService.getProductListByKeyword(searchKeyword);
         
         model.addAttribute("products", searchResult);
         return "product/product-list";
     }
 	
 	@GetMapping("/product")
-	public String getProductList(@RequestParam(value = "category", required = false, defaultValue = "") String category,
+	public String getProductListSearch(@RequestParam(value = "category", required = false, defaultValue = "") String category,
 	                             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
 	                             Model model) {
-	    List<Product> productList;
+		List<ProductDto.ListP> productList = null;
 
-	    if (!category.isEmpty() && ("DOG".equals(category) || "CAT".equals(category))) {
+		if (!category.isEmpty() && ("DOG".equals(category) || "CAT".equals(category))) {
 	        productList = productService.getProductListByCategory(category);
 	        model.addAttribute("products", productList);
 	        return "product/product-" + category; // 카테고리별 JSP 파일명을 동적으로 설정합니다.
 	    } else if (!keyword.isEmpty()) {
 	        productList = productService.getProductListByKeyword(keyword);
 	        model.addAttribute("keyword", keyword); // 검색 키워드 정보도 함께 전달
-	    } else {
-	        productList = productAdminService.getAllProducts();
-	        category = ""; // 기본값으로 카테고리를 빈 문자열로 설정
 	    }
 
 	    model.addAttribute("products", productList);
@@ -130,6 +128,7 @@ public class ProductController {
 	            return "error-page"; // 에러 페이지로 리다이렉트 또는 에러 메시지를 표시하는 방식으로 처리해야 합니다.
 	        }
 	        model.addAttribute("product", product);
+	        
 	        return "product/product-read"; // product-read.jsp로 변경
 	    } catch (NumberFormatException e) {
 	        // 숫자 형식의 상품 번호가 아닌 경우 에러 처리
@@ -148,5 +147,4 @@ public class ProductController {
     	
     	return ResponseEntity.ok(productList);
 	}
-
 }

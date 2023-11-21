@@ -34,10 +34,8 @@ public class CartController {
 	public ModelAndView read(Principal principal, @RequestParam(value="pno", defaultValue = "7") Long pno) {
 		CartDto.ReadCart cartDto = cartService.read(principal.getName());
 		
-		// 상품 dto 테스트용
-		CartDto.testProductDto product = cartService.readTestProduct(pno);
-		
-		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto).addObject("product", product);
+				
+		return new ModelAndView("cart/orderdetails-list").addObject("cartDto", cartDto);
 	}
 
 	// 장바구니 상품이미지 보여주기 위한 설정 = 완료

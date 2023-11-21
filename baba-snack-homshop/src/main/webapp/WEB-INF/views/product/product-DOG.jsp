@@ -26,6 +26,9 @@
 	const msg = '${msg}';
 	if (msg !== '')
 		alert(msg);
+	
+	const c = '${products}';
+	console.log(c);
 </script>
 </head>
 <body>
@@ -61,9 +64,7 @@
 									<div class="product">
 										<div class="product-image">
 											<a href="/product/product-read?pno=${dogProduct.pno}">
-											<img class="get-product-img"
-												data-img-src="${dogProduct.photos[0].productSaveImg}"
-												alt="${dogProduct.productName}">
+											<img class="get-product-img" src="${dogProduct.productPhoto[0].productSaveImg}"	alt="${dogProduct.productName}">
 											</a>
 										</div>
 										<div class="product-info">

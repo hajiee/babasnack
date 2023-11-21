@@ -111,6 +111,123 @@ $(document).ready(function() {
     $(".star[data-rating='" + defaultRating + "']").addClass("filled").prevAll(".star").addClass("filled");
     $("#rating").val(defaultRating);
     $("#rating-value").text(defaultRating);
+    const v = '${product.productPhoto[0].productSaveImg}';
+    console.log(v);
+});
+</script>
+<script>
+// 상품 장바구니 추가
+$(document).ready(function() {
+	$('#add-cart').on("click", function() {
+		var index = $("#quantity option").index($("#quantity option:selected"));
+		
+		if(index == 0){
+			alert("장바구니에 담을 상품 수량을 선택해 주십시오.");
+			
+		} else if(index == 1){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 1>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("1개의 상품이 장바구니에 담겼습니다.\n장바구니로 이동합니다.");
+		} else if(index == 2){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 2>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("2개의 상품이 장바구니에 담겼습니다.\n장바구니로 이동합니다.");
+		} else if(index == 3){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 3>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("3개의 상품이 장바구니에 담겼습니다.\n장바구니로 이동합니다.");
+		} else if(index == 4){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 4>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("4개의 상품이 장바구니에 담겼습니다.\n장바구니로 이동합니다.");
+		} else if(index == 5){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 5>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("5개의 상품이 장바구니에 담겼습니다.\n장바구니로 이동합니다.");
+		}
+
+	});
+});
+
+//상품 구매하기로 장바구니 추가
+$(document).ready(function() {
+	$('#buy-button').on("click", function() {
+		var index = $("#quantity option").index($("#quantity option:selected"));
+		
+		if(index == 0){
+			alert("구매할 상품 수량을 선택해 주십시오.");
+		} else if(index == 1){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 1>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("1개 구매하셨습니다.\n장바구니로 이동합니다.");
+		} else if(index == 2){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 2>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("2개 구매하셨습니다.\n장바구니로 이동합니다.");
+		} else if(index == 3){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 3>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("3개 구매하셨습니다.\n장바구니로 이동합니다.");
+		} else if(index == 4){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 4>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("4개 구매하셨습니다.\n장바구니로 이동합니다.");
+		} else if(index == 5){
+			const form = `
+				<form action='/cart/orderdetails-list/add' method='post'>
+					<input type='hidden' name='pno' value='${product.pno}'>
+					<input type='hidden' name='productCnt' value = 5>
+				</form>
+			`;
+			$(form).appendTo($('body')).submit();
+			alert("5개 구매하셨습니다.\n장바구니로 이동합니다.");
+		}		
+	});
 });
 </script>
 </head>
@@ -142,7 +259,7 @@ $(document).ready(function() {
 						</tr>
 						<tr>
 							<td rowspan='6' id="get-productPhoto-page">
-								<img id="get-productPhoto" src="" alt="${product.productName} 사진">
+								<img id="get-productPhoto" src="${product.productPhoto[0].productSaveImg}" alt="${product.productName} 사진">
 							</td>
 						</tr>
 						<tr>
@@ -170,10 +287,8 @@ $(document).ready(function() {
 							</td>
 							<td>
 								<div class="btn-group">
-								<a href="/cart/orderdetails-list">
-  									<button type="button" class="btn btn-secondary">장바구니</button>
-  								</a>
-  									<button type="button" class="btn btn-dark">구매하기</button>
+  									<button type="button" class="btn btn-secondary" id="add-cart">장바구니</button>
+  									<button type="button" class="btn btn-dark" id="buy-button">구매하기</button>
   								</div>
 							</td>
 						</tr>

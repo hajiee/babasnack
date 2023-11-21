@@ -57,9 +57,7 @@
 									<div class="product">
 										<div class="product-image">
 											<a href="/product/product-read?pno=${catProduct.pno}">
-											<img class="get-product-img"
-												data-img-src="${catProduct.photos[0].productSaveImg}"
-												alt="${catProduct.productName}">
+											<img class="get-product-img" src="${catProduct.productPhoto[0].productSaveImg}" alt="${catProduct.productName}">
 											</a>
 										</div>
 										<div class="product-info">

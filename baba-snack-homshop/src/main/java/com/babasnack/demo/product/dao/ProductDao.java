@@ -17,19 +17,19 @@ public interface ProductDao {
 	public List<Product> findAllProducts();
 
     // 상품번호로 조회
-    @Select("SELECT * FROM product WHERE pno = #{pno}")
-    public Product findByProduct(Long pno);
+	@Select("SELECT * FROM product RIGHT OUTER JOIN product_photo ON product.pno = product_photo.pno WHERE product.pno = #{pno}")
+	public Product findByProduct(Long pno);
 
     // 상품조회
-    @Select("SELECT * FROM product WHERE product_name = #{productName}")
+    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno WHERE product_name = #{productName}")
     public Product findByProductName(String productName);
     
     // 카테고리별 상품 목록 조회
-    @Select("SELECT * FROM product WHERE category = #{category}")
+    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno WHERE category = #{category}")
     public List<Product> findByCategory(String category);
 
     // 상품명으로 부분 일치 검색
-    @Select("SELECT * FROM product WHERE product_name LIKE '%' || #{keyword} || '%'")
+    @Select("SELECT * FROM product right outer join product_photo on product.pno = product_photo.pno WHERE product_name LIKE '%' || #{keyword} || '%'")
     public List<Product> findByKeyword(String keyword);
     
     // 한 페이지당 상품 수
