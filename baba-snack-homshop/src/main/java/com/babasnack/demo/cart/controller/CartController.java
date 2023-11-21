@@ -37,7 +37,7 @@ public class CartController {
 	}
 
 	// 장바구니 상품이미지 보여주기 위한 설정
-	@GetMapping("/productCartImg/{productSaveImg}")
+	@GetMapping("/productImg/{productSaveImg}")
 	public ResponseEntity<byte[]> viewProductSaveImg(@PathVariable String productSaveImg) {
 		File file = new File("c:/upload/productImg", productSaveImg);
 		try {
