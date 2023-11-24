@@ -46,6 +46,12 @@
 	width: 80px;
 	margin-left: 10px; /* 수정 버튼과의 간격 조정 */
 }
+
+#detail-memberOrder{
+	width: 150px;
+	margin:0px; /* 수정 버튼과의 간격 조정 */
+}
+
 #editBtn button{
 	font-size:18px;
 }
