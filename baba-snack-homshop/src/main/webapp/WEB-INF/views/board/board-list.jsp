@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -29,6 +30,17 @@
 </script>
 <script>
 	$(document).ready(function() {
+		$('#boardWriteBtn').click(function(e) {
+    	var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
+
+        // 비회원인 경우 처리
+        if (!isAuthenticated) {
+            alert('로그인 후 이용해주세요.');
+            window.location.href = '/member/login';  // 로그인 페이지로 리다이렉트
+        	}
+		}
+		
+		
 		// 글쓴이와 날짜 정보 가져오기
 		$("tbody tr").each(function() {
 			var boardWriter = $(this).find("td:eq(2)").text();
@@ -53,9 +65,11 @@
 		</nav>
 		<main id="board-main">
 			<aside id="aside-board-list">
+			<sec:authorize access="isAuthenticated()">
 				<a href="/board/board-write">
-					<button type="button" class="btn btn-outline-warning">글올리기</button>
+					<button type="button" class="btn btn-outline-warning" id="boardWriteBtn">글올리기</button>
 				</a>
+			</sec:authorize>
 			</aside>
 			<section>
 				<table class="table table-hover" id="board-table">

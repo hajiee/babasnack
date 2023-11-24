@@ -124,17 +124,6 @@ $(document).ready(function() {
 	</div>
 </body>
 <script>
-    	var isAuthenticated = <%=session.getAttribute("isAuthenticated")%>;
-    	var username = '<%=session.getAttribute("username")%>';
-    	var isAdmin = <%=request.isUserInRole("ROLE_ADMIN")%>;
-
-        // 비회원인 경우 처리
-        if (!isAuthenticated && !isAdmin) {
-            alert('로그인 후 이용해주세요.');
-            window.location.href = '/member/login';  // 로그인 페이지로 리다이렉트
-        }
-</script>
-<script>
 function submitForm(action) {
     document.getElementById('boardForm').action = action;
     document.getElementById('boardForm').submit();
